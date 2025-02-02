@@ -21,9 +21,10 @@
     }
     body {
       background: #000;
-      overflow: hidden;
       position: relative;
       color: #fff;
+      /* Allow vertical scrolling if content overflows */
+      overflow-y: auto;
     }
     /* Utility Classes for Visibility */
     .hidden { display: none; }
@@ -58,12 +59,7 @@
       padding: 2rem;
       max-width: 800px;
       margin: 0 auto;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow-y: auto;
+      min-height: 100vh;  /* Changed from fixed height to allow extra content */
     }
     .welcome h1 {
       font-size: 3.5rem;
@@ -98,7 +94,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    .cta-button {
+    .cta-button, .exams-button {
       padding: 1rem 2rem;
       font-size: 1.2rem;
       background: #ff4081;
@@ -113,7 +109,7 @@
       animation: pulse 2s infinite;
       margin-top: 1.5rem;
     }
-    .cta-button:hover {
+    .cta-button:hover, .exams-button:hover {
       transform: translateY(-3px);
       box-shadow: 0 6px 20px rgba(255,64,129,0.6);
     }
@@ -122,13 +118,21 @@
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
-    /* Exam Countdown Button Styling */
+    /* Styling for the upcoming exams section */
+    #examsCountdownSection {
+      background: #111;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    #examsCountdownSection h2 {
+      color: #ff4081;
+      margin-bottom: 1rem;
+    }
     .exam-countdown-item {
-      margin: 1rem 0;
+      margin: 1.5rem 0;
       padding: 1rem;
       background: rgba(255,255,255,0.1);
       border-radius: 15px;
-      display: inline-block;
     }
     .exam-countdown-item h3 {
       margin-bottom: 0.5rem;
@@ -141,7 +145,7 @@
     }
     /* File Tree (Resources) Page */
     .file-browser {
-      position: fixed; /* Use fixed positioning so it always fills the viewport */
+      position: fixed; /* Always fills the viewport */
       top: 0;
       left: 0;
       width: 100vw;
@@ -204,14 +208,12 @@
     .file-item a:hover {
       color: #ff4081;
     }
-    /* Optional styling for the upcoming exams section */
-    #examsCountdownSection {
-      margin-top: 2rem;
-      width: 100%;
-    }
-    #examsCountdownSection h2 {
-      color: #ff4081;
-      margin-bottom: 1rem;
+    /* Optional styling for a highlighted folder */
+    .coursebook-folder {
+      background-color: green;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
     }
   </style>
 </head>
@@ -223,12 +225,12 @@
     <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
   </div>
 
-  <!-- Animated Welcome Page (Only One) -->
+  <!-- Animated Welcome Page -->
   <div class="welcome" id="welcomePage">
     <h1>Welcome to Physics Resources! 📚</h1>
     <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
     
-    <!-- Main Countdown for the First Exam -->
+    <!-- Main Countdown for the First Exam (optional) -->
     <div class="countdown">
       <div class="countdown-item">
         <div class="countdown-number" id="months">00</div>
@@ -252,14 +254,19 @@
       </div>
     </div>
     <p class="exam-date">First IB Exams: April 29, 2025</p>
-    <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
     
-    <!-- New Section: Upcoming Exams Countdown -->
-    <div id="examsCountdownSection">
-      <h2>Upcoming Exams</h2>
-      <div id="examsCountdownContainer">
-        <!-- Each exam’s countdown will be injected here -->
-      </div>
+    <!-- Button to explore resources (opens the file browser) -->
+    <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
+    <br>
+    <!-- Button to view upcoming exams -->
+    <a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a>
+  </div>
+
+  <!-- Upcoming Exams Section -->
+  <div id="examsCountdownSection">
+    <h2>Upcoming Exams</h2>
+    <div id="examsCountdownContainer">
+      <!-- Exam countdown items will be injected here -->
     </div>
   </div>
 
@@ -384,20 +391,11 @@
     </div>
   </div>
 
-  <style>
-    .coursebook-folder {
-      background-color: green;
-      color: white;
-      font-weight: bold;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-    }
-  </style>
-
   <script>
     document.addEventListener("DOMContentLoaded", function() {
 
       /***** MAIN COUNTDOWN (First Exam) *****/
-      // Count down to April 29, 2025 – adjust as needed.
+      // Countdown to April 29, 2025 (adjust as needed).
       const mainCountdownDate = new Date('2025-04-29T00:00:00').getTime();
       const mainCountdownInterval = setInterval(updateMainCountdown, 1000);
       updateMainCountdown(); // initial call
@@ -429,38 +427,35 @@
         document.getElementById('seconds').innerHTML = seconds;
       }
 
-
       /***** UPCOMING EXAMS COUNTDOWNS *****/
-      // Define an array of exam objects.
-      // Adjust the date strings and labels as needed.
+      // Define an array of exam objects with subject, paper, and date.
       const exams = [
-        { label: 'Exam 1: April 29, 2025', date: new Date('2025-04-29T00:00:00') },
-        { label: 'Exam 2: April 30, 2025', date: new Date('2025-04-30T00:00:00') },
-        { label: 'Exam 3: May 08, 2025', date: new Date('2025-05-08T00:00:00') },
-        { label: 'Exam 4: May 09, 2025 (AM)', date: new Date('2025-05-09T00:00:00') },
-        { label: 'Exam 5: May 09, 2025 (PM)', date: new Date('2025-05-09T12:00:00') },
-        { label: 'Exam 6: May 12, 2025 (AM)', date: new Date('2025-05-12T00:00:00') },
-        { label: 'Exam 7: May 13, 2025 (PM)', date: new Date('2025-05-13T12:00:00') },
-        { label: 'Exam 8: May 14, 2025 (AM)', date: new Date('2025-05-14T00:00:00') },
-        { label: 'Exam 9: May 14, 2025 (PM)', date: new Date('2025-05-14T12:00:00') },
-        { label: 'Exam 10: May 14, 2025 (Evening)', date: new Date('2025-05-14T18:00:00') },
-        { label: 'Exam 11: May 14, 2025 (Night)', date: new Date('2025-05-14T23:59:59') },
-        { label: 'Exam 12: May 15, 2025 (AM)', date: new Date('2025-05-15T00:00:00') },
-        { label: 'Exam 13: May 15, 2025 (PM)', date: new Date('2025-05-15T12:00:00') },
-        { label: 'Exam 14: May 16, 2025', date: new Date('2025-05-16T00:00:00') },
-        { label: 'Exam 15: May 21, 2025', date: new Date('2025-05-21T00:00:00') },
+        { subject: 'PHYSICS SL', paper: 'P1', date: new Date('2025-04-29T00:00:00') },
+        { subject: 'PHYSICS SL', paper: 'P2', date: new Date('2025-04-30T00:00:00') },
+        { subject: 'ENGLISH A Language and Literature HL', paper: 'P1', date: new Date('2025-05-08T00:00:00') },
+        { subject: 'ENGLISH A Language and Literature HL', paper: 'P2', date: new Date('2025-05-09T00:00:00') },
+        { subject: 'GEOGRAPHY SL', paper: 'P1', date: new Date('2025-05-09T12:00:00') },
+        { subject: 'GEOGRAPHY SL', paper: 'P2', date: new Date('2025-05-12T00:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P2', date: new Date('2025-05-13T12:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P1', date: new Date('2025-05-14T00:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P3', date: new Date('2025-05-14T12:00:00') },
+        { subject: 'SPANISH B SL', paper: 'P1', date: new Date('2025-05-14T18:00:00') },
+        { subject: 'SPANISH B SL', paper: 'RE', date: new Date('2025-05-14T23:00:00') },
+        { subject: 'SPANISH B SL', paper: 'LI', date: new Date('2025-05-15T00:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P1', date: new Date('2025-05-15T12:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P2', date: new Date('2025-05-16T00:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P3', date: new Date('2025-05-21T00:00:00') }
       ];
       
-      // Get the container where exam countdowns will be inserted.
       const examsContainer = document.getElementById('examsCountdownContainer');
       
-      // For each exam, create a countdown display.
+      // Create a countdown display for each exam.
       exams.forEach((exam, index) => {
-        // Create a container div for the exam countdown
         const examDiv = document.createElement('div');
         examDiv.className = 'exam-countdown-item';
         examDiv.innerHTML = `
-          <h3>${exam.label}</h3>
+          <h3>Exam ${index + 1}: ${exam.subject} – ${exam.paper}</h3>
+          <p><strong>Date:</strong> ${exam.date.toLocaleDateString()}</p>
           <div class="countdown">
             <span id="examMonths${index}">00</span> Months 
             <span id="examDays${index}">00</span> Days 
@@ -472,13 +467,11 @@
         examsContainer.appendChild(examDiv);
       });
       
-      // Function to update all exam countdown timers
       function updateExamCountdowns() {
         const now = new Date().getTime();
         exams.forEach((exam, index) => {
           const distance = exam.date.getTime() - now;
           if (distance < 0) {
-            // If exam time has passed, set countdown to zero.
             document.getElementById(`examMonths${index}`).innerHTML = '0';
             document.getElementById(`examDays${index}`).innerHTML = '0';
             document.getElementById(`examHours${index}`).innerHTML = '0';
@@ -500,28 +493,34 @@
         });
       }
       
-      // Update exam countdowns every second.
       setInterval(updateExamCountdowns, 1000);
       updateExamCountdowns();
-      
-      
-      /***** TOGGLE BETWEEN WELCOME & FILE BROWSER *****/
+
+      /***** BUTTONS TO TOGGLE/SCROLL VIEWS *****/
       const exploreButton = document.getElementById('exploreButton');
+      const examsButton = document.getElementById('examsButton');
       const backButton = document.getElementById('backButton');
       const welcomePage = document.getElementById('welcomePage');
       const fileBrowser = document.getElementById('fileBrowser');
+      const examsSection = document.getElementById('examsCountdownSection');
 
+      // Open file browser (resources)
       exploreButton.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log("Explore button clicked.");
         welcomePage.classList.add("hidden");
         fileBrowser.classList.remove("hidden");
         fileBrowser.classList.add("visible");
       });
 
+      // Scroll to the Upcoming Exams section
+      examsButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        examsSection.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      // Back button from file browser to welcome page
       backButton.addEventListener('click', function(e) {
         e.preventDefault();
-        console.log("Back button clicked.");
         fileBrowser.classList.remove("visible");
         fileBrowser.classList.add("hidden");
         welcomePage.classList.remove("hidden");
