@@ -232,6 +232,67 @@
     <div class="glow-text" style="top:30%; animation-delay:-5s;">STUDY HARD STUDY HARD STUDY HARD</div>
     <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
   </div>
+ <script>
+    // Array of five extra messages with translations
+    const extraMessages = [
+      {
+        en: "NEVER STOP LEARNING",
+        es: "NUNCA DEJES DE APRENDER",
+        pl: "NIGDY NIE PRZESTAWAJ SIĘ UCZYĆ",
+        fa: "یادگیری را متوقف نکنید"
+      },
+      {
+        en: "BELIEVE IN YOURSELF",
+        es: "CREE EN TI MISMO",
+        pl: "UWIERZ W SIEBIE",
+        fa: "به خودت ایمان داشته باش"
+      },
+      {
+        en: "EMBRACE THE CHALLENGE",
+        es: "ABRAZA EL DESAFÍO",
+        pl: "PRZYJMIJ WYZWANIE",
+        fa: "چالش را بپذیرید"
+      },
+      {
+        en: "ACHIEVE YOUR DREAMS",
+        es: "ALCANZA TUS SUEÑOS",
+        pl: "OSIĄGNIJ SWOJE MARZENIA",
+        fa: "به رویاهای خود دست یاب"
+      },
+      {
+        en: "STAY CURIOUS, STAY INSPIRED",
+        es: "MANTENTE CURIOSO, MANTENTE INSPIRADO",
+        pl: "POZOSTAŃ CIEKAWY, POZOSTAŃ ZAINSPIRUJANY",
+        fa: "کنجکاو بمان، الهام‌بخش بمان"
+      }
+    ];
+    
+    // List of available languages
+    const languages = ["en", "es", "pl", "fa"];
+    
+    // For each extra message, create a new glow-text element
+    extraMessages.forEach((msg, index) => {
+      // Choose a random language for this message
+      const randomLang = languages[Math.floor(Math.random() * languages.length)];
+      
+      // Create a new div for the extra message
+      const newDiv = document.createElement('div');
+      newDiv.className = "glow-text";
+      
+      // Set a different top position and animation delay so they don’t overlap.
+      // You can adjust these values as needed.
+      newDiv.style.top = `${10 + index * 15}%`;
+      newDiv.style.animationDelay = `-${5 * (index + 1)}s`;
+      
+      // Set the text content to the message in the chosen language
+      newDiv.textContent = msg[randomLang];
+      
+      // Append the new div to the glow container
+      document.querySelector('.glow-container').appendChild(newDiv);
+    });
+  </script>
+</body>
+</html>
 
   <!-- Animated Welcome Page -->
   <div class="welcome" id="welcomePage">
