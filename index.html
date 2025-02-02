@@ -279,37 +279,60 @@
   </div>
 
   <script>
-    // Countdown Timer
-    const countdownDate = new Date('2025-04-29T00:00:00').getTime();
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
-      const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
-      const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      
-      document.getElementById('months').innerHTML = months;
-      document.getElementById('days').innerHTML = days;
-      document.getElementById('hours').innerHTML = hours;
-      document.getElementById('minutes').innerHTML = minutes;
-      document.getElementById('seconds').innerHTML = seconds;
-      
-      requestAnimationFrame(updateCountdown);
-    }
-    updateCountdown();
+    // Wrap everything to ensure the DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+      // Countdown Timer using setInterval for efficiency
+      const countdownDate = new Date('2025-04-29T00:00:00').getTime();
+      const countdownInterval = setInterval(updateCountdown, 1000);
+      updateCountdown(); // Initial call
 
-    // Toggle View: Welcome <-> File Browser
-    document.getElementById('exploreButton').addEventListener('click', function(e) {
-      e.preventDefault();
-      document.getElementById('welcomePage').style.display = 'none';
-      document.getElementById('fileBrowser').style.display = 'block';
-    });
-    document.getElementById('backButton').addEventListener('click', function(e) {
-      e.preventDefault();
-      document.getElementById('fileBrowser').style.display = 'none';
-      document.getElementById('welcomePage').style.display = 'flex';
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+        
+        // Clear the interval if the countdown is finished
+        if (distance < 0) {
+          clearInterval(countdownInterval);
+          document.getElementById('months').innerHTML = '0';
+          document.getElementById('days').innerHTML = '0';
+          document.getElementById('hours').innerHTML = '0';
+          document.getElementById('minutes').innerHTML = '0';
+          document.getElementById('seconds').innerHTML = '0';
+          return;
+        }
+        
+        const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
+        const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById('months').innerHTML = months;
+        document.getElementById('days').innerHTML = days;
+        document.getElementById('hours').innerHTML = hours;
+        document.getElementById('minutes').innerHTML = minutes;
+        document.getElementById('seconds').innerHTML = seconds;
+      }
+
+      // Toggle View: Welcome <-> File Browser
+      const exploreButton = document.getElementById('exploreButton');
+      const backButton = document.getElementById('backButton');
+      const welcomePage = document.getElementById('welcomePage');
+      const fileBrowser = document.getElementById('fileBrowser');
+
+      exploreButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        welcomePage.style.display = 'none';
+        fileBrowser.style.display = 'block';
+        // Force reflow to trigger the fadeIn animation
+        fileBrowser.offsetHeight;
+      });
+
+      backButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        fileBrowser.style.display = 'none';
+        welcomePage.style.display = 'flex';
+      });
     });
   </script>
 </body>
