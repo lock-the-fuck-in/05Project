@@ -11,7 +11,6 @@
       height: 100%;
       width: 100%;
     }
-    
     /* Base Reset & Typography */
     * {
       margin: 0;
@@ -23,6 +22,7 @@
       background: #000;
       position: relative;
       color: #fff;
+      /* Allow vertical scrolling if content overflows */
       overflow-y: auto;
     }
     /* Utility Classes for Visibility */
@@ -44,15 +44,15 @@
       color: rgba(255, 255, 255, 0.1);
       white-space: nowrap;
       user-select: none;
-      /* Extra messages will override animation properties inline */
+      /* Default animation for the fixed messages */
       animation: glowMove 20s linear infinite;
     }
-    /* Existing keyframe for the default messages */
+    /* Keyframe for the default fixed messages */
     @keyframes glowMove {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
-    /* New keyframe for extra messages with a slower fade effect */
+    /* New keyframe for extra messages with a slow fade */
     @keyframes glowMoveFade {
       0% {
         transform: translateX(-100%);
@@ -78,7 +78,7 @@
       padding: 2rem;
       max-width: 800px;
       margin: 0 auto;
-      min-height: 100vh;
+      min-height: 100vh;  /* Allow extra content */
     }
     .welcome h1 {
       font-size: 3.5rem;
@@ -172,7 +172,7 @@
     }
     /* File Tree (Resources) Page */
     .file-browser {
-      position: fixed;
+      position: fixed; /* Always fills the viewport */
       top: 0;
       left: 0;
       width: 100vw;
@@ -252,47 +252,45 @@
     <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
   </div>
   
-  <!-- Updated Script for Extra Messages -->
+  <!-- Updated Script for Extra Messages Without Overlap -->
   <script>
-    // Array of five extra messages with translations
+    // Increase the number of extra messages
     const extraMessages = [
-      {
-        en: "NEVER STOP LEARNING",
-        es: "NUNCA DEJES DE APRENDER",
-        pl: "NIGDY NIE PRZESTAWAJ SIĘ UCZYĆ",
-        fa: "یادگیری را متوقف نکنید"
-      },
-      {
-        en: "BELIEVE IN YOURSELF",
-        es: "CREE EN TI MISMO",
-        pl: "UWIERZ W SIEBIE",
-        fa: "به خودت ایمان داشته باش"
-      },
-      {
-        en: "EMBRACE THE CHALLENGE",
-        es: "ABRAZA EL DESAFÍO",
-        pl: "PRZYJMIJ WYZWANIE",
-        fa: "چالش را بپذیرید"
-      },
-      {
-        en: "ACHIEVE YOUR DREAMS",
-        es: "ALCANZA TUS SUEÑOS",
-        pl: "OSIĄGNIJ SWOJE MARZENIA",
-        fa: "به رویاهای خود دست یاب"
-      },
-      {
-        en: "STAY CURIOUS, STAY INSPIRED",
-        es: "MANTENTE CURIOSO, MANTENTE INSPIRADO",
-        pl: "POZOSTAŃ CIEKAWY, POZOSTAŃ ZAINSPIRUJANY",
-        fa: "کنجکاو بمان، الهام‌بخش بمان"
-      }
+      { en: "NEVER STOP LEARNING",         es: "NUNCA DEJES DE APRENDER",         pl: "NIGDY NIE PRZESTAWAJ SIĘ UCZYĆ",           fa: "یادگیری را متوقف نکنید" },
+      { en: "BELIEVE IN YOURSELF",          es: "CREE EN TI MISMO",                 pl: "UWIERZ W SIEBIE",                           fa: "به خودت ایمان داشته باش" },
+      { en: "EMBRACE THE CHALLENGE",         es: "ABRAZA EL DESAFÍO",                pl: "PRZYJMIJ WYZWANIE",                         fa: "چالش را بپذیرید" },
+      { en: "ACHIEVE YOUR DREAMS",           es: "ALCANZA TUS SUEÑOS",               pl: "OSIĄGNIJ SWOJE MARZENIA",                   fa: "به رویاهای خود دست یاب" },
+      { en: "STAY CURIOUS, STAY INSPIRED",   es: "MANTENTE CURIOSO, MANTENTE INSPIRADO", pl: "POZOSTAŃ CIEKAWY, POZOSTAŃ ZAINSPIRUJANY",     fa: "کنجکاو بمان، الهام‌بخش بمان" },
+      { en: "KEEP MOVING FORWARD",           es: "SIGUE ADELANTE",                   pl: "IDŹ NAPRZÓD",                              fa: "به جلو حرکت کن" },
+      { en: "SUCCESS IS A JOURNEY",          es: "EL ÉXITO ES UN VIAJE",              pl: "SUKCES TO PODRÓŻ",                          fa: "موفقیت یک سفر است" },
+      { en: "YOUR POTENTIAL IS LIMITLESS",   es: "TU POTENCIAL ES ILIMITADO",         pl: "TWÓJ POTENCJAŁ JEST NIEOGRANICZONY",          fa: "پتانسیل شما بی‌حد و مرز است" },
+      { en: "STRIVE FOR EXCELLENCE",         es: "ESFUÉRZATE POR LA EXCELENCIA",       pl: "DĄŻ DO DOSKONAŁOŚCI",                       fa: "برای برتری تلاش کن" },
+      { en: "MAKE IT HAPPEN",                es: "HAZ QUE SUCEDA",                    pl: "SPRAW, ŻE SIĘ STAJE",                        fa: "به وقوع بپیوندد" }
     ];
     
     // List of available languages
     const languages = ["en", "es", "pl", "fa"];
     
+    // Calculate evenly spaced vertical slots based on the number of messages
+    const numMessages = extraMessages.length;
+    const slots = [];
+    // For example, spread between 5% and 95%
+    for (let i = 0; i < numMessages; i++) {
+      // Calculate a slot such that the first is at 5% and the last is at 95%
+      let slot = 5 + ((95 - 5) / (numMessages - 1)) * i;
+      slots.push(slot);
+    }
+    // Shuffle the slots array so the order is random
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+    shuffle(slots);
+    
     // For each extra message, create a new glow-text element with random properties.
-    extraMessages.forEach((msg) => {
+    extraMessages.forEach((msg, index) => {
       // Choose a random language for this message.
       const randomLang = languages[Math.floor(Math.random() * languages.length)];
       
@@ -300,11 +298,10 @@
       const newDiv = document.createElement('div');
       newDiv.className = "glow-text";
       
-      // Set a random vertical position between 5% and 90% (to avoid overlap).
-      const randomTop = Math.floor(Math.random() * 85) + 5;
-      newDiv.style.top = `${randomTop}%`;
+      // Use one of the non-overlapping vertical slots.
+      newDiv.style.top = `${slots[index]}%`;
       
-      // Set a random animation duration between 15s and 30s (controls speed).
+      // Set a random animation duration between 15s and 30s.
       const randomDuration = Math.floor(Math.random() * 16) + 15;
       
       // Set a random negative animation delay so the messages start at different times.
@@ -321,8 +318,6 @@
       document.querySelector('.glow-container').appendChild(newDiv);
     });
   </script>
-</body>
-</html>
 
   <!-- Animated Welcome Page -->
   <div class="welcome" id="welcomePage">
