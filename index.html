@@ -103,7 +103,7 @@
       <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf" target="pdfFrame">ESQ D</a></li>
       <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf" target="pdfFrame">ESQ E</a></li>
     </ul>
-     <!-- Assessment Guidance -->
+    <!-- Assessment Guidance -->
     <h2>Assessment Guidance</h2>
     <ul>
       <li><a href="ib_phys_dc_all_files/Assessment%20Guidance/ib_phys_dc_ag_ea.pdf" target="pdfFrame">AG EA</a></li>
@@ -154,12 +154,15 @@
   </div>
 
   <script>
-    // Modified JavaScript
+    // Reset the viewer and show the lock animation
     function resetViewer() {
-      // Reload the page to reset everything
-      window.location.reload();
+      // Hide iframe and show lock animation again
+      document.querySelector("iframe").style.display = "none";
+      document.querySelector("#welcome").style.display = "block";
+      document.querySelector(".lock-animation").style.display = "block";
     }
 
+    // Display the iframe when a link is clicked
     document.querySelectorAll("#sidebar a").forEach(link => {
       link.addEventListener("click", function() {
         document.querySelector("iframe").style.display = "block";
