@@ -1,371 +1,385 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Physics Resources Hub</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: #000;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Background animation */
-        .glow-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-        }
-
-        .glow-text {
-            position: absolute;
-            font-size: 4rem;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 0.1);
-            animation: glowMove 20s linear infinite;
-            white-space: nowrap;
-            user-select: none;
-        }
-
-        @keyframes glowMove {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* Main content */
-        .container {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-            color: white;
-        }
-
-        .countdown {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin: 2rem 0;
-            backdrop-filter: blur(5px);
-        }
-
-        .countdown-item {
-            display: inline-block;
-            margin: 0 1rem;
-            text-align: center;
-        }
-
-        .countdown-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #ff4081;
-            text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
-        }
-
-        .countdown-label {
-            font-size: 0.9rem;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .cta-button {
-            padding: 1rem 2rem;
-            font-size: 1.2rem;
-            background: #ff4081;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(255,64,129,0.4);
-            animation: pulse 2s infinite;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255,64,129,0.6);
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physics Resources Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #000;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    /* Background animation */
+    .glow-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .glow-text {
+      position: absolute;
+      font-size: 4rem;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 0.1);
+      animation: glowMove 20s linear infinite;
+      white-space: nowrap;
+      user-select: none;
+    }
+    @keyframes glowMove {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    /* Main Content (Home) */
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+      color: white;
+    }
+    .countdown {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+      backdrop-filter: blur(5px);
+    }
+    .countdown-item {
+      display: inline-block;
+      margin: 0 1rem;
+      text-align: center;
+    }
+    .countdown-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #ff4081;
+      text-shadow: 0 0 10px rgba(255,64,129,0.5);
+    }
+    .countdown-label {
+      font-size: 0.9rem;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .cta-button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(255,64,129,0.4);
+      animation: pulse 2s infinite;
+      position: relative;
+      z-index: 1;
+    }
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255,64,129,0.6);
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    /* File Browser (Secondary Content) */
+    .file-browser {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      overflow-y: auto;
+      padding: 2rem;
+      z-index: 2;
+      display: none; /* Hidden by default */
+    }
+    .back-button {
+      display: block;
+      margin-bottom: 1rem;
+      color: #ff4081;
+      text-decoration: none;
+    }
+    .folder {
+      margin-bottom: 2rem;
+    }
+    .folder-title {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+    .file-list {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    .file-item {
+      margin-bottom: 0.5rem;
+    }
+    .file-item a {
+      text-decoration: none;
+      color: #0066cc;
+    }
+  </style>
 </head>
 <body>
-    <div class="glow-container">
-        <div class="glow-text">IB PHYSICS IB PHYSICS IB PHYSICS</div>
-        <div class="glow-text" style="top:30%;animation-delay:-5s">STUDY HARD STUDY HARD STUDY HARD</div>
-        <div class="glow-text" style="top:70%;animation-delay:-10s">SUCCESS AWAITS SUCCESS AWAITS</div>
+  <!-- Background Glow -->
+  <div class="glow-container">
+    <div class="glow-text">IB PHYSICS IB PHYSICS IB PHYSICS</div>
+    <div class="glow-text" style="top:30%; animation-delay:-5s;">STUDY HARD STUDY HARD STUDY HARD</div>
+    <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container" id="mainContainer">
+    <h1>Welcome to Physics Resources! 📚</h1>
+    <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
+    
+    <!-- Countdown Timer -->
+    <div class="countdown">
+      <div class="countdown-item">
+        <div class="countdown-number" id="months">00</div>
+        <div class="countdown-label">Months</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="days">00</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="hours">00</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="minutes">00</div>
+        <div class="countdown-label">Minutes</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="seconds">00</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
     </div>
+    
+    <p class="exam-date">First IB Exams: April 29, 2025</p>
+    <a href="files.html" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
+  </div>
 
-    <div class="container">
-        <h1>Welcome to Physics Resources! 📚</h1>
-        <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
-        
-        <div class="countdown">
-            <div class="countdown-item">
-                <div class="countdown-number" id="months">00</div>
-                <div class="countdown-label">Months</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="days">00</div>
-                <div class="countdown-label">Days</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="hours">00</div>
-                <div class="countdown-label">Hours</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="minutes">00</div>
-                <div class="countdown-label">Minutes</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="seconds">00</div>
-                <div class="countdown-label">Seconds</div>
-            </div>
-        </div>
-
-        <p class="exam-date">First IB Exams: April 29, 2025</p>
-        <a href="files.html" class="cta-button">Explore Resources Now 🚀</a>
+  <!-- File Browser Section (hidden by default) -->
+  <div class="file-browser" id="fileBrowser">
+    <a href="#" class="back-button" id="backButton">← Back to Home</a>
+    <h2>Resource Directory</h2>
+    
+    <!-- Main Workbook Section -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open icon"></i> Main Workbook</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Physics - WORKBOOK - K.A. Tsokos - Seventh Edition - Cambridge 2023 (Digital Edition).pdf">
+            <i class="fas fa-file-pdf icon"></i> Physics Workbook (Full Version)
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/Workbook answers.pdf">
+            <i class="fas fa-file-pdf icon"></i> Workbook Answers
+          </a>
+        </li>
+      </ul>
     </div>
+    
+    <!-- Multiple Choice Questions Section -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open icon"></i> Multiple choice questions</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_0.pdf">
+            <i class="fas fa-file-pdf icon"></i> Topic Zero
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_A.pdf">
+            <i class="fas fa-file-pdf icon"></i> Topic A
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_B.pdf">
+            <i class="fas fa-file-pdf icon"></i> Topic B
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_C.pdf">
+            <i class="fas fa-file-pdf icon"></i> Topic C
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_D.pdf">
+            <i class="fas fa-file-pdf icon"></i> Topic D
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_E.pdf">
+            <i class="fas fa-file-pdf icon"></i> Topic E
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Answers Section -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open icon"></i> Answers for multiple choice questions</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf">
+            <i class="fas fa-file-pdf icon"></i> Answers For Topic Zero
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_A.pdf">
+            <i class="fas fa-file-pdf icon"></i> Answers For Topic A
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_B.pdf">
+            <i class="fas fa-file-pdf icon"></i> Answers For Topic B
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_C.pdf">
+            <i class="fas fa-file-pdf icon"></i> Answers For Topic C
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf">
+            <i class="fas fa-file-pdf icon"></i> Answers For Topic D
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf">
+            <i class="fas fa-file-pdf icon"></i> Answers For Topic E
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Specimen Papers Section -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open icon"></i> Specimen Papers</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_HL.pdf">
+            <i class="fas fa-file-pdf icon"></i> Specimen HL PP1
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_SL.pdf">
+            <i class="fas fa-file-pdf icon"></i> Specimen SL PP1
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_HL.pdf">
+            <i class="fas fa-file-pdf icon"></i> Specimen HL PP2
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_SL.pdf">
+            <i class="fas fa-file-pdf icon"></i> Specimen SL PP2
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Specimen Papers Answers Section -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open icon"></i> Specimen Papers Answers</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/P1 HL.pdf">
+            <i class="fas fa-file-pdf icon"></i> Specimen HL PP1
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/P1 SL.pdf">
+            <i class="fas fa-file-pdf icon"></i> Specimen SL PP1
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/P2 HL.pdf">
+            <i class="fas fa-file-pdf icon"></i> Specimen HL PP2
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/P2 SL.pdf">
+            <i class="fas fa-file-pdf icon"></i> Specimen SL PP2
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
-    <script>
-        const countdownDate = new Date('2025-04-29T00:00:00').getTime();
+  <script>
+    // Countdown Timer
+    const countdownDate = new Date('2025-04-29T00:00:00').getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+      const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
+      const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      document.getElementById('months').innerHTML = months;
+      document.getElementById('days').innerHTML = days;
+      document.getElementById('hours').innerHTML = hours;
+      document.getElementById('minutes').innerHTML = minutes;
+      document.getElementById('seconds').innerHTML = seconds;
+      
+      requestAnimationFrame(updateCountdown);
+    }
+    updateCountdown();
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = countdownDate - now;
-
-            const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
-            const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('months').innerHTML = months;
-            document.getElementById('days').innerHTML = days;
-            document.getElementById('hours').innerHTML = hours;
-            document.getElementById('minutes').innerHTML = minutes;
-            document.getElementById('seconds').innerHTML = seconds;
-
-            requestAnimationFrame(updateCountdown);
-        }
-
-        updateCountdown();
-    </script>
+    // Toggle between Home and File Browser view
+    document.getElementById('exploreButton').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('mainContainer').style.display = 'none';
+      document.getElementById('fileBrowser').style.display = 'block';
+    });
+    document.getElementById('backButton').addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('fileBrowser').style.display = 'none';
+      document.getElementById('mainContainer').style.display = 'flex';
+    });
+  </script>
 </body>
 </html>
-<body>
-    <div class="file-browser">
-        <a href="index.html" class="back-button">← Back to Home</a>
-        <h2>Resource Directory</h2>
-
-        <!-- Fixed Main Workbook Section -->
-        <div class="folder">
-            <div class="folder-title"><i class="fas fa-folder-open icon"></i> Main Workbook</div>
-            <ul class="file-list">
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Physics - WORKBOOK - K.A. Tsokos - Seventh Edition - Cambridge 2023 (Digital Edition).pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Physics Workbook (Full Version)
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/Workbook answers.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Workbook Answers
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Fixed Multiple Choice Questions Section -->
-        <div class="folder">
-            <div class="folder-title"><i class="fas fa-folder-open icon"></i> Multiple choice questions</div>
-            <ul class="file-list">
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_0.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Topic Zero
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_A.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Topic A
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_B.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Topic B
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_C.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Topic C
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_D.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Topic D
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Exam-style questions/ib_phys_dc_ESQ_E.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Topic E
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Fixed Answers Section -->
-        <div class="folder">
-            <div class="folder-title"><i class="fas fa-folder-open icon"></i> Answers for multiple choice questions</div>
-            <ul class="file-list">
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Answers For Topic Zero
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_A.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Answers For Topic A
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_B.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Answers For Topic B
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_C.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Answers For Topic C
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Answers For Topic D
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Answers For Topic E
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Fixed Specimen Papers Section -->
-        <div class="folder">
-            <div class="folder-title"><i class="fas fa-folder-open icon"></i> Specimen Papers</div>
-            <ul class="file-list">
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_HL.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Specimen HL PP1
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_SL.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Specimen SL PP1
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_HL.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Specimen HL PP2
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_SL.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Specimen SL PP2
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <!-- Fixed Specimen Papers Answers Section -->
-        <div class="folder">
-            <div class="folder-title"><i class="fas fa-folder-open icon"></i> Specimen Papers Answers</div>
-            <ul class="file-list">
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/P1 HL.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Specimen HL PP1
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/P1 SL.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Specimen SL PP1
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/P2 HL.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Specimen HL PP2
-                    </a>
-                </li>
-                <li class="file-item">
-                    <a href="ib_phys_dc_all_files/Answers/P2 SL.pdf">
-                        <i class="fas fa-file-pdf icon"></i>
-                        Specimen SL PP2
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</body>
-</html>
-
