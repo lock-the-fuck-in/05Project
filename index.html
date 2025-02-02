@@ -43,14 +43,34 @@
       font-size: 4rem;
       font-weight: bold;
       color: rgba(255, 255, 255, 0.1);
-      animation: glowMove 20s linear infinite;
       white-space: nowrap;
       user-select: none;
+      /* Extra messages will override animation properties inline */
+      animation: glowMove 20s linear infinite;
     }
+    /* Existing keyframe for the default messages */
     @keyframes glowMove {
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
+    /* New keyframe for extra messages (with fade in/out) */
+    @keyframes glowMoveFade {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+    
     /* Welcome (Animated) Page */
     .welcome {
       position: relative;
@@ -232,7 +252,9 @@
     <div class="glow-text" style="top:30%; animation-delay:-5s;">STUDY HARD STUDY HARD STUDY HARD</div>
     <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
   </div>
- <script>
+  
+  <!-- Updated Script for Extra Messages -->
+  <script>
     // Array of five extra messages with translations
     const extraMessages = [
       {
@@ -270,24 +292,33 @@
     // List of available languages
     const languages = ["en", "es", "pl", "fa"];
     
-    // For each extra message, create a new glow-text element
-    extraMessages.forEach((msg, index) => {
-      // Choose a random language for this message
+    // For each extra message, create a new glow-text element with random properties.
+    extraMessages.forEach((msg) => {
+      // Choose a random language for this message.
       const randomLang = languages[Math.floor(Math.random() * languages.length)];
       
-      // Create a new div for the extra message
+      // Create a new div for the extra message.
       const newDiv = document.createElement('div');
       newDiv.className = "glow-text";
       
-      // Set a different top position and animation delay so they don’t overlap.
-      // You can adjust these values as needed.
-      newDiv.style.top = `${10 + index * 15}%`;
-      newDiv.style.animationDelay = `-${5 * (index + 1)}s`;
+      // Set a random vertical position between 5% and 90% (to avoid overlap).
+      const randomTop = Math.floor(Math.random() * 85) + 5;
+      newDiv.style.top = `${randomTop}%`;
       
-      // Set the text content to the message in the chosen language
+      // Set a random animation duration between 15s and 30s (controls speed).
+      const randomDuration = Math.floor(Math.random() * 16) + 15;
+      
+      // Set a random negative animation delay so the messages start at different times.
+      const randomDelay = -(Math.random() * randomDuration).toFixed(2);
+      
+      // Use the new keyframe animation (glowMoveFade) with randomized speed.
+      newDiv.style.animation = `glowMoveFade ${randomDuration}s linear infinite`;
+      newDiv.style.animationDelay = `${randomDelay}s`;
+      
+      // Set the text content to the message in the chosen language.
       newDiv.textContent = msg[randomLang];
       
-      // Append the new div to the glow container
+      // Append the new div to the glow container.
       document.querySelector('.glow-container').appendChild(newDiv);
     });
   </script>
