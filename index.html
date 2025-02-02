@@ -363,14 +363,14 @@
     document.getElementById("backButton").addEventListener("click", function (event) {
         event.preventDefault();
         let fileBrowser = document.getElementById("fileBrowser");
-        let welcomeScreen = document.getElementById("welcomeScreen"); // Make sure this ID matches your actual welcome section
+        let welcomePage = document.getElementById("welcomePage"); // Make sure this ID matches your actual welcome section
 
         // Hide file browser smoothly
         fileBrowser.style.opacity = "0";
         setTimeout(() => {
             fileBrowser.classList.add("hidden");
-            welcomeScreen.classList.remove("hidden");
-            welcomeScreen.style.opacity = "1"; // Fade-in effect
+            welcomePage.classList.remove("hidden");
+            welcomePage.style.opacity = "1"; // Fade-in effect
         }, 500); // Delay matches the transition time
     });
 </script>
