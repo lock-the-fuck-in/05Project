@@ -194,6 +194,57 @@
     <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
   </div>
 
+<!-- Updated Script for Extra Messages Without Overlap -->
+  <script>
+    // Increase the number of extra messages
+    const extraMessages = [
+      { en: "NEVER STOP LEARNING",         es: "NUNCA DEJES DE APRENDER",         pl: "NIGDY NIE PRZESTAWAJ SIĘ UCZYĆ",           fa: "یادگیری را متوقف نکنید" },
+      { en: "BELIEVE IN YOURSELF",          es: "CREE EN TI MISMO",                 pl: "UWIERZ W SIEBIE",                           fa: "به خودت ایمان داشته باش" },
+      { en: "EMBRACE THE CHALLENGE",         es: "ABRAZA EL DESAFÍO",                pl: "PRZYJMIJ WYZWANIE",                         fa: "چالش را بپذیرید" },
+      { en: "ACHIEVE YOUR DREAMS",           es: "ALCANZA TUS SUEÑOS",               pl: "OSIĄGNIJ SWOJE MARZENIA",                   fa: "به رویاهای خود دست یاب" },
+      { en: "STAY CURIOUS, STAY INSPIRED",   es: "MANTENTE CURIOSO, MANTENTE INSPIRADO", pl: "POZOSTAŃ CIEKAWY, POZOSTAŃ ZAINSPIRUJANY",     fa: "کنجکاو بمان، الهام‌بخش بمان" },
+      { en: "KEEP MOVING FORWARD",           es: "SIGUE ADELANTE",                   pl: "IDŹ NAPRZÓD",                              fa: "به جلو حرکت کن" },
+      { en: "SUCCESS IS A JOURNEY",          es: "EL ÉXITO ES UN VIAJE",              pl: "SUKCES TO PODRÓŻ",                          fa: "موفقیت یک سفر است" },
+      { en: "YOUR POTENTIAL IS LIMITLESS",   es: "TU POTENCIAL ES ILIMITADO",         pl: "TWÓJ POTENCJAŁ JEST NIEOGRANICZONY",          fa: "پتانسیل شما بی‌حد و مرز است" },
+      { en: "STRIVE FOR EXCELLENCE",         es: "ESFUÉRZATE POR LA EXCELENCIA",       pl: "DĄŻ DO DOSKONAŁOŚCI",                       fa: "برای برتری تلاش کن" },
+      { en: "MAKE IT HAPPEN",                es: "HAZ QUE SUCEDA",                    pl: "SPRAW, ŻE SIĘ STAJE",                        fa: "به وقوع بپیوندد" }
+    ];
+    
+    // List of available languages
+    const languages = ["en", "es", "pl", "fa"];
+    
+    // Calculate evenly spaced vertical slots based on the number of messages
+    const numMessages = extraMessages.length;
+    const slots = [];
+    // Spread between 5% and 95%
+    for (let i = 0; i < numMessages; i++) {
+      let slot = 5 + ((95 - 5) / (numMessages - 1)) * i;
+      slots.push(slot);
+    }
+    // Shuffle the slots array so the order is random
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+    shuffle(slots);
+    
+    // For each extra message, create a new glow-text element with random properties.
+    extraMessages.forEach((msg, index) => {
+      const randomLang = languages[Math.floor(Math.random() * languages.length)];
+      const newDiv = document.createElement('div');
+      newDiv.className = "glow-text";
+      newDiv.style.top = `${slots[index]}%`;
+      const randomDuration = Math.floor(Math.random() * 16) + 15; // between 15s and 30s
+      const randomDelay = -(Math.random() * randomDuration).toFixed(2);
+      newDiv.style.animation = `glowMoveFade ${randomDuration}s ease-in-out infinite`;
+      newDiv.style.animationDelay = `${randomDelay}s`;
+      newDiv.textContent = msg[randomLang];
+      document.querySelector('.glow-container').appendChild(newDiv);
+    });
+  </script>
+  
   <div class="welcome" id="welcomePage">
     <h1>Welcome to Physics Resources! 📚</h1>
     <p>Access IB Physics resources instantly in your browser - no downloads needed!</p>
