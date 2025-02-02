@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resource Browser - Physics Hub</title>
+    <title>Physics Resources Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -14,74 +14,186 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a237e, #4a148c);
-            color: white;
+            background: #000;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background animation */
+        .glow-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .glow-text {
+            position: absolute;
+            font-size: 4rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.1);
+            animation: glowMove 20s linear infinite;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        @keyframes glowMove {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Main content */
+        .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
             padding: 2rem;
-        }
-
-        .back-button {
-            margin-bottom: 2rem;
-        }
-
-        a {
-            color: #ff4081;
-            text-decoration: none;
-        }
-
-        .file-browser {
             max-width: 800px;
             margin: 0 auto;
-            background: rgba(255,255,255,0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .folder {
-            margin-bottom: 1.5rem;
-        }
-
-        .folder-title {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .folder-title:hover {
-            color: #ff4081;
-        }
-
-        .file-list {
-            list-style: none;
-            margin-left: 1.5rem;
-        }
-
-        .file-item {
-            padding: 0.5rem;
-            margin: 0.5rem 0;
-            background: rgba(255,255,255,0.05);
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .file-item:hover {
-            background: rgba(255,255,255,0.1);
-            transform: translateX(10px);
-        }
-
-        .file-item a {
+            height: 100vh;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
         }
 
-        .icon {
-            width: 20px;
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: white;
+        }
+
+        .countdown {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown-item {
+            display: inline-block;
+            margin: 0 1rem;
             text-align: center;
         }
-   </style>
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ff4081;
+            text-shadow: 0 0 10px rgba(255, 64, 129, 0.5);
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255,64,129,0.4);
+            animation: pulse 2s infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,64,129,0.6);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
 </head>
+<body>
+    <div class="glow-container">
+        <div class="glow-text">IB PHYSICS IB PHYSICS IB PHYSICS</div>
+        <div class="glow-text" style="top:30%;animation-delay:-5s">STUDY HARD STUDY HARD STUDY HARD</div>
+        <div class="glow-text" style="top:70%;animation-delay:-10s">SUCCESS AWAITS SUCCESS AWAITS</div>
+    </div>
+
+    <div class="container">
+        <h1>Welcome to Physics Resources! 📚</h1>
+        <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="months">00</div>
+                <div class="countdown-label">Months</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+
+        <p class="exam-date">First IB Exams: April 29, 2025</p>
+        <a href="files.html" class="cta-button">Explore Resources Now 🚀</a>
+    </div>
+
+    <script>
+        const countdownDate = new Date('2025-04-29T00:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('months').innerHTML = months;
+            document.getElementById('days').innerHTML = days;
+            document.getElementById('hours').innerHTML = hours;
+            document.getElementById('minutes').innerHTML = minutes;
+            document.getElementById('seconds').innerHTML = seconds;
+
+            requestAnimationFrame(updateCountdown);
+        }
+
+        updateCountdown();
+    </script>
+</body>
+</html>
 <body>
     <div class="file-browser">
         <a href="index.html" class="back-button">← Back to Home</a>
