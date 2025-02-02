@@ -23,7 +23,6 @@
       background: #000;
       position: relative;
       color: #fff;
-      /* Allow vertical scrolling if content overflows */
       overflow-y: auto;
     }
     /* Utility Classes for Visibility */
@@ -53,16 +52,16 @@
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
-    /* New keyframe for extra messages (with fade in/out) */
+    /* New keyframe for extra messages with a slower fade effect */
     @keyframes glowMoveFade {
       0% {
         transform: translateX(-100%);
         opacity: 0;
       }
-      10% {
+      20% {
         opacity: 1;
       }
-      90% {
+      80% {
         opacity: 1;
       }
       100% {
@@ -79,7 +78,7 @@
       padding: 2rem;
       max-width: 800px;
       margin: 0 auto;
-      min-height: 100vh;  /* Allow extra content */
+      min-height: 100vh;
     }
     .welcome h1 {
       font-size: 3.5rem;
@@ -173,7 +172,7 @@
     }
     /* File Tree (Resources) Page */
     .file-browser {
-      position: fixed; /* Always fills the viewport */
+      position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
@@ -311,8 +310,8 @@
       // Set a random negative animation delay so the messages start at different times.
       const randomDelay = -(Math.random() * randomDuration).toFixed(2);
       
-      // Use the new keyframe animation (glowMoveFade) with randomized speed.
-      newDiv.style.animation = `glowMoveFade ${randomDuration}s linear infinite`;
+      // Use the new keyframe animation (glowMoveFade) with ease-in-out.
+      newDiv.style.animation = `glowMoveFade ${randomDuration}s ease-in-out infinite`;
       newDiv.style.animationDelay = `${randomDelay}s`;
       
       // Set the text content to the message in the chosen language.
