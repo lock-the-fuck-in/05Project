@@ -11,7 +11,6 @@
       display: flex;
       min-height: 100vh;
     }
-    /* Sidebar styling */
     #sidebar {
       width: 250px;
       background-color: #f9f9f9;
@@ -43,8 +42,8 @@
       font-weight: bold;
       margin-bottom: 10px;
       color: #ff4500;
+      cursor: pointer;
     }
-    /* Viewer styling */
     #viewer {
       flex: 1;
       padding: 10px;
@@ -64,59 +63,25 @@
   </style>
 </head>
 <body>
-  <!-- Sidebar with navigation -->
+
   <div id="sidebar">
     <h1>IB Physics Resources</h1>
-    <a id="home-button" href="#" onclick="resetViewer()">🏠 Home</a>
-    
-    <!-- Answers -->
+    <a id="home-button" href="index.html">🏠 Home</a>
+
     <h2>Answers</h2>
     <ul>
       <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf" target="pdfFrame">ESQ 0</a></li>
       <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_A.pdf" target="pdfFrame">ESQ A</a></li>
       <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_B.pdf" target="pdfFrame">ESQ B</a></li>
-      <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_C.pdf" target="pdfFrame">ESQ C</a></li>
-      <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf" target="pdfFrame">ESQ D</a></li>
-      <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf" target="pdfFrame">ESQ E</a></li>
     </ul>
 
-    <!-- Assessment Guidance -->
     <h2>Assessment Guidance</h2>
     <ul>
       <li><a href="ib_phys_dc_all_files/Assessment%20Guidance/ib_phys_dc_ag_ea.pdf" target="pdfFrame">AG EA</a></li>
       <li><a href="ib_phys_dc_all_files/Assessment%20Guidance/ib_phys_dc_ag_ia.pdf" target="pdfFrame">AG IA</a></li>
-      <li><a href="ib_phys_dc_all_files/Assessment%20Guidance/ib_phys_dc_ag_units.pdf" target="pdfFrame">AG Units</a></li>
     </ul>
-
-    <!-- Exam-style Questions -->
-    <h2>Exam-style Questions</h2>
-    <ul>
-      <li><a href="ib_phys_dc_all_files/Exam-style%20questions/ib_phys_dc_ESQ_0.pdf" target="pdfFrame">ESQ 0</a></li>
-      <li><a href="ib_phys_dc_all_files/Exam-style%20questions/ib_phys_dc_ESQ_A.pdf" target="pdfFrame">ESQ A</a></li>
-      <li><a href="ib_phys_dc_all_files/Exam-style%20questions/ib_phys_dc_ESQ_B.pdf" target="pdfFrame">ESQ B</a></li>
-      <li><a href="ib_phys_dc_all_files/Exam-style%20questions/ib_phys_dc_ESQ_C.pdf" target="pdfFrame">ESQ C</a></li>
-      <li><a href="ib_phys_dc_all_files/Exam-style%20questions/ib_phys_dc_ESQ_D.pdf" target="pdfFrame">ESQ D</a></li>
-      <li><a href="ib_phys_dc_all_files/Exam-style%20questions/ib_phys_dc_ESQ_E.pdf" target="pdfFrame">ESQ E</a></li>
-    </ul>
-
-    <!-- Prelims -->
-    <h2>Prelims</h2>
-    <ul>
-      <li><a href="ib_phys_dc_all_files/Prelims/ib_phys_dc_toc_page.pdf" target="pdfFrame">TOC Page</a></li>
-    </ul>
-
-    <!-- Specimen Papers -->
-    <h2>Specimen Papers</h2>
-    <ul>
-      <li><a href="ib_phys_dc_all_files/Specimen%20Papers/ib_phys_dc_sp_1_HL.pdf" target="pdfFrame">SP 1 HL</a></li>
-      <li><a href="ib_phys_dc_all_files/Specimen%20Papers/ib_phys_dc_sp_1_SL.pdf" target="pdfFrame">SP 1 SL</a></li>
-      <li><a href="ib_phys_dc_all_files/Specimen%20Papers/ib_phys_dc_sp_2_HL.pdf" target="pdfFrame">SP 2 HL</a></li>
-      <li><a href="ib_phys_dc_all_files/Specimen%20Papers/ib_phys_dc_sp_2_SL.pdf" target="pdfFrame">SP 2 SL</a></li>
-    </ul>
-
   </div>
 
-  <!-- PDF viewer -->
   <div id="viewer">
     <div id="welcome">Welcome! Select a file from the sidebar to view it.</div>
     <iframe name="pdfFrame" src="" style="display: none;"></iframe>
@@ -129,7 +94,6 @@
       document.querySelector("#welcome").style.display = "block";
     }
 
-    // Hide welcome message when a PDF is loaded
     document.querySelectorAll("#sidebar a").forEach(link => {
       link.addEventListener("click", function() {
         document.querySelector("iframe").style.display = "block";
@@ -140,4 +104,3 @@
 
 </body>
 </html>
-
