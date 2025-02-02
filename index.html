@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IB Physics DC Resources</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+    /* Sidebar styling */
+    #sidebar {
+      width: 250px;
+      background-color: #f4f4f4;
+      border-right: 1px solid #ccc;
+      padding: 10px;
+      overflow-y: auto;
+    }
+    #sidebar h2 {
+      font-size: 18px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    #sidebar ul {
+      list-style: none;
+      padding-left: 15px;
+      display: none;
+    }
+    #sidebar li {
+      margin: 5px 0;
+    }
+    #sidebar a {
+      text-decoration: none;
+      color: #0077cc;
+      cursor: pointer;
+    }
+    #sidebar a:hover {
+      text-decoration: underline;
+    }
+    /* Main viewer styling */
+    #viewer {
+      flex: 1;
+      padding: 10px;
+      overflow: auto;
+    }
+    iframe {
+      width: 100%;
+      height: 80vh;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sidebar">
+    <h1>Resources</h1>
+
+    <!-- Folder: Answers -->
+    <h2 class="folder-title">Answers</h2>
+    <ul class="folder-list">
+      <li><a href="ib_phys_dc_all_files/Answers/file1.pdf" target="pdfFrame">file1.pdf</a></li>
+      <li><a href="ib_phys_dc_all_files/Answers/file2.pdf" target="pdfFrame">file2.pdf</a></li>
+      <!-- Add more PDF links as needed -->
+    </ul>
+
+    <!-- Folder: Assessment Guidance -->
+    <h2 class="folder-title">Assessment Guidance</h2>
+    <ul class="folder-list">
+      <li><a href="ib_phys_dc_all_files/Assessment%20Guidance/guide1.pdf" target="pdfFrame">guide1.pdf</a></li>
+      <li><a href="ib_phys_dc_all_files/Assessment%20Guidance/guide2.pdf" target="pdfFrame">guide2.pdf</a></li>
+      <!-- Add more PDF links as needed -->
+    </ul>
+
+    <!-- Folder: Exam-style questions -->
+    <h2 class="folder-title">Exam-style questions</h2>
+    <ul class="folder-list">
+      <li><a href="ib_phys_dc_all_files/Exam-style%20questions/exam1.pdf" target="pdfFrame">exam1.pdf</a></li>
+      <li><a href="ib_phys_dc_all_files/Exam-style%20questions/exam2.pdf" target="pdfFrame">exam2.pdf</a></li>
+      <!-- Add more PDF links as needed -->
+    </ul>
+
+    <!-- Folder: Prelims -->
+    <h2 class="folder-title">Prelims</h2>
+    <ul class="folder-list">
+      <li><a href="ib_phys_dc_all_files/Prelims/prelim1.pdf" target="pdfFrame">prelim1.pdf</a></li>
+      <li><a href="ib_phys_dc_all_files/Prelims/prelim2.pdf" target="pdfFrame">prelim2.pdf</a></li>
+      <!-- Add more PDF links as needed -->
+    </ul>
+
+    <!-- Folder: Specimen Papers -->
+    <h2 class="folder-title">Specimen Papers</h2>
+    <ul class="folder-list">
+      <li><a href="ib_phys_dc_all_files/Specimen%20Papers/specimen1.pdf" target="pdfFrame">specimen1.pdf</a></li>
+      <li><a href="ib_phys_dc_all_files/Specimen%20Papers/specimen2.pdf" target="pdfFrame">specimen2.pdf</a></li>
+      <!-- Add more PDF links as needed -->
+    </ul>
+  </div>
+
+  <div id="viewer">
+    <p>Select a PDF from the sidebar to view it here.</p>
+    <iframe name="pdfFrame" src=""></iframe>
+  </div>
+
+  <script>
+    // Toggle folder lists on header click.
+    const folderTitles = document.querySelectorAll('.folder-title');
+    folderTitles.forEach(title => {
+      title.addEventListener('click', () => {
+        // Toggle the next sibling (the <ul> with the list of files)
+        const list = title.nextElementSibling;
+        if (list.style.display === "block") {
+          list.style.display = "none";
+        } else {
+          list.style.display = "block";
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
