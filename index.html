@@ -140,3 +140,82 @@
 
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IB Physics Resources</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+
+        .text {
+            font-size: 3rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: glow 0.5s infinite alternate ease-in-out;
+            position: absolute;
+            top: 20%;
+            width: 100%;
+        }
+
+        .subtext {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-top: 10px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            animation: glow 0.5s infinite alternate ease-in-out;
+            position: absolute;
+            top: 30%;
+            width: 100%;
+        }
+
+        @keyframes glow {
+            0% {
+                color: white;
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            }
+            100% {
+                color: rgb(255, 105, 180);
+                text-shadow: 0 0 20px rgba(255, 105, 180, 1), 0 0 40px rgba(255, 105, 180, 0.8);
+            }
+        }
+
+        .enter-button {
+            margin-top: 50vh;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            background-color: rgb(255, 105, 180);
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+            transition: transform 0.2s;
+        }
+
+        .enter-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="text">L . O . C . K - T . H . E - F . U . C . K - I . N</div>
+    <div class="subtext">protocol initiated</div>
+    <button class="enter-button" onclick="window.location.href='resources.html'">ENTER</button>
+</body>
+</html>
