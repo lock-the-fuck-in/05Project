@@ -59,7 +59,7 @@
       padding: 2rem;
       max-width: 800px;
       margin: 0 auto;
-      min-height: 100vh;  /* Changed from fixed height to allow extra content */
+      min-height: 100vh;  /* Allow extra content */
     }
     .welcome h1 {
       font-size: 3.5rem;
@@ -128,8 +128,13 @@
       color: #ff4081;
       margin-bottom: 1rem;
     }
+    /* Grid container to show three exam items per row */
+    #examsCountdownContainer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
     .exam-countdown-item {
-      margin: 1.5rem 0;
       padding: 1rem;
       background: rgba(255,255,255,0.1);
       border-radius: 15px;
@@ -138,6 +143,9 @@
       margin-bottom: 0.5rem;
       font-size: 1.2rem;
       color: #ff4081;
+    }
+    .exam-countdown-item p {
+      margin-bottom: 0.5rem;
     }
     .exam-countdown-item .countdown span {
       font-weight: bold;
@@ -265,8 +273,9 @@
   <!-- Upcoming Exams Section -->
   <div id="examsCountdownSection">
     <h2>Upcoming Exams</h2>
+    <!-- The grid container for exam countdown items -->
     <div id="examsCountdownContainer">
-      <!-- Exam countdown items will be injected here -->
+      <!-- Exam countdown items will be injected here via JavaScript -->
     </div>
   </div>
 
