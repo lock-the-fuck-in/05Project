@@ -52,16 +52,16 @@
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
-    /* New keyframe for extra messages with a slow fade */
+    /* New keyframe for extra messages with smoother fade in/out */
     @keyframes glowMoveFade {
       0% {
         transform: translateX(-100%);
         opacity: 0;
       }
-      20% {
+      25% {
         opacity: 1;
       }
-      80% {
+      75% {
         opacity: 1;
       }
       100% {
@@ -274,9 +274,8 @@
     // Calculate evenly spaced vertical slots based on the number of messages
     const numMessages = extraMessages.length;
     const slots = [];
-    // For example, spread between 5% and 95%
+    // Spread between 5% and 95%
     for (let i = 0; i < numMessages; i++) {
-      // Calculate a slot such that the first is at 5% and the last is at 95%
       let slot = 5 + ((95 - 5) / (numMessages - 1)) * i;
       slots.push(slot);
     }
@@ -291,40 +290,25 @@
     
     // For each extra message, create a new glow-text element with random properties.
     extraMessages.forEach((msg, index) => {
-      // Choose a random language for this message.
       const randomLang = languages[Math.floor(Math.random() * languages.length)];
-      
-      // Create a new div for the extra message.
       const newDiv = document.createElement('div');
       newDiv.className = "glow-text";
-      
-      // Use one of the non-overlapping vertical slots.
       newDiv.style.top = `${slots[index]}%`;
-      
-      // Set a random animation duration between 15s and 30s.
-      const randomDuration = Math.floor(Math.random() * 16) + 15;
-      
-      // Set a random negative animation delay so the messages start at different times.
+      const randomDuration = Math.floor(Math.random() * 16) + 15; // between 15s and 30s
       const randomDelay = -(Math.random() * randomDuration).toFixed(2);
-      
-      // Use the new keyframe animation (glowMoveFade) with ease-in-out.
       newDiv.style.animation = `glowMoveFade ${randomDuration}s ease-in-out infinite`;
       newDiv.style.animationDelay = `${randomDelay}s`;
-      
-      // Set the text content to the message in the chosen language.
       newDiv.textContent = msg[randomLang];
-      
-      // Append the new div to the glow container.
       document.querySelector('.glow-container').appendChild(newDiv);
     });
   </script>
-
+  
   <!-- Animated Welcome Page -->
   <div class="welcome" id="welcomePage">
     <h1>Welcome to Physics Resources! 📚</h1>
     <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
     
-    <!-- Main Countdown for the First Exam (optional) -->
+    <!-- Main Countdown for the Next Upcoming Exam -->
     <div class="countdown">
       <div class="countdown-item">
         <div class="countdown-number" id="months">00</div>
@@ -347,7 +331,8 @@
         <div class="countdown-label">Seconds</div>
       </div>
     </div>
-    <p class="exam-date">First IB Exams: April 29, 2025</p>
+    <!-- This paragraph will update with the next exam's date -->
+    <p class="exam-date" id="mainExamDate">Next IB Exam: </p>
     
     <!-- Button to explore resources (opens the file browser) -->
     <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
@@ -356,10 +341,9 @@
     <a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a>
   </div>
 
-  <!-- Upcoming Exams Section -->
+  <!-- Upcoming Exams Section (hidden when exploring resources) -->
   <div id="examsCountdownSection">
     <h2>Upcoming Exams</h2>
-    <!-- The grid container for exam countdown items -->
     <div id="examsCountdownContainer">
       <!-- Exam countdown items will be injected here via JavaScript -->
     </div>
@@ -370,7 +354,7 @@
     <a href="#" class="back-button" id="backButton">← Back to Welcome</a>
     <h2>Resource Directory</h2>
 
-    <!-- Coursebook Answers (Highlighted in Green) -->
+    <!-- (Resource folders and content here) -->
     <div class="folder coursebook-folder">
       <div class="folder-title"><i class="fas fa-folder-open"></i> Coursebook Answers</div>
       <ul class="file-list">
@@ -381,149 +365,116 @@
         </li>
       </ul>
     </div>
-
+    <!-- (Other folders go here) -->
     <!-- Main Workbook -->
-    <div class="folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Main Workbook</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Physics%20-%20WORKBOOK%20-%20K.A.%20Tsokos%20-%20Seventh%20Edition%20-%20Cambridge%202023%20(Digital%20Edition).pdf">
-            <i class="fas fa-file-pdf"></i> Physics Workbook
-          </a>
-        </li>
-      </ul>
-    </div>
+<div class="folder">
+<div class="folder-title"><i class="fas fa-folder-open"></i> Main Workbook</div>
+<ul class="file-list">
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Physics%20-%20WORKBOOK%20-%20K.A.%20Tsokos%20-%20Seventh%20Edition%20-%20Cambridge%202023%20(Digital%20Edition).pdf">
+<i class="fas fa-file-pdf"></i> Physics Workbook
+</a>
+</li>
+</ul>
+</div>
 
-    <!-- Answers for Multiple Choice Questions -->
-    <div class="folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Answers for Multiple Choice Questions</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic Zero
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_A.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic A
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_B.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic B
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_C.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic C
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic D
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic E
-          </a>
-        </li>
-      </ul>
-    </div>
+<!-- Answers for Multiple Choice Questions -->
+<div class="folder">
+<div class="folder-title"><i class="fas fa-folder-open"></i> Answers for Multiple Choice Questions</div>
+<ul class="file-list">
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf">
+<i class="fas fa-file-pdf"></i> Answers For Topic Zero
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_A.pdf">
+<i class="fas fa-file-pdf"></i> Answers For Topic A
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_B.pdf">
+<i class="fas fa-file-pdf"></i> Answers For Topic B
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_C.pdf">
+<i class="fas fa-file-pdf"></i> Answers For Topic C
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf">
+<i class="fas fa-file-pdf"></i> Answers For Topic D
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf">
+<i class="fas fa-file-pdf"></i> Answers For Topic E
+</a>
+</li>
+</ul>
+</div>
 
-    <!-- Specimen Papers -->
-    <div class="folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_HL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen HL PP1
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_SL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen SL PP1
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_HL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen HL PP2
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_SL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen SL PP2
-          </a>
-        </li>
-      </ul>
-    </div>
+<!-- Specimen Papers -->
+<div class="folder">
+<div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers</div>
+<ul class="file-list">
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_HL.pdf">
+<i class="fas fa-file-pdf"></i> Specimen HL PP1
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_SL.pdf">
+<i class="fas fa-file-pdf"></i> Specimen SL PP1
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_HL.pdf">
+<i class="fas fa-file-pdf"></i> Specimen HL PP2
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_SL.pdf">
+<i class="fas fa-file-pdf"></i> Specimen SL PP2
+</a>
+</li>
+</ul>
+</div>
 
-    <!-- Specimen Papers Answers -->
-    <div class="folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers Answers</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/P1 HL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen HL PP1
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/P1 SL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen SL PP1
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/P2 HL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen HL PP2
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/P2 SL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen SL PP2
-          </a>
-        </li>
-      </ul>
-    </div>
+<!-- Specimen Papers Answers -->
+<div class="folder">
+<div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers Answers</div>
+<ul class="file-list">
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/P1 HL.pdf">
+<i class="fas fa-file-pdf"></i> Specimen HL PP1
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/P1 SL.pdf">
+<i class="fas fa-file-pdf"></i> Specimen SL PP1
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/P2 HL.pdf">
+<i class="fas fa-file-pdf"></i> Specimen HL PP2
+</a>
+</li>
+<li class="file-item">
+<a href="ib_phys_dc_all_files/Answers/P2 SL.pdf">
+<i class="fas fa-file-pdf"></i> Specimen SL PP2
+</a>
+</li>
+</ul>
+</div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
 
-      /***** MAIN COUNTDOWN (First Exam) *****/
-      // Countdown to April 29, 2025 (adjust as needed).
-      const mainCountdownDate = new Date('2025-04-29T00:00:00').getTime();
-      const mainCountdownInterval = setInterval(updateMainCountdown, 1000);
-      updateMainCountdown(); // initial call
-
-      function updateMainCountdown() {
-        const now = new Date().getTime();
-        const distance = mainCountdownDate - now;
-        
-        if (distance < 0) {
-          clearInterval(mainCountdownInterval);
-          document.getElementById('months').innerHTML = '0';
-          document.getElementById('days').innerHTML = '0';
-          document.getElementById('hours').innerHTML = '0';
-          document.getElementById('minutes').innerHTML = '0';
-          document.getElementById('seconds').innerHTML = '0';
-          return;
-        }
-        
-        const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
-        const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-        document.getElementById('months').innerHTML = months;
-        document.getElementById('days').innerHTML = days;
-        document.getElementById('hours').innerHTML = hours;
-        document.getElementById('minutes').innerHTML = minutes;
-        document.getElementById('seconds').innerHTML = seconds;
-      }
-
-      /***** UPCOMING EXAMS COUNTDOWNS *****/
-      // Define an array of exam objects with subject, paper, and date.
+      /***** MAIN COUNTDOWN: Next Upcoming Exam *****/
+      // Define the array of exams (must be in ascending order by date)
       const exams = [
         { subject: 'PHYSICS SL', paper: 'P1', date: new Date('2025-04-29T00:00:00') },
         { subject: 'PHYSICS SL', paper: 'P2', date: new Date('2025-04-30T00:00:00') },
@@ -542,6 +493,50 @@
         { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P3', date: new Date('2025-05-21T00:00:00') }
       ];
       
+      let mainCountdownInterval = setInterval(updateMainCountdown, 1000);
+      updateMainCountdown(); // initial call
+      
+      function updateMainCountdown() {
+        const now = new Date().getTime();
+        // Find the first exam whose date is in the future
+        let nextExam = null;
+        for (let i = 0; i < exams.length; i++) {
+          if (exams[i].date.getTime() > now) {
+            nextExam = exams[i];
+            break;
+          }
+        }
+        if (!nextExam) {
+          // No upcoming exam – clear countdown
+          clearInterval(mainCountdownInterval);
+          document.getElementById('months').innerHTML = '0';
+          document.getElementById('days').innerHTML = '0';
+          document.getElementById('hours').innerHTML = '0';
+          document.getElementById('minutes').innerHTML = '0';
+          document.getElementById('seconds').innerHTML = '0';
+          document.getElementById('mainExamDate').textContent = "No upcoming exam.";
+          return;
+        }
+        
+        const distance = nextExam.date.getTime() - now;
+        const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
+        const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById('months').innerHTML = months;
+        document.getElementById('days').innerHTML = days;
+        document.getElementById('hours').innerHTML = hours;
+        document.getElementById('minutes').innerHTML = minutes;
+        document.getElementById('seconds').innerHTML = seconds;
+        
+        document.getElementById('mainExamDate').textContent =
+          "Next IB Exam: " + nextExam.date.toLocaleDateString() +
+          " (" + nextExam.subject + " – " + nextExam.paper + ")";
+      }
+
+      /***** UPCOMING EXAMS COUNTDOWNS *****/
       const examsContainer = document.getElementById('examsCountdownContainer');
       
       // Create a countdown display for each exam.
@@ -599,26 +594,29 @@
       const fileBrowser = document.getElementById('fileBrowser');
       const examsSection = document.getElementById('examsCountdownSection');
 
-      // Open file browser (resources)
+      // When "Explore Resources Now" is clicked, hide the welcome page and upcoming exams section.
       exploreButton.addEventListener('click', function(e) {
         e.preventDefault();
         welcomePage.classList.add("hidden");
+        examsSection.classList.add("hidden");
         fileBrowser.classList.remove("hidden");
         fileBrowser.classList.add("visible");
       });
 
-      // Scroll to the Upcoming Exams section
+      // When "View Upcoming Exams" is clicked, scroll to that section.
       examsButton.addEventListener('click', function(e) {
         e.preventDefault();
+        examsSection.classList.remove("hidden");
         examsSection.scrollIntoView({ behavior: 'smooth' });
       });
 
-      // Back button from file browser to welcome page
+      // Back button from file browser to welcome page.
       backButton.addEventListener('click', function(e) {
         e.preventDefault();
         fileBrowser.classList.remove("visible");
         fileBrowser.classList.add("hidden");
         welcomePage.classList.remove("hidden");
+        examsSection.classList.remove("hidden");
       });
       
     });
