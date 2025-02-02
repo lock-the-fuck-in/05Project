@@ -41,7 +41,7 @@
       animation: glow 0.5s infinite alternate ease-in-out;
     }
 
-    /* Modified Viewer Section */
+    /* Modified Viewer Section to dynamically scale */
     #viewer {
       flex: 1;
       padding: 10px;
@@ -49,15 +49,29 @@
       background: black;
       position: relative;
       overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    /* Existing Styles (keep these) */
+    iframe {
+      width: 100%; /* Make iframe width 100% of the container */
+      height: 100%; /* Make iframe height 100% of the container */
+      border: none;
+      max-width: 100%; /* Prevent overflow */
+      max-height: 100%; /* Prevent overflow */
+      min-width: 320px; /* Set a minimum width for the iframe */
+      min-height: 240px; /* Set a minimum height for the iframe */
+    }
+
+    /* Existing Styles */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       display: flex;
       min-height: 100vh;
     }
+
     #sidebar {
       width: 250px;
       background-color: #f9f9f9;
@@ -66,16 +80,16 @@
       box-sizing: border-box;
       overflow-y: auto;
     }
-    /* ... (keep all other existing styles the same) ... */
+
+    /* Additional sidebar styling can go here */
   </style>
 </head>
 <body>
   <!-- Sidebar remains unchanged -->
   <div id="sidebar">
-    <!-- Your existing sidebar content -->
     <h1>IB Physics Resources</h1>
     <a id="home-button" href="#" onclick="resetViewer()">🏠 Home</a>
- <!-- Answers -->
+    <!-- Your existing sidebar content -->
     <h2>Answers</h2>
     <ul>
       <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf" target="pdfFrame">ESQ 0</a></li>
@@ -85,8 +99,7 @@
       <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf" target="pdfFrame">ESQ D</a></li>
       <li><a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf" target="pdfFrame">ESQ E</a></li>
     </ul>
-
-    <!-- Assessment Guidance -->
+     <!-- Assessment Guidance -->
     <h2>Assessment Guidance</h2>
     <ul>
       <li><a href="ib_phys_dc_all_files/Assessment%20Guidance/ib_phys_dc_ag_ea.pdf" target="pdfFrame">AG EA</a></li>
@@ -123,13 +136,11 @@
 
   <!-- Modified Viewer Section -->
   <div id="viewer">
-    <!-- Lock In Animation -->
     <div class="lock-animation">
       <div class="text">L . O . C . K - T . H . E - F . U . C . K - I . N</div>
       <div class="subtext">protocol initiated</div>
     </div>
     
-    <!-- Welcome Message -->
     <div id="welcome" style="color: white; position: relative; z-index: 1; text-align: center;">
       Welcome! Select a file from the sidebar to view it.
     </div>
@@ -153,6 +164,18 @@
         document.querySelector("#welcome").style.display = "none";
         document.querySelector(".lock-animation").style.display = "none";
       });
+    });
+
+    // Optional: Dynamic resizing based on window size (this is handled by CSS, but you can add a resize event listener if needed)
+    window.addEventListener('resize', function() {
+      const iframe = document.querySelector("iframe");
+      const viewer = document.querySelector("#viewer");
+
+      const viewerWidth = viewer.offsetWidth;
+      const viewerHeight = viewer.offsetHeight;
+
+      iframe.style.width = viewerWidth + 'px';
+      iframe.style.height = viewerHeight + 'px';
     });
   </script>
 </body>
