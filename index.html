@@ -445,23 +445,28 @@ body {
 </ul>
 </div>
   </div>
-  <script>
+ <script>
     document.addEventListener("DOMContentLoaded", function() {
+      // Define exams (make sure these are in chronological order)
       const exams = [
-        { subject: 'Physics SL', paper: 'P1', date: new Date('2025-04-29') },
-        { subject: 'Physics SL', paper: 'P2', date: new Date('2025-04-30') },
-        { subject: 'English HL', paper: 'P1', date: new Date('2025-05-08') },
-        { subject: 'English HL', paper: 'P2', date: new Date('2025-05-09') },
-        { subject: 'Geography SL', paper: 'P1', date: new Date('2025-05-09') },
-        { subject: 'Geography SL', paper: 'P2', date: new Date('2025-05-12') },
-        { subject: 'Economics HL', paper: 'P2', date: new Date('2025-05-13') },
-        { subject: 'Economics HL', paper: 'P1', date: new Date('2025-05-14') },
-        { subject: 'Spanish B SL', paper: 'P1', date: new Date('2025-05-14') },
-        { subject: 'Math AA HL', paper: 'P1', date: new Date('2025-05-15') },
-        { subject: 'Math AA HL', paper: 'P2', date: new Date('2025-05-16') }
+        { subject: 'PHYSICS SL', paper: 'P1', date: new Date('2025-04-29T14:00:00') },
+        { subject: 'PHYSICS SL', paper: 'P2', date: new Date('2025-04-30T09:00:00') },
+        { subject: 'ENGLISH A Language and Literature HL', paper: 'P1', date: new Date('2025-05-08T14:00:00') },
+        { subject: 'ENGLISH A Language and Literature HL', paper: 'P2', date: new Date('2025-05-09T09:00:00') },
+        { subject: 'GEOGRAPHY SL', paper: 'P1', date: new Date('2025-05-09T14:00:00') },
+        { subject: 'GEOGRAPHY SL', paper: 'P2', date: new Date('2025-05-12T09:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P2', date: new Date('2025-05-13T14:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P1', date: new Date('2025-05-14T09:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P3', date: new Date('2025-05-14T09:00:00') },
+        { subject: 'SPANISH B SL', paper: 'P1', date: new Date('2025-05-14T14:00:00') },
+        { subject: 'SPANISH B SL', paper: 'RE', date: new Date('2025-05-14T14:00:00') },
+        { subject: 'SPANISH B SL', paper: 'LI', date: new Date('2025-05-15T09:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P1', date: new Date('2025-05-15T14:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P2', date: new Date('2025-05-16T09:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P3', date: new Date('2025-05-21T14:00:00') }
       ];
-
-      // Main Countdown Logic
+      
+      /***** MAIN COUNTDOWN (Next Upcoming Exam) *****/
       function updateMainCountdown() {
         const now = new Date();
         const nextExam = exams.find(exam => exam.date > now);
@@ -471,84 +476,91 @@ body {
           countdownElement.textContent = "No upcoming exams found";
           return;
         }
-
+        
         const diff = nextExam.date - now;
         const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24) % 30);
+        const days = Math.floor((diff / (1000 * 60 * 60 * 24)) % 30);
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
+        
         document.getElementById('months').textContent = months;
         document.getElementById('days').textContent = days;
         document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
         
         countdownElement.textContent = `Next Exam: ${nextExam.subject} ${nextExam.paper} - ${nextExam.date.toLocaleDateString()}`;
       }
+      
+      setInterval(updateMainCountdown, 1000);
+      updateMainCountdown();
 
-      // Initialize Exam Cards
+      /***** UPCOMING EXAMS COUNTDOWNS *****/
       const examsContainer = document.getElementById('examsCountdownContainer');
+      
+      // Create a countdown display for each exam.
       exams.forEach((exam, index) => {
-        const card = document.createElement('div');
-        card.className = 'exam-countdown-item';
-        card.innerHTML = `
-          <h3>${exam.subject} ${exam.paper}</h3>
-          <p>Date: ${exam.date.toLocaleDateString()}</p>
+        const examDiv = document.createElement('div');
+        examDiv.className = 'exam-countdown-item';
+        examDiv.innerHTML = `
+          <h3>Exam ${index + 1}: ${exam.subject} – ${exam.paper}</h3>
+          <p><strong>Date:</strong> ${exam.date.toLocaleDateString()}</p>
           <div class="countdown">
+            <span id="examMonths${index}">0</span> Months 
             <span id="examDays${index}">0</span> Days 
-            <span id="examHours${index}">0</span> Hours 
-            <span id="examMinutes${index}">0</span> Minutes
+            <span id="examHours${index}">0</span> Hours
           </div>
         `;
-        examsContainer.appendChild(card);
+        examsContainer.appendChild(examDiv);
       });
-
-      // Update All Exam Countdowns
+      
       function updateAllCountdowns() {
+        const now = new Date().getTime();
         exams.forEach((exam, index) => {
-          const diff = exam.date - new Date();
-          if (diff < 0) return;
-
-          document.getElementById(`examDays${index}`).textContent = Math.floor(diff / (1000 * 60 * 60 * 24));
-          document.getElementById(`examHours${index}`).textContent = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          document.getElementById(`examMinutes${index}`).textContent = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          const diff = exam.date.getTime() - now;
+          if (diff < 0) {
+            document.getElementById(`examMonths${index}`).textContent = '0';
+            document.getElementById(`examDays${index}`).textContent = '0';
+            document.getElementById(`examHours${index}`).textContent = '0';
+            return;
+          }
+          const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+          const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          
+          document.getElementById(`examMonths${index}`).textContent = months;
+          document.getElementById(`examDays${index}`).textContent = days;
+          document.getElementById(`examHours${index}`).textContent = hours;
         });
       }
+      
+      setInterval(updateAllCountdowns, 1000);
+      updateAllCountdowns();
 
-      // Navigation Controls
+      /***** BUTTONS TO TOGGLE/SCROLL VIEWS *****/
       const exploreBtn = document.getElementById('exploreButton');
       const examsBtn = document.getElementById('examsButton');
       const backBtn = document.getElementById('backButton');
+      const welcomePage = document.getElementById('welcomePage');
       const fileBrowser = document.getElementById('fileBrowser');
       const examsSection = document.getElementById('examsCountdownSection');
-
+      
       exploreBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        document.getElementById('welcomePage').classList.add('hidden');
+        welcomePage.classList.add('hidden');
         examsSection.classList.add('hidden');
         fileBrowser.classList.remove('hidden');
       });
-
+      
       examsBtn.addEventListener('click', (e) => {
         e.preventDefault();
         examsSection.classList.remove('hidden');
         examsSection.scrollIntoView({ behavior: 'smooth' });
       });
-
+      
       backBtn.addEventListener('click', (e) => {
         e.preventDefault();
         fileBrowser.classList.add('hidden');
-        document.getElementById('welcomePage').classList.remove('hidden');
+        welcomePage.classList.remove('hidden');
         examsSection.classList.remove('hidden');
       });
-
-      // Initialize updates
-      setInterval(updateMainCountdown, 1000);
-      setInterval(updateAllCountdowns, 1000);
-      updateMainCountdown();
-      updateAllCountdowns();
     });
   </script>
 </body>
