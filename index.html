@@ -404,23 +404,19 @@
     });
   </script>
 
- <!-- Add Lock In Section -->
+  <!-- Lock In Section -->
   <div class="lock-in-section hidden" id="lockInSection">
     <div class="text">L . O . C . K - T . H . E - F . U . C . K - I . N</div>
     <div class="subtext">protocol initiated</div>
-  </div>
-
-  <!-- Add new button to welcome page -->
-  <div class="welcome" id="welcomePage">
-    <!-- Existing welcome content -->
-    <br>
-    <a href="#" class="lock-button" id="lockButton">LOCK THE F**K IN 🔒</a>
   </div>
   
   <!-- Animated Welcome Page -->
   <div class="welcome" id="welcomePage">
     <h1>Welcome to Physics Resources! 📚</h1>
     <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
+
+     <!-- Lock Button -->
+    <a href="#" class="lock-button" id="lockButton">LOCK THE F**K IN 🔒</a>
     
     <!-- Main Countdown for the Next Upcoming Exam -->
     <div class="countdown">
@@ -700,7 +696,7 @@
       setInterval(updateExamCountdowns, 1000);
       updateExamCountdowns();
 
-      /***** BUTTONS TO TOGGLE/SCROLL VIEWS *****/
+      // Button functionality
       const exploreButton = document.getElementById('exploreButton');
       const examsButton = document.getElementById('examsButton');
       const backButton = document.getElementById('backButton');
@@ -708,31 +704,45 @@
       const fileBrowser = document.getElementById('fileBrowser');
       const examsSection = document.getElementById('examsCountdownSection');
 
-      // When "Explore Resources Now" is clicked, hide the welcome page and upcoming exams section.
       exploreButton.addEventListener('click', function(e) {
         e.preventDefault();
         welcomePage.classList.add("hidden");
         examsSection.classList.add("hidden");
         fileBrowser.classList.remove("hidden");
-        fileBrowser.classList.add("visible");
       });
 
-      // When "View Upcoming Exams" is clicked, scroll to that section.
       examsButton.addEventListener('click', function(e) {
         e.preventDefault();
         examsSection.classList.remove("hidden");
         examsSection.scrollIntoView({ behavior: 'smooth' });
       });
 
-      // Back button from file browser to welcome page.
       backButton.addEventListener('click', function(e) {
         e.preventDefault();
-        fileBrowser.classList.remove("visible");
         fileBrowser.classList.add("hidden");
         welcomePage.classList.remove("hidden");
         examsSection.classList.remove("hidden");
       });
 
+      // Lock functionality
+      const lockButton = document.getElementById('lockButton');
+      const lockInSection = document.getElementById('lockInSection');
+
+      lockButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.body.style.overflow = 'hidden';
+        welcomePage.classList.add("hidden");
+        examsSection.classList.add("hidden");
+        fileBrowser.classList.add("hidden");
+        lockInSection.classList.remove("hidden");
+      });
+
+      lockInSection.addEventListener('click', function() {
+        document.body.style.overflow = 'auto';
+        lockInSection.classList.add("hidden");
+        welcomePage.classList.remove("hidden");
+      });
+    });
       <script>
     // Add to existing JavaScript
     const lockButton = document.getElementById('lockButton');
