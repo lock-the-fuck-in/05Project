@@ -537,7 +537,12 @@ body::-webkit-scrollbar {
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-
+      
+ function formatDateDMY(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
       /***** MAIN COUNTDOWN: Next Upcoming Exam *****/
       // Define the array of exams (must be in ascending order by date)
       const exams = [
@@ -597,7 +602,7 @@ body::-webkit-scrollbar {
         document.getElementById('seconds').innerHTML = seconds;
         
         document.getElementById('mainExamDate').textContent =
-          "Next IB Exam: " + nextExam.date.toLocaleDateString() +
+          "Next IB Exam: " + formatDateDMY(nextExam.date) +
           " (" + nextExam.subject + " – " + nextExam.paper + ")";
       }
 
@@ -610,7 +615,7 @@ body::-webkit-scrollbar {
         examDiv.className = 'exam-countdown-item';
         examDiv.innerHTML = `
           <h3>Exam ${index + 1}: ${exam.subject} – ${exam.paper}</h3>
-          <p><strong>Date:</strong> ${exam.date.toLocaleDateString()}</p>
+          <p><strong>Date:</strong> ${formatDateDMY(exam.date)}</p>
           <div class="countdown">
             <span id="examMonths${index}">00</span> Months 
             <span id="examDays${index}">00</span> Days 
