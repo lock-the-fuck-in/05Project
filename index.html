@@ -137,15 +137,34 @@
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
-    /* Styling for the upcoming exams section */
+/* Styling for the upcoming exams section */
     #examsCountdownSection {
-      background: #111;
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('11920460.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       padding: 2rem;
       margin-top: 2rem;
+      position: relative;
     }
+    
+    /* Add a pseudo-element for better text readability */
+    #examsCountdownSection::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 0;
+    }
+    
     #examsCountdownSection h2 {
       color: #ff4081;
       margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
     }
     /* Grid container to show three exam items per row */
     #examsCountdownContainer {
