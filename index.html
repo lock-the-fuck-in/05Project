@@ -546,36 +546,47 @@ body {
         return date.toLocaleDateString('en-GB', options).replace(/ /g, '-').toUpperCase();
       }
 
-      // Main Countdown Logic
-      function updateMainCountdown() {
-        const now = new Date();
-        const nextExam = exams.find(exam => exam.date > now);
-        const countdownElement = document.getElementById('mainExamDate');
-        
-        if (!nextExam) {
-          countdownElement.textContent = "No upcoming exams found";
-          return;
-        }
+     // In the updateMainCountdown function:
+function updateMainCountdown() {
+  const now = new Date();
+  const nextExam = exams.find(exam => exam.date > now);
+  const countdownElement = document.getElementById('mainExamDate');
+  
+  if (!nextExam) {
+    countdownElement.textContent = "No upcoming exams found";
+    return;
+  }
 
-        const diff = nextExam.date - now;
-        const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
-        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  // Get total difference in milliseconds
+  const diff = nextExam.date - now;
 
-        document.getElementById('months').textContent = months;
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours;
-        document.getElementById('minutes').textContent = minutes;
-        document.getElementById('seconds').textContent = seconds;
-        
-        countdownElement.innerHTML = `
-          Next Exam: ${nextExam.subject} ${nextExam.paper}<br>
-          ${formatExamDate(nextExam.date)} ${nextExam.date.getHours() >= 12 ? 'PM' : 'AM'} |
-          Duration: ${nextExam.duration} mins
-        `;
-      }
+  // Calculate time units
+  const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+  const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+  // Update display with months
+  document.getElementById('months').textContent = months.toString().padStart(2, '0');
+  document.getElementById('days').textContent = days.toString().padStart(2, '0');
+  document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+  document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+  document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+  
+  // Format date as 29-APR-25
+  const examDate = nextExam.date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: '2-digit'
+  }).toUpperCase().replace(/ /g, '-');
+
+  countdownElement.innerHTML = `
+    Next Exam: ${nextExam.subject} ${nextExam.paper}<br>
+    Date: ${examDate}<br>
+    Time: ${nextExam.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
+  `;
+}
 
       // Initialize Exam Cards
       const examsContainer = document.getElementById('examsCountdownContainer');
