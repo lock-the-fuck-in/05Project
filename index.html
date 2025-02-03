@@ -137,88 +137,6 @@
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
-
- /* Center welcome content vertically and horizontally */
-    .welcome {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* Lock In Section */
-    .lock-in-section {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      z-index: 9999;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      font-family: Arial, sans-serif;
-    }
-
-    .lock-in-section .text {
-      font-size: 3rem;
-      font-weight: bold;
-      letter-spacing: 5px;
-      color: white;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-      animation: glow 0.5s infinite alternate ease-in-out;
-      text-align: center;
-    }
-
-    .lock-in-section .subtext {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: white;
-      margin-top: 10px;
-      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-      animation: glow 0.5s infinite alternate ease-in-out;
-    }
-
-    @keyframes glow {
-      0% { color: white; text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); }
-      100% { color: #ff69b4; text-shadow: 0 0 20px #ff69b4, 0 0 40px rgba(255, 105, 180, 0.8); }
-    }
-
-    /* New button styling */
-    .lock-button {
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      background: #ff6b6b;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-      box-shadow: 0 4px 15px rgba(255,107,107,0.4);
-      animation: pulse 2s infinite;
-      margin-top: 1.5rem;
-    }
-
-    .lock-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(255,107,107,0.6);
-    }
-
-    /* Hide scrollbar globally */
-    body {
-      overflow-y: hidden;
-    }
-
-    /* Allow scrolling in file browser */
-    .file-browser {
-      overflow-y: auto;
-    }
-    
 /* Styling for the upcoming exams section */
     #examsCountdownSection {
       background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('11920460.jpg');
@@ -403,20 +321,11 @@
       document.querySelector('.glow-container').appendChild(newDiv);
     });
   </script>
-
-  <!-- Lock In Section -->
-  <div class="lock-in-section hidden" id="lockInSection">
-    <div class="text">L . O . C . K - T . H . E - F . U . C . K - I . N</div>
-    <div class="subtext">protocol initiated</div>
-  </div>
   
   <!-- Animated Welcome Page -->
   <div class="welcome" id="welcomePage">
     <h1>Welcome to Physics Resources! 📚</h1>
     <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
-
-     <!-- Lock Button -->
-    <a href="#" class="lock-button" id="lockButton">LOCK THE F**K IN 🔒</a>
     
     <!-- Main Countdown for the Next Upcoming Exam -->
     <div class="countdown">
@@ -696,7 +605,7 @@
       setInterval(updateExamCountdowns, 1000);
       updateExamCountdowns();
 
-      // Button functionality
+      /***** BUTTONS TO TOGGLE/SCROLL VIEWS *****/
       const exploreButton = document.getElementById('exploreButton');
       const examsButton = document.getElementById('examsButton');
       const backButton = document.getElementById('backButton');
@@ -704,66 +613,30 @@
       const fileBrowser = document.getElementById('fileBrowser');
       const examsSection = document.getElementById('examsCountdownSection');
 
+      // When "Explore Resources Now" is clicked, hide the welcome page and upcoming exams section.
       exploreButton.addEventListener('click', function(e) {
         e.preventDefault();
         welcomePage.classList.add("hidden");
         examsSection.classList.add("hidden");
         fileBrowser.classList.remove("hidden");
+        fileBrowser.classList.add("visible");
       });
 
+      // When "View Upcoming Exams" is clicked, scroll to that section.
       examsButton.addEventListener('click', function(e) {
         e.preventDefault();
         examsSection.classList.remove("hidden");
         examsSection.scrollIntoView({ behavior: 'smooth' });
       });
 
+      // Back button from file browser to welcome page.
       backButton.addEventListener('click', function(e) {
         e.preventDefault();
+        fileBrowser.classList.remove("visible");
         fileBrowser.classList.add("hidden");
         welcomePage.classList.remove("hidden");
         examsSection.classList.remove("hidden");
       });
-
-      // Lock functionality
-      const lockButton = document.getElementById('lockButton');
-      const lockInSection = document.getElementById('lockInSection');
-
-      lockButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.body.style.overflow = 'hidden';
-        welcomePage.classList.add("hidden");
-        examsSection.classList.add("hidden");
-        fileBrowser.classList.add("hidden");
-        lockInSection.classList.remove("hidden");
-      });
-
-      lockInSection.addEventListener('click', function() {
-        document.body.style.overflow = 'auto';
-        lockInSection.classList.add("hidden");
-        welcomePage.classList.remove("hidden");
-      });
-    });
-      <script>
-    // Add to existing JavaScript
-    const lockButton = document.getElementById('lockButton');
-    const lockInSection = document.getElementById('lockInSection');
-
-    lockButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      document.body.style.overflow = 'hidden';
-      welcomePage.classList.add("hidden");
-      examsSection.classList.add("hidden");
-      fileBrowser.classList.add("hidden");
-      lockInSection.classList.remove("hidden");
-    });
-
-    lockInSection.addEventListener('click', function() {
-      document.body.style.overflow = 'auto';
-      lockInSection.classList.add("hidden");
-      welcomePage.classList.remove("hidden");
-    });
-
-
       
     });
   </script>
