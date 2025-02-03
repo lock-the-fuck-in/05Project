@@ -4,32 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Physics Resources Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
-    /* Basic Reset & Typography */
     html, body {
       height: 100%;
       width: 100%;
-    }
-    * {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
       background: #000;
       color: #fff;
-      position: relative;
       overflow-y: auto;
     }
-    .hidden {
+
+     html {
+      overflow: hidden;
+    }
+    
+    body {
+      overflow-y: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    body::-webkit-scrollbar {
       display: none;
     }
-    .visible {
-      display: block;
-    }
-
-    /* Background Glow (Optional) */
+    
+    .hidden { display: none; }
+    .visible { display: block; }
+    
     .glow-container {
       position: absolute;
       width: 100%;
@@ -50,8 +54,13 @@
       0% { transform: translateX(-100%); }
       100% { transform: translateX(100%); }
     }
-
-    /* Welcome Page Styles */
+    @keyframes glowMoveFade {
+      0% { transform: translateX(-100%); opacity: 0; }
+      25% { opacity: 1; }
+      75% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    
     .welcome {
       position: relative;
       z-index: 1;
@@ -61,18 +70,19 @@
       margin: 0 auto;
       min-height: 100vh;
     }
+    
+ .welcome::-webkit-scrollbar {
+      display: none;
+    }
+
+    
     .welcome h1 {
       font-size: 3.5rem;
       margin-bottom: 1rem;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
     }
-    .welcome p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
     .countdown {
-      background: rgba(255,255,255,0.1);
+      background: rgba(255, 255, 255, 0.1);
       padding: 1.5rem;
       border-radius: 15px;
       margin: 2rem 0;
@@ -109,54 +119,42 @@
       animation: pulse 2s infinite;
       margin-top: 1.5rem;
     }
-    .cta-button:hover, .exams-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(255,64,129,0.6);
-    }
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
     }
 
-    /* Upcoming Exams Section with Background Image */
     #examsCountdownSection {
-      background-image: url('11920460.jpg');
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("11920460.jpg");
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      color: white;
-      padding: 20px;
-      min-height: 100vh;
-      text-align: center;
+      padding: 4rem 2rem;
+      border-top: 3px solid #ff4081;
+      border-bottom: 3px solid #ff4081;
+      box-shadow: 0 0 30px rgba(0,0,0,0.7);
     }
-    /* Grid container for exam cards */
+    #examsCountdownSection h2 {
+      color: #ff4081;
+      font-size: 2.5rem;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
     #examsCountdownContainer {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
-      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
     .exam-countdown-item {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      width: 100%;
-    }
-    .exam-countdown-item h3 {
-      margin-bottom: 0.5rem;
-      font-size: 1.2rem;
-      color: #ff4081;
-    }
-    .exam-countdown-item p {
-      margin-bottom: 0.5rem;
-    }
-    .exam-countdown-item .countdown {
-      font-size: 1.2rem;
-      font-weight: bold;
+      padding: 1.5rem;
+      background: rgba(0,0,0,0.6);
+      border-radius: 15px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,64,129,0.3);
     }
 
-    /* File Browser Page */
     .file-browser {
       position: fixed;
       top: 0;
@@ -174,33 +172,126 @@
       to { opacity: 1; }
     }
     .back-button {
-      display: inline-block;
-      margin-bottom: 1rem;
       color: #ff4081;
       text-decoration: none;
       font-size: 1.1rem;
-      border-bottom: 1px solid transparent;
       transition: border-color 0.3s;
     }
-    .back-button:hover {
-      border-color: #ff4081;
+    .folder {
+      margin-bottom: 2rem;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 1rem;
+      background: #1a1a1a;
     }
+    .folder-title {
+      font-size: 1.5rem;
+      color: #ff4081;
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.5rem;
+    }
+    .file-list {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    .file-item a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .file-item a:hover {
+      color: #ff4081;
+    }
+    .coursebook-folder {
+      background-color: #006400;
+      border: 1px solid #00ff00;
+    }
+
+    html {
+  overflow: hidden;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.welcome {
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.glow-container {
+  pointer-events: none;
+}
   </style>
 </head>
 <body>
-  <!-- Optional Background Glow -->
   <div class="glow-container">
     <div class="glow-text">IB PHYSICS IB PHYSICS IB PHYSICS</div>
     <div class="glow-text" style="top:30%; animation-delay:-5s;">STUDY HARD STUDY HARD STUDY HARD</div>
     <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
   </div>
 
-  <!-- Animated Welcome Page -->
+<!-- Updated Script for Extra Messages Without Overlap -->
+  <script>
+    // Increase the number of extra messages
+    const extraMessages = [
+      { en: "NEVER STOP LEARNING",         es: "NUNCA DEJES DE APRENDER",         pl: "NIGDY NIE PRZESTAWAJ SIĘ UCZYĆ",           fa: "یادگیری را متوقف نکنید" },
+      { en: "BELIEVE IN YOURSELF",          es: "CREE EN TI MISMO",                 pl: "UWIERZ W SIEBIE",                           fa: "به خودت ایمان داشته باش" },
+      { en: "EMBRACE THE CHALLENGE",         es: "ABRAZA EL DESAFÍO",                pl: "PRZYJMIJ WYZWANIE",                         fa: "چالش را بپذیرید" },
+      { en: "ACHIEVE YOUR DREAMS",           es: "ALCANZA TUS SUEÑOS",               pl: "OSIĄGNIJ SWOJE MARZENIA",                   fa: "به رویاهای خود دست یاب" },
+      { en: "STAY CURIOUS, STAY INSPIRED",   es: "MANTENTE CURIOSO, MANTENTE INSPIRADO", pl: "POZOSTAŃ CIEKAWY, POZOSTAŃ ZAINSPIRUJANY",     fa: "کنجکاو بمان، الهام‌بخش بمان" },
+      { en: "KEEP MOVING FORWARD",           es: "SIGUE ADELANTE",                   pl: "IDŹ NAPRZÓD",                              fa: "به جلو حرکت کن" },
+      { en: "SUCCESS IS A JOURNEY",          es: "EL ÉXITO ES UN VIAJE",              pl: "SUKCES TO PODRÓŻ",                          fa: "موفقیت یک سفر است" },
+      { en: "YOUR POTENTIAL IS LIMITLESS",   es: "TU POTENCIAL ES ILIMITADO",         pl: "TWÓJ POTENCJAŁ JEST NIEOGRANICZONY",          fa: "پتانسیل شما بی‌حد و مرز است" },
+      { en: "STRIVE FOR EXCELLENCE",         es: "ESFUÉRZATE POR LA EXCELENCIA",       pl: "DĄŻ DO DOSKONAŁOŚCI",                       fa: "برای برتری تلاش کن" },
+      { en: "MAKE IT HAPPEN",                es: "HAZ QUE SUCEDA",                    pl: "SPRAW, ŻE SIĘ STAJE",                        fa: "به وقوع بپیوندد" }
+    ];
+    
+    // List of available languages
+    const languages = ["en", "es", "pl", "fa"];
+    
+    // Calculate evenly spaced vertical slots based on the number of messages
+    const numMessages = extraMessages.length;
+    const slots = [];
+    // Spread between 5% and 95%
+    for (let i = 0; i < numMessages; i++) {
+      let slot = 5 + ((95 - 5) / (numMessages - 1)) * i;
+      slots.push(slot);
+    }
+    // Shuffle the slots array so the order is random
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+    shuffle(slots);
+    
+    // For each extra message, create a new glow-text element with random properties.
+    extraMessages.forEach((msg, index) => {
+      const randomLang = languages[Math.floor(Math.random() * languages.length)];
+      const newDiv = document.createElement('div');
+      newDiv.className = "glow-text";
+      newDiv.style.top = `${slots[index]}%`;
+      const randomDuration = Math.floor(Math.random() * 16) + 15; // between 15s and 30s
+      const randomDelay = -(Math.random() * randomDuration).toFixed(2);
+      newDiv.style.animation = `glowMoveFade ${randomDuration}s ease-in-out infinite`;
+      newDiv.style.animationDelay = `${randomDelay}s`;
+      newDiv.textContent = msg[randomLang];
+      document.querySelector('.glow-container').appendChild(newDiv);
+    });
+  </script>
+  
   <div class="welcome" id="welcomePage">
     <h1>Welcome to Physics Resources! 📚</h1>
-    <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
+    <p>Access IB Physics resources instantly in your browser - no downloads needed!</p>
     
-    <!-- Main Countdown for the Next Upcoming Exam -->
     <div class="countdown">
       <div class="countdown-item">
         <div class="countdown-number" id="months">00</div>
@@ -223,26 +314,23 @@
         <div class="countdown-label">Seconds</div>
       </div>
     </div>
-    <p class="exam-date" id="mainExamDate">Next Exam: </p>
+    <p id="mainExamDate">Next IB Exam: Loading...</p>
     
-    <!-- Navigation Buttons -->
     <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
     <br>
-    <a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a>
+    <a href="#" class="exams-button" id="examsButton">View All Upcoming Exams</a>
   </div>
 
-  <!-- Upcoming Exams Section -->
-  <div id="examsCountdownSection">
-    <h2>Upcoming Exams</h2>
+  <div id="examsCountdownSection" class="hidden">
+    <h2>📅 Upcoming Exams Schedule</h2>
     <div id="examsCountdownContainer"></div>
   </div>
 
-  <!-- File Browser Page -->
   <div class="file-browser hidden" id="fileBrowser">
     <a href="#" class="back-button" id="backButton">← Back to Dashboard</a>
     <h2>📂 Resource Repository</h2>
 
-    <!-- (Your resource folders go here) -->
+   <!-- (Resource folders and content here) -->
     <div class="folder coursebook-folder">
       <div class="folder-title"><i class="fas fa-folder-open"></i> Coursebook Answers</div>
       <ul class="file-list">
@@ -253,16 +341,7 @@
         </li>
       </ul>
     </div>
-  <div class="folder coursebook-folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Coursebook Answers</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/Coursebook answers.pdf">
-            <i class="fas fa-file-pdf"></i> Coursebook Answers
-          </a>
-        </li>
-      </ul>
-    </div>
+    <!-- (Other folders go here) -->
     <!-- Main Workbook -->
 <div class="folder">
 <div class="folder-title"><i class="fas fa-folder-open"></i> Main Workbook</div>
@@ -366,40 +445,23 @@
 </ul>
 </div>
   </div>
-
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Helper function to compute month difference between two dates
-      function getMonthDiff(date1, date2) {
-        let months = (date2.getFullYear() - date1.getFullYear()) * 12;
-        months += date2.getMonth() - date1.getMonth();
-        // Optionally adjust based on the day of month
-        if (date2.getDate() < date1.getDate()) {
-          months--;
-        }
-        return months;
-      }
-      
-      // Define exams (ensure these are in chronological order)
       const exams = [
-        { subject: 'PHYSICS SL', paper: 'P1', date: new Date('2025-04-29T13:00:00'), duration: 90 },
-        { subject: 'PHYSICS SL', paper: 'P2', date: new Date('2025-04-30T09:00:00'), duration: 90 },
-        { subject: 'ENGLISH A Language and Literature HL', paper: 'P1', date: new Date('2025-05-08T13:00:00'), duration: 135 },
-        { subject: 'ENGLISH A Language and Literature HL', paper: 'P2', date: new Date('2025-05-09T09:00:00'), duration: 105 },
-        { subject: 'GEOGRAPHY SL', paper: 'P1', date: new Date('2025-05-09T13:00:00'), duration: 90 },
-        { subject: 'GEOGRAPHY SL', paper: 'P2', date: new Date('2025-05-12T09:00:00'), duration: 75 },
-        { subject: 'ECONOMICS HL', paper: 'P2', date: new Date('2025-05-13T13:00:00'), duration: 105 },
-        { subject: 'ECONOMICS HL', paper: 'P1', date: new Date('2025-05-14T09:00:00'), duration: 75 },
-        { subject: 'ECONOMICS HL', paper: 'P3', date: new Date('2025-05-14T13:00:00'), duration: 105 },
-        { subject: 'SPANISH B SL', paper: 'P1', date: new Date('2025-05-14T09:00:00'), duration: 75 },
-        { subject: 'SPANISH B SL', paper: 'RE', date: new Date('2025-05-14T13:00:00'), duration: 60 },
-        { subject: 'SPANISH B SL', paper: 'LI', date: new Date('2025-05-15T09:00:00'), duration: 45 },
-        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P1', date: new Date('2025-05-15T13:00:00'), duration: 120 },
-        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P2', date: new Date('2025-05-16T09:00:00'), duration: 120 },
-        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P3', date: new Date('2025-05-21T13:00:00'), duration: 75 }
+        { subject: 'Physics SL', paper: 'P1', date: new Date('2025-04-29') },
+        { subject: 'Physics SL', paper: 'P2', date: new Date('2025-04-30') },
+        { subject: 'English HL', paper: 'P1', date: new Date('2025-05-08') },
+        { subject: 'English HL', paper: 'P2', date: new Date('2025-05-09') },
+        { subject: 'Geography SL', paper: 'P1', date: new Date('2025-05-09') },
+        { subject: 'Geography SL', paper: 'P2', date: new Date('2025-05-12') },
+        { subject: 'Economics HL', paper: 'P2', date: new Date('2025-05-13') },
+        { subject: 'Economics HL', paper: 'P1', date: new Date('2025-05-14') },
+        { subject: 'Spanish B SL', paper: 'P1', date: new Date('2025-05-14') },
+        { subject: 'Math AA HL', paper: 'P1', date: new Date('2025-05-15') },
+        { subject: 'Math AA HL', paper: 'P2', date: new Date('2025-05-16') }
       ];
-      
-      /***** MAIN COUNTDOWN (Next Upcoming Exam) *****/
+
+      // Main Countdown Logic
       function updateMainCountdown() {
         const now = new Date();
         const nextExam = exams.find(exam => exam.date > now);
@@ -409,113 +471,84 @@
           countdownElement.textContent = "No upcoming exams found";
           return;
         }
-        
+
         const diff = nextExam.date - now;
-        const months = getMonthDiff(now, nextExam.date);
-        const days = Math.floor((diff - months * 1000 * 60 * 60 * 24 * 30) / (1000 * 60 * 60 * 24));
+        const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24) % 30);
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-        
-        document.getElementById('months').textContent = months.toString().padStart(2, '0');
-        document.getElementById('days').textContent = days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        
-        // Format date as 29-APR-25
-        const examDate = nextExam.date.toLocaleDateString('en-GB', {
-          day: '2-digit',
-          month: 'short',
-          year: '2-digit'
-        }).toUpperCase().replace(/ /g, '-');
-        
-        countdownElement.innerHTML = `
-          Next Exam: ${nextExam.subject} ${nextExam.paper}<br>
-          Date: ${examDate}<br>
-          Time: ${nextExam.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
-        `;
-      }
-      
-      setInterval(updateMainCountdown, 1000);
-      updateMainCountdown();
 
-      /***** UPCOMING EXAMS COUNTDOWNS *****/
+        document.getElementById('months').textContent = months;
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
+        document.getElementById('minutes').textContent = minutes;
+        document.getElementById('seconds').textContent = seconds;
+        
+        countdownElement.textContent = `Next Exam: ${nextExam.subject} ${nextExam.paper} - ${nextExam.date.toLocaleDateString()}`;
+      }
+
+      // Initialize Exam Cards
       const examsContainer = document.getElementById('examsCountdownContainer');
-      
-      // Create a countdown display for each exam.
       exams.forEach((exam, index) => {
-        const examDiv = document.createElement('div');
-        examDiv.className = 'exam-countdown-item';
-        examDiv.innerHTML = `
-          <h3>Exam ${index + 1}: ${exam.subject} – ${exam.paper}</h3>
-          <p><strong>Date:</strong> ${formatExamDate(exam.date)}</p>
-          <p>⏰ ${exam.date.getHours() >= 12 ? 'PM' : 'AM'}</p>
-          <p>⏳ Duration: ${exam.duration} minutes</p>
+        const card = document.createElement('div');
+        card.className = 'exam-countdown-item';
+        card.innerHTML = `
+          <h3>${exam.subject} ${exam.paper}</h3>
+          <p>Date: ${exam.date.toLocaleDateString()}</p>
           <div class="countdown">
             <span id="examDays${index}">0</span> Days 
             <span id="examHours${index}">0</span> Hours 
             <span id="examMinutes${index}">0</span> Minutes
           </div>
         `;
-        examsContainer.appendChild(examDiv);
+        examsContainer.appendChild(card);
       });
-      
-      // Date formatting function
-      function formatExamDate(date) {
-        const options = { day: '2-digit', month: 'short', year: '2-digit' };
-        return date.toLocaleDateString('en-GB', options).replace(/ /g, '-').toUpperCase();
-      }
-      
+
+      // Update All Exam Countdowns
       function updateAllCountdowns() {
         exams.forEach((exam, index) => {
           const diff = exam.date - new Date();
-          if (diff < 0) {
-            document.getElementById(`examDays${index}`).textContent = '0';
-            document.getElementById(`examHours${index}`).textContent = '0';
-            document.getElementById(`examMinutes${index}`).textContent = '0';
-            return;
-          }
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          
-          document.getElementById(`examDays${index}`).textContent = days;
-          document.getElementById(`examHours${index}`).textContent = hours;
-          document.getElementById(`examMinutes${index}`).textContent = minutes;
+          if (diff < 0) return;
+
+          document.getElementById(`examDays${index}`).textContent = Math.floor(diff / (1000 * 60 * 60 * 24));
+          document.getElementById(`examHours${index}`).textContent = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          document.getElementById(`examMinutes${index}`).textContent = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         });
       }
-      
-      setInterval(updateAllCountdowns, 1000);
-      updateAllCountdowns();
 
-      /***** BUTTONS TO TOGGLE/SCROLL VIEWS *****/
+      // Navigation Controls
       const exploreBtn = document.getElementById('exploreButton');
       const examsBtn = document.getElementById('examsButton');
       const backBtn = document.getElementById('backButton');
-      const welcomePage = document.getElementById('welcomePage');
       const fileBrowser = document.getElementById('fileBrowser');
       const examsSection = document.getElementById('examsCountdownSection');
-      
+
       exploreBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        welcomePage.classList.add('hidden');
+        document.getElementById('welcomePage').classList.add('hidden');
         examsSection.classList.add('hidden');
         fileBrowser.classList.remove('hidden');
       });
-      
+
       examsBtn.addEventListener('click', (e) => {
         e.preventDefault();
         examsSection.classList.remove('hidden');
         examsSection.scrollIntoView({ behavior: 'smooth' });
       });
-      
+
       backBtn.addEventListener('click', (e) => {
         e.preventDefault();
         fileBrowser.classList.add('hidden');
-        welcomePage.classList.remove('hidden');
+        document.getElementById('welcomePage').classList.remove('hidden');
         examsSection.classList.remove('hidden');
       });
+
+      // Initialize updates
+      setInterval(updateMainCountdown, 1000);
+      setInterval(updateAllCountdowns, 1000);
+      updateMainCountdown();
+      updateAllCountdowns();
     });
   </script>
 </body>
