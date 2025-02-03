@@ -70,12 +70,16 @@
       }
     }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
 body {
-    overflow: hidden;  /* Add this line to disable scrolling */
-    /* Keep existing body styles below */
-    position: relative;
-    color: #fff;
-    /* Remove overflow-y: auto */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  overflow: auto; /* Restore scrolling */
 }
 
     
