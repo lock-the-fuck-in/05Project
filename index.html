@@ -445,21 +445,106 @@ body {
 </ul>
 </div>
   </div>
-  <script>
+<script>
     document.addEventListener("DOMContentLoaded", function() {
       const exams = [
-        { subject: 'Physics SL', paper: 'P1', date: new Date('2025-04-29') },
-        { subject: 'Physics SL', paper: 'P2', date: new Date('2025-04-30') },
-        { subject: 'English HL', paper: 'P1', date: new Date('2025-05-08') },
-        { subject: 'English HL', paper: 'P2', date: new Date('2025-05-09') },
-        { subject: 'Geography SL', paper: 'P1', date: new Date('2025-05-09') },
-        { subject: 'Geography SL', paper: 'P2', date: new Date('2025-05-12') },
-        { subject: 'Economics HL', paper: 'P2', date: new Date('2025-05-13') },
-        { subject: 'Economics HL', paper: 'P1', date: new Date('2025-05-14') },
-        { subject: 'Spanish B SL', paper: 'P1', date: new Date('2025-05-14') },
-        { subject: 'Math AA HL', paper: 'P1', date: new Date('2025-05-15') },
-        { subject: 'Math AA HL', paper: 'P2', date: new Date('2025-05-16') }
+        { 
+          subject: 'PHYSICS SL',
+          paper: 'P1',
+          date: new Date('2025-04-29T13:00'), // 29-APR-25 PM
+          duration: 90
+        },
+        { 
+          subject: 'PHYSICS SL',
+          paper: 'P2',
+          date: new Date('2025-04-30T09:00'), // 30-APR-25 AM
+          duration: 90
+        },
+        { 
+          subject: 'ENGLISH A Language and Literature HL',
+          paper: 'P1',
+          date: new Date('2025-05-08T13:00'), // 08-MAY-25 PM
+          duration: 135
+        },
+        { 
+          subject: 'ENGLISH A Language and Literature HL',
+          paper: 'P2',
+          date: new Date('2025-05-09T09:00'), // 09-MAY-25 AM
+          duration: 105
+        },
+        { 
+          subject: 'GEOGRAPHY SL',
+          paper: 'P1',
+          date: new Date('2025-05-09T13:00'), // 09-MAY-25 PM
+          duration: 90
+        },
+        { 
+          subject: 'GEOGRAPHY SL',
+          paper: 'P2',
+          date: new Date('2025-05-12T09:00'), // 12-MAY-25 AM
+          duration: 75
+        },
+        { 
+          subject: 'ECONOMICS HL',
+          paper: 'P2',
+          date: new Date('2025-05-13T13:00'), // 13-MAY-25 PM
+          duration: 105
+        },
+        { 
+          subject: 'ECONOMICS HL',
+          paper: 'P1',
+          date: new Date('2025-05-14T09:00'), // 14-MAY-25 AM
+          duration: 75
+        },
+        { 
+          subject: 'ECONOMICS HL',
+          paper: 'P3',
+          date: new Date('2025-05-14T13:00'), // 14-MAY-25 PM
+          duration: 105
+        },
+        { 
+          subject: 'SPANISH B SL',
+          paper: 'P1',
+          date: new Date('2025-05-14T09:00'), // 14-MAY-25 AM
+          duration: 75
+        },
+        { 
+          subject: 'SPANISH B SL',
+          paper: 'RE',
+          date: new Date('2025-05-14T13:00'), // 14-MAY-25 PM
+          duration: 60
+        },
+        { 
+          subject: 'SPANISH B SL',
+          paper: 'LI',
+          date: new Date('2025-05-15T09:00'), // 15-MAY-25 AM
+          duration: 45
+        },
+        { 
+          subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL',
+          paper: 'P1',
+          date: new Date('2025-05-15T13:00'), // 15-MAY-25 PM
+          duration: 120
+        },
+        { 
+          subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL',
+          paper: 'P2',
+          date: new Date('2025-05-16T09:00'), // 16-MAY-25 AM
+          duration: 120
+        },
+        { 
+          subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL',
+          paper: 'P3',
+          date: new Date('2025-05-21T13:00'), // 21-MAY-25 PM
+          duration: 75
+        }
       ];
+
+      // Date formatting function
+      function formatExamDate(date) {
+        const options = { day: '2-digit', month: 'short', year: '2-digit' };
+        return date.toLocaleDateString('en-GB', options).replace(/ /g, '-').toUpperCase();
+      }
 
       // Main Countdown Logic
       function updateMainCountdown() {
@@ -474,7 +559,7 @@ body {
 
         const diff = nextExam.date - now;
         const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24) % 30);
+        const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
@@ -485,7 +570,11 @@ body {
         document.getElementById('minutes').textContent = minutes;
         document.getElementById('seconds').textContent = seconds;
         
-        countdownElement.textContent = `Next Exam: ${nextExam.subject} ${nextExam.paper} - ${nextExam.date.toLocaleDateString()}`;
+        countdownElement.innerHTML = `
+          Next Exam: ${nextExam.subject} ${nextExam.paper}<br>
+          ${formatExamDate(nextExam.date)} ${nextExam.date.getHours() >= 12 ? 'PM' : 'AM'} |
+          Duration: ${nextExam.duration} mins
+        `;
       }
 
       // Initialize Exam Cards
@@ -495,7 +584,9 @@ body {
         card.className = 'exam-countdown-item';
         card.innerHTML = `
           <h3>${exam.subject} ${exam.paper}</h3>
-          <p>Date: ${exam.date.toLocaleDateString()}</p>
+          <p>📅 ${formatExamDate(exam.date)}</p>
+          <p>⏰ ${exam.date.getHours() >= 12 ? 'PM' : 'AM'}</p>
+          <p>⏳ Duration: ${exam.duration} minutes</p>
           <div class="countdown">
             <span id="examDays${index}">0</span> Days 
             <span id="examHours${index}">0</span> Hours 
@@ -504,7 +595,6 @@ body {
         `;
         examsContainer.appendChild(card);
       });
-
       // Update All Exam Countdowns
       function updateAllCountdowns() {
         exams.forEach((exam, index) => {
