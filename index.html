@@ -661,6 +661,8 @@ body::-webkit-scrollbar {
       const welcomePage = document.getElementById('welcomePage');
       const fileBrowser = document.getElementById('fileBrowser');
       const examsSection = document.getElementById('examsCountdownSection');
+      const lockInButton = document.getElementById('lockInButton');
+
 
       // When "Explore Resources Now" is clicked, hide the welcome page and upcoming exams section.
       exploreButton.addEventListener('click', function(e) {
@@ -686,6 +688,11 @@ body::-webkit-scrollbar {
         welcomePage.classList.remove("hidden");
         examsSection.classList.remove("hidden");
       });
+
+      lockInButton.addEventListener('click', function(e) {
+  e.preventDefault();
+  window.location.href = 'https://lock-the-fuck-in.github.io/lock-the-fuck-in/';
+});
       
     });
   </script>
