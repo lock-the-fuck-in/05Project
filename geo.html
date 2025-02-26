@@ -4,79 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geography Revision Hub</title>
+    <!-- Link to the external CSS file for consistent styling -->
+    <link rel="stylesheet" href="styles.css">
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --light-bg: #f9f9f9;
-            --dark-text: #2c3e50;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            line-height: 1.6;
-            padding: 20px;
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding: 2rem;
-            background: var(--primary-color);
-            color: white;
-            border-radius: 10px;
-        }
-
-        .search-box {
-            margin: 20px 0;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid var(--secondary-color);
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .topic-filter {
-            margin: 20px 0;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            background: var(--secondary-color);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn.active {
-            background: var(--primary-color);
-        }
-
+        /* Additional styles specific to geo.html can be added here */
         .question-card {
             background: white;
             margin: 15px 0;
@@ -151,6 +82,12 @@
             <p>IBDP Geography Questions & Answers</p>
         </header>
 
+        <!-- Navigation links -->
+        <nav>
+            <a href="index.html" class="nav-link">Home</a>
+            <!-- Add other navigation links as needed -->
+        </nav>
+
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="Search questions...">
         </div>
@@ -166,6 +103,8 @@
         <button class="print-btn" onclick="window.print()">Print All</button>
     </div>
 
+    <!-- Link to the external JavaScript file for consistent functionality -->
+    <script src="scripts.js"></script>
     <script>
         // Sample data - Replace with your actual data from Excel
         const questions = [
