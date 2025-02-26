@@ -398,10 +398,10 @@ document.querySelector('.glow-container').appendChild(newDiv);
 <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
 <br>
 <!-- Button to view upcoming exams -->
-<a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a>
-
+<a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a
 <br>
 <a href="#" class="cta-button" id="lockInButton">Lock In 🔒</a>
+<br>
 <a href="#" class="cta-button" id="geoButton">Geo</a>
 </div>
 
@@ -694,6 +694,13 @@ lockInButton.addEventListener('click', function(e) {
 e.preventDefault();
 window.location.href = 'https://lock-the-fuck-in.github.io/lock-the-fuck-in/';
 });
+
+ // Add the geoButton event listener here:
+  const geoButton = document.getElementById('geoButton');
+  geoButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.location.href = 'geo.html';
+  });
 
 });
 </script>
