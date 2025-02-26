@@ -1,229 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>05Project</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-<style>
-/* Ensure the html and body fill the viewport */
-html, body {
-    height: 100%;
-    width: 100%;
-}
-/* Base Reset & Typography */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-body {
-    background: #000;
-    position: relative;
-    color: #fff;
-    /* Allow vertical scrolling if content overflows */
-    overflow-y: auto;
-}
-/* Utility Classes for Visibility */
-.hidden { display: none; }
-.visible { display: block; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geography Revision Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* New Dark Theme Styles */
+        :root {
+            --primary-color: #ff4081;
+            --secondary-color: #3498db;
+            --dark-bg: #000;
+            --light-text: #fff;
+        }
 
-/* Background Glow Animation */
-.glow-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 0;
-}
-.glow-text {
-    position: absolute;
-    font-size: 4rem;
-    font-weight: bold;
-    color: rgba(255, 255, 255, 0.1);
-    white-space: nowrap;
-    user-select: none;
-    /* Default animation for the fixed messages */
-    animation: glowMove 20s linear infinite;
-}
-/* Keyframe for the default fixed messages */
-@keyframes glowMove {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-/* New keyframe for extra messages with smoother fade in/out */
-@keyframes glowMoveFade {
-    0% {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    25% {
-        opacity: 1;
-    }
-    75% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-/* Add to existing CSS */
-html {
-    overflow: hidden;
-}
+        body {
+            line-height: 1.6;
+            background: var(--dark-bg);
+            color: var(--light-text);
+            position: relative;
+            overflow-y: auto;
+        }
 
-body {
-    overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* IE/Edge */
-}
+        .glow-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
 
-body::-webkit-scrollbar {
-    display: none; /* Chrome/Safari/Opera */
-}
+        .glow-text {
+            position: absolute;
+            font-size: 4rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+            user-select: none;
+            animation: glowMove 20s linear infinite;
+        }
 
-.welcome {
-    height: 100vh; /* Changed from min-height */
-    overflow-y: auto; /* Allows scrolling within welcome section */
-    padding: 2rem;
-    box-sizing: border-box;
-}
+        @keyframes glowMove {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
 
-/* Hide scrollbar specifically in welcome section */
-.welcome::-webkit-scrollbar {
-    display: none;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-.file-browser {
-    overflow-y: auto; /* Already exists but add scrollbar hiding */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-}
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 4rem 2rem;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
 
-.file-browser::-webkit-scrollbar {
-    display: none;
-}
+        .search-box {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
 
-/* Welcome (Animated) Page */
-.welcome {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
-    min-height: 100vh; /* Full viewport height */
-    display: flex; /* Added */
-    flex-direction: column; /* Added */
-    justify-content: center; /* Vertically center */
-    align-items: center; /* Horizontally center */
-}
-.welcome h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-.welcome p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-}
-.countdown {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 1.5rem;
-    border-radius: 15px;
-    margin: 2rem 0;
-    backdrop-filter: blur(5px);
-}
-.countdown-item {
-    display: inline-block;
-    margin: 0 1rem;
-    text-align: center;
-}
-.countdown-number {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #ff4081;
-    text-shadow: 0 0 10px rgba(255,64,129,0.5);
-}
-.countdown-label {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.cta-button, .exams-button {
-    padding: 1rem 2rem;
-    font-size: 1.2rem;
-    background: #ff4081;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-    box-shadow: 0 4px 15px rgba(255,64,129,0.4);
-    animation: pulse 2s infinite;
-    margin-top: 1.5rem;
-}
-.cta-button:hover, .exams-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255,64,129,0.6);
-}
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-/* Styling for the upcoming exams section */
-#examsCountdownSection {
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('11920460.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 2rem;
-    margin-top: 2rem;
-    position: relative;
-}
+        #searchInput {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            font-size: 16px;
+            background: rgba(0,0,0,0.5);
+            color: var(--light-text);
+        }
 
-/* Add a pseudo-element for better text readability */
-#examsCountdownSection::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 0;
-}
+        .topic-filter {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-#examsCountdownSection h2 {
-    color: #ff4081;
-    margin-bottom: 1rem;
-    position: relative;
-    z-index: 1;
-}
-/* Grid container to show three exam items per row */
-#examsCountdownContainer {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-}
-.exam-countdown-item {
-    padding: 1rem;
-    background: rgba(255,255,255,0.1);
-    border-radius: 15px;
-}
-.exam-countdown-item h3 {
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-    color: #ff4081;
-}
-.exam-countdown-item p {
-    margin-bottom
-::contentReference[oaicite:0]{index=0}
- 
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,64,129,0.4);
+        }
+
+        .filter-btn.active {
+            background: #2c3e50;
+            box-shadow: 0 4px 15px rgba(44,62,80,0.4);
+        }
+
+        .question-card {
+            background: rgba(255,255,255,0.1);
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            transition: transform 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(255,64,129,0.2);
+        }
+
+        .question-topic {
+            font-size: 0.9em;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .answer {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-left: 4px solid var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .toggle-answer {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-answer:hover {
+            transform: scale(1.05);
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255,64,129,0.4);
+            z-index: 2;
+        }
+
+        @media print {
+            .answer {
+                display: block !important;
+            }
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-container">
+        <div class="glow-text">GEOGRAPHY GEOGRAPHY GEOGRAPHY</div>
+        <div class="glow-text" style="top:30%; animation-delay:-5s;">STUDY HARD STUDY HARD STUDY HARD</div>
+        <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1>📚 Geography Revision Hub</h1>
+            <p>IBDP Geography Questions & Answers</p>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search questions...">
+        </div>
+
+        <div class="topic-filter" id="topicFilter">
+            <!-- Topics will be populated by JavaScript -->
+        </div>
+
+        <div id="questionContainer">
+            <!-- Questions will be populated by JavaScript -->
+        </div>
+
+        <button class="print-btn" onclick="window.print()">Print All</button>
+    </div>
+
+    <script>
+        // Sample data - Replace with your actual data from Excel
+        const questions = [
+            {
+                topic: "Oceans and coastal margins",
+                question: "Outline one reason why hurricanes usually form over tropical oceans.",
+                year: 2024,
+                answer: "Warm ocean provides the energy for a storm to develop<br>• Coriolis effect / rotation of the Earth allows storms to spin in the tropics.",
+                paper: 1
+            },
+            // Add all other questions in this format
+        ];
+
+        // Initialize
+        function init() {
+            populateTopics();
+            displayQuestions(questions);
+            setupSearch();
+        }
+
+        // Populate topic filters
+        function populateTopics() {
+            const topics = [...new Set(questions.map(q => q.topic))];
+            const container = document.getElementById('topicFilter');
+            
+            // Add 'All' filter
+            const allButton = document.createElement('button');
+            allButton.className = 'filter-btn active';
+            allButton.textContent = 'All';
+            allButton.onclick = () => filterQuestions('all');
+            container.appendChild(allButton);
+
+            // Add topic filters
+            topics.forEach(topic => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.textContent = topic;
+                btn.onclick = () => filterQuestions(topic);
+                container.appendChild(btn);
+            });
+        }
+
+        // Display questions
+        function displayQuestions(questionsArray) {
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = '';
+
+            questionsArray.forEach(q => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.innerHTML = `
+                    <div class="question-header">
+                        <div>
+                            <h3>${q.question}</h3>
+                            <div class="question-topic">${q.topic}</div>
+                        </div>
+                        <span class="year">${q.year}</span>
+                    </div>
+                    <button class="toggle-answer" onclick="toggleAnswer(this)">Show Answer ▼</button>
+                    <div class="answer">${q.answer}</div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Filter questions by topic
+        function filterQuestions(topic) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const filtered = topic === 'all' 
+                ? questions 
+                : questions.filter(q => q.topic === topic);
+            
+            displayQuestions(filtered);
+        }
+
+        // Search functionality
+        function setupSearch() {
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = questions.filter(q => 
+                    q.question.toLowerCase().includes(searchTerm) ||
+                    q.answer.toLowerCase().includes(searchTerm)
+                );
+                displayQuestions(filtered);
+            });
+        }
+
+        // Toggle answer visibility
+        window.toggleAnswer = function(button) {
+            const answer = button.nextElementSibling;
+            answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            button.textContent = answer.style.display === 'block' ? 'Hide Answer ▲' : 'Show Answer ▼';
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
