@@ -54,20 +54,29 @@ animation: glowMove 20s linear infinite;
 }
 /* New keyframe for extra messages with smoother fade in/out */
 @keyframes glowMoveFade {
-0% {
-transform: translateX(-100%);
-opacity: 0;
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
-25% {
-opacity: 1;
-}
-75% {
-opacity: 1;
-}
-100% {
-transform: translateX(100%);
-opacity: 0;
-}
+
+/* Button container for equal spacing */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;         /* Equal space between buttons */
+  margin-top: 1rem;
 }
 
 /* Add to existing CSS */
@@ -109,17 +118,18 @@ display: none;
 
 /* Welcome (Animated) Page */
 .welcome {
-position: relative;
-z-index: 1;
-text-align: center;
-padding: 2rem;
-max-width: 800px;
-margin: 0 auto;
-min-height: 100vh; /* Full viewport height */
-display: flex; /* Added */
-flex-direction: column; /* Added */
-justify-content: center; /* Vertically center */
-align-items: center; /* Horizontally center */
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  height: 100vh;      /* Fixed viewport height */
+  overflow: hidden;   /* Hide any overflow to avoid double scroll */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .welcome h1 {
 font-size: 3.5rem;
@@ -394,19 +404,16 @@ document.querySelector('.glow-container').appendChild(newDiv);
 <!-- This paragraph will update with the next exam's date -->
 <p class="exam-date" id="mainExamDate">Next IB Exam: </p>
 
-<!-- Button to explore resources (opens the file browser) -->
-<a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
-<br>
-<!-- Button to view upcoming exams -->
-<a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a
-<br>
-<a href="#" class="cta-button" id="lockInButton">Lock In 🔒</a>
-<br>
-<a href="#" class="cta-button" id="geoButton">Geo</a>
+<div class="button-container">
+  <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
+  <a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a>
+  <a href="#" class="cta-button" id="lockInButton">Lock In 🔒</a>
+  <a href="#" class="cta-button" id="geoButton">Geo</a>
 </div>
 
+
 <!-- Upcoming Exams Section (hidden when exploring resources) -->
-<div id="examsCountdownSection">
+<div id="examsCountdownSection" class="hidden">
 <h2>Upcoming Exams</h2>
 <div id="examsCountdownContainer">
 <!-- Exam countdown items will be injected here via JavaScript -->
