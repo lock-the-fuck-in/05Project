@@ -148,6 +148,14 @@
       border-radius: 4px;
       margin-top: 5px;
     }
+    .syllabus {
+      margin-top: 10px;
+      font-size: 0.85em;
+      background: rgba(0,0,0,0.2);
+      padding: 8px;
+      border-left: 4px solid var(--secondary-color);
+      border-radius: 4px;
+    }
     .answer {
       display: none;
       margin-top: 15px;
@@ -224,6 +232,12 @@
           <!-- Topic filter buttons will be populated by JavaScript -->
         </div>
       </div>
+      <div class="filter-group">
+        <label for="syllabusSectionFilter">Syllabus</label>
+        <div id="syllabusSectionFilter">
+          <!-- Syllabus filter buttons will be populated by JavaScript -->
+        </div>
+      </div>
     </div>
     <div id="questionContainer">
       <!-- Questions will be populated by JavaScript -->
@@ -237,7 +251,9 @@
     //    paper: <paper number (1 or 2)>,
     //    topic: "<topic>",
     //    question: "<question text>",
-    //    answer: "<answer text with optional HTML for bullet points>"
+    //    answer: "<answer text with optional HTML for bullet points>",
+    //    syllabus: "<full syllabus reference text>",
+    //    syllabusSection: "<brief syllabus section (for filtering)>"
     // },
     const questions = [
       {
@@ -262,6 +278,7 @@
     let selectedYear = 'all';
     let selectedPaper = 'all';
     let selectedTopic = 'all';
+    let selectedSyllabus = 'all';
 
     function init() {
       populateFilters();
@@ -273,11 +290,14 @@
       populateFilter('year', questions.map(q => q.year));
       populateFilter('paper', questions.map(q => q.paper));
       populateFilter('topic', questions.map(q => q.topic));
+      populateFilter('syllabusSection', questions.map(q => q.syllabusSection));
     }
 
+    // This function creates filter buttons for a given filter type.
+    // For syllabus, we use the container with ID "syllabusSectionFilter".
     function populateFilter(filterType, items) {
       const uniqueItems = ['all', ...new Set(items)];
-      const container = document.getElementById(filterType + 'Filter');
+      const container = document.getElementById(filterType === 'syllabusSection' ? 'syllabusSectionFilter' : filterType + 'Filter');
       container.innerHTML = '';
       uniqueItems.forEach(item => {
         const btn = document.createElement('button');
@@ -287,6 +307,7 @@
           if (filterType === 'year') selectedYear = item;
           else if (filterType === 'paper') selectedPaper = item;
           else if (filterType === 'topic') selectedTopic = item;
+          else if (filterType === 'syllabusSection') selectedSyllabus = item;
           updateActiveFilters(filterType, item);
           filterAndDisplayQuestions();
         };
@@ -295,7 +316,8 @@
     }
 
     function updateActiveFilters(filterType, activeItem) {
-      const buttons = document.getElementById(filterType + 'Filter').querySelectorAll('button');
+      const containerID = filterType === 'syllabusSection' ? 'syllabusSectionFilter' : filterType + 'Filter';
+      const buttons = document.getElementById(containerID).querySelectorAll('button');
       buttons.forEach(btn => {
         if (btn.textContent === activeItem) btn.classList.add('active');
         else btn.classList.remove('active');
@@ -307,7 +329,8 @@
         const matchYear = (selectedYear === 'all' || q.year.toString() === selectedYear.toString());
         const matchPaper = (selectedPaper === 'all' || q.paper.toString() === selectedPaper.toString());
         const matchTopic = (selectedTopic === 'all' || q.topic === selectedTopic);
-        return matchYear && matchPaper && matchTopic;
+        const matchSyllabus = (selectedSyllabus === 'all' || q.syllabusSection === selectedSyllabus);
+        return matchYear && matchPaper && matchTopic && matchSyllabus;
       });
       displayQuestions(filtered);
     }
@@ -334,6 +357,10 @@
           </div>
           <button class="toggle-answer" onclick="toggleAnswer(this)">Show Answer ▼</button>
           <div class="answer">${q.answer}</div>
+          <div class="syllabus">
+            <strong>Syllabus Reference:</strong> ${q.syllabus}<br>
+            <em>Syllabus Section:</em> ${q.syllabusSection}
+          </div>
         `;
         container.appendChild(card);
       });
@@ -347,7 +374,9 @@
           q.answer.toLowerCase().includes(searchTerm) ||
           q.topic.toLowerCase().includes(searchTerm) ||
           q.year.toString().includes(searchTerm) ||
-          q.paper.toString().includes(searchTerm)
+          q.paper.toString().includes(searchTerm) ||
+          (q.syllabus && q.syllabus.toLowerCase().includes(searchTerm)) ||
+          (q.syllabusSection && q.syllabusSection.toLowerCase().includes(searchTerm))
         );
         displayQuestions(filtered);
       });
