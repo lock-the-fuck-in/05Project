@@ -124,8 +124,8 @@ display: none;
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
-  height: 100vh;      /* Fixed viewport height */
-  overflow: hidden;   /* Hide any overflow to avoid double scroll */
+ min-height: 100vh;  /* Ensures the section fills at least the viewport */
+  overflow-y: auto;   /* Enables scrolling if the content exceeds the viewport */
   display: flex;
   flex-direction: column;
   justify-content: center;
