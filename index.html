@@ -1,431 +1,396 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>05Project</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-<style>
-/* Ensure the html and body fill the viewport */
-html, body {
-height: 100%;
-width: 100%;
-}
-/* Base Reset & Typography */
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-body {
-background: #000;
-position: relative;
-color: #fff;
-/* Allow vertical scrolling if content overflows */
-overflow-y: auto;
-}
-/* Utility Classes for Visibility */
-.hidden { display: none; }
-.visible { display: block; }
+  <meta charset="UTF-8" />
+  <!-- Ensures mobile browsers scale properly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>05Project</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+  <style>
+    /* Ensure the html and body fill the viewport */
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-/* Background Glow Animation */
-.glow-container {
-position: absolute;
-width: 100%;
-height: 100%;
-overflow: hidden;
-z-index: 0;
-}
-.glow-text {
-position: absolute;
-font-size: 4rem;
-font-weight: bold;
-color: rgba(255, 255, 255, 0.1);
-white-space: nowrap;
-user-select: none;
-/* Default animation for the fixed messages */
-animation: glowMove 20s linear infinite;
-}
-/* Keyframe for the default fixed messages */
-@keyframes glowMove {
-0% { transform: translateX(-100%); }
-100% { transform: translateX(100%); }
-}
-/* New keyframe for extra messages with smoother fade in/out */
-@keyframes glowMoveFade {
-  0% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  25% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
+    /* Base Reset & Typography */
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #000;
+      position: relative;
+      color: #fff;
+      /* Let the entire page scroll if content overflows */
+      overflow-y: scroll; 
+      /* Optional: if you really want to hide scrollbars, comment out the next line */
+      scrollbar-width: auto; /* For Firefox, 'auto' shows a normal scrollbar */
+    }
 
-/* Button container for equal spacing */
-.button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;  /* space between buttons */
-  margin-top: 1rem;
-}
+    /* Utility Classes for Visibility */
+    .hidden { display: none; }
+    .visible { display: block; }
 
-/* Add to existing CSS */
-/*html {
-overflow: hidden;
-}*/
+    /* Background Glow Animation */
+    .glow-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .glow-text {
+      position: absolute;
+      /* Make the glow-text more responsive: clamp(min, preferred, max) */
+      font-size: clamp(2rem, 8vw, 4rem);
+      font-weight: bold;
+      color: rgba(255, 255, 255, 0.1);
+      white-space: nowrap;
+      user-select: none;
+      animation: glowMove 20s linear infinite;
+    }
+    @keyframes glowMove {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    @keyframes glowMoveFade {
+      0%   { transform: translateX(-100%); opacity: 0; }
+      25%  { opacity: 1; }
+      75%  { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
 
-body {
-overflow-y: auto;
-scrollbar-width: none; /* Firefox */
--ms-overflow-style: none;  /* IE/Edge */
-}
+    /* Button container */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
 
-body::-webkit-scrollbar {
-display: none; /* Chrome/Safari/Opera */
-}
+    /* Welcome (Animated) Page */
+    .welcome {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      /* Remove fixed height to allow the section to grow taller */
+      min-height: 100vh; 
+      /* Let the body do the scrolling (remove overflow-y here) */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .welcome h1 {
+      /* Make headings scale on small screens */
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .welcome p {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
 
-.welcome {
-height: 100vh; /* Changed from min-height */
-overflow-y: auto; /* Allows scrolling within welcome section */
-padding: 2rem;
-box-sizing: border-box;
-}
+    .countdown {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin: 2rem 0;
+      backdrop-filter: blur(5px);
+    }
+    .countdown-item {
+      display: inline-block;
+      margin: 0 1rem;
+      text-align: center;
+    }
+    .countdown-number {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      font-weight: bold;
+      color: #ff4081;
+      text-shadow: 0 0 10px rgba(255,64,129,0.5);
+    }
+    .countdown-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .cta-button, .exams-button {
+      padding: 1rem 2rem;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      background: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(255,64,129,0.4);
+      animation: pulse 2s infinite;
+      margin-top: 1.5rem;
+    }
+    .cta-button:hover, .exams-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255,64,129,0.6);
+    }
+    @keyframes pulse {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
 
-/* Hide scrollbar specifically in welcome section */
-.welcome::-webkit-scrollbar {
-display: none;
-}
+    /* Upcoming Exams Section */
+    #examsCountdownSection {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('11920460.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding: 2rem;
+      margin-top: 2rem;
+      position: relative;
+    }
+    #examsCountdownSection::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 0;
+    }
+    #examsCountdownSection h2 {
+      color: #ff4081;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+    }
+    #examsCountdownContainer {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .exam-countdown-item {
+      padding: 1rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+    }
+    .exam-countdown-item h3 {
+      margin-bottom: 0.5rem;
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      color: #ff4081;
+    }
+    .exam-countdown-item p {
+      margin-bottom: 0.5rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+    .exam-countdown-item .countdown span {
+      font-weight: bold;
+      margin: 0 0.3rem;
+    }
 
-.file-browser {
-overflow-y: auto; /* Already exists but add scrollbar hiding */
-scrollbar-width: none;
--ms-overflow-style: none;
-}
+    /* File Tree (Resources) Page */
+    .file-browser {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #111;
+      overflow-y: auto;
+      padding: 2rem;
+      z-index: 2;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .back-button {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: #ff4081;
+      text-decoration: none;
+      font-size: 1.1rem;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .back-button:hover {
+      border-color: #ff4081;
+    }
+    .file-browser h2 {
+      margin-bottom: 1.5rem;
+      color: #ff4081;
+      font-size: 2rem;
+      text-align: center;
+    }
+    .folder {
+      margin-bottom: 2rem;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 1rem;
+      background: #1a1a1a;
+    }
+    .folder-title {
+      font-size: 1.5rem;
+      color: #ff4081;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 0.5rem;
+    }
+    .file-list {
+      list-style: none;
+      padding-left: 1rem;
+    }
+    .file-item {
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+    }
+    .file-item a {
+      text-decoration: none;
+      color: #ccc;
+      transition: color 0.3s;
+    }
+    .file-item a:hover {
+      color: #ff4081;
+    }
+    .coursebook-folder {
+      background-color: green;
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    }
 
-.file-browser::-webkit-scrollbar {
-display: none;
-}
-
-/* Welcome (Animated) Page */
-.welcome {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
- min-height: 100vh;  /* Ensures the section fills at least the viewport */
-  overflow-y: auto;   /* Enables scrolling if the content exceeds the viewport */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.welcome h1 {
-font-size: 3.5rem;
-margin-bottom: 1rem;
-text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-.welcome p {
-font-size: 1.2rem;
-margin-bottom: 2rem;
-line-height: 1.6;
-}
-.countdown {
-background: rgba(255, 255, 255, 0.1);
-padding: 1.5rem;
-border-radius: 15px;
-margin: 2rem 0;
-backdrop-filter: blur(5px);
-}
-.countdown-item {
-display: inline-block;
-margin: 0 1rem;
-text-align: center;
-}
-.countdown-number {
-font-size: 2.5rem;
-font-weight: bold;
-color: #ff4081;
-text-shadow: 0 0 10px rgba(255,64,129,0.5);
-}
-.countdown-label {
-font-size: 0.9rem;
-text-transform: uppercase;
-letter-spacing: 1px;
-}
-.cta-button, .exams-button {
-padding: 1rem 2rem;
-font-size: 1.2rem;
-background: #ff4081;
-color: white;
-border: none;
-border-radius: 50px;
-cursor: pointer;
-transition: all 0.3s ease;
-text-decoration: none;
-display: inline-block;
-box-shadow: 0 4px 15px rgba(255,64,129,0.4);
-animation: pulse 2s infinite;
-margin-top: 1.5rem;
-}
-.cta-button:hover, .exams-button:hover {
-transform: translateY(-3px);
-box-shadow: 0 6px 20px rgba(255,64,129,0.6);
-}
-@keyframes pulse {
-0% { transform: scale(1); }
-50% { transform: scale(1.05); }
-100% { transform: scale(1); }
-}
-/* Styling for the upcoming exams section */
-#examsCountdownSection {
-background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('11920460.jpg');
-background-size: cover;
-background-position: center;
-background-repeat: no-repeat;
-padding: 2rem;
-margin-top: 2rem;
-position: relative;
-}
-
-/* Add a pseudo-element for better text readability */
-#examsCountdownSection::before {
-content: '';
-position: absolute;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background: rgba(0,0,0,0.5);
-z-index: 0;
-}
-
-#examsCountdownSection h2 {
-color: #ff4081;
-margin-bottom: 1rem;
-position: relative;
-z-index: 1;
-}
-/* Grid container to show three exam items per row */
-#examsCountdownContainer {
-display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 1rem;
-}
-.exam-countdown-item {
-padding: 1rem;
-background: rgba(255,255,255,0.1);
-border-radius: 15px;
-}
-.exam-countdown-item h3 {
-margin-bottom: 0.5rem;
-font-size: 1.2rem;
-color: #ff4081;
-}
-.exam-countdown-item p {
-margin-bottom: 0.5rem;
-}
-.exam-countdown-item .countdown span {
-font-weight: bold;
-margin: 0 0.3rem;
-}
-/* File Tree (Resources) Page */
-.file-browser {
-position: fixed; /* Always fills the viewport */
-top: 0;
-left: 0;
-width: 100vw;
-height: 100vh;
-background: #111;
-overflow-y: auto;
-padding: 2rem;
-z-index: 2;
-animation: fadeIn 0.5s ease-in-out;
-}
-@keyframes fadeIn {
-from { opacity: 0; }
-to { opacity: 1; }
-}
-.back-button {
-display: inline-block;
-margin-bottom: 1rem;
-color: #ff4081;
-text-decoration: none;
-font-size: 1.1rem;
-border-bottom: 1px solid transparent;
-transition: border-color 0.3s;
-}
-.back-button:hover {
-border-color: #ff4081;
-}
-.file-browser h2 {
-margin-bottom: 1.5rem;
-color: #ff4081;
-font-size: 2rem;
-text-align: center;
-}
-.folder {
-margin-bottom: 2rem;
-border: 1px solid #222;
-border-radius: 8px;
-padding: 1rem;
-background: #1a1a1a;
-}
-.folder-title {
-font-size: 1.5rem;
-color: #ff4081;
-margin-bottom: 0.5rem;
-border-bottom: 1px solid #333;
-padding-bottom: 0.5rem;
-}
-.file-list {
-list-style: none;
-padding-left: 1rem;
-}
-.file-item {
-margin-bottom: 0.8rem;
-font-size: 1.1rem;
-}
-.file-item a {
-text-decoration: none;
-color: #ccc;
-transition: color 0.3s;
-}
-.file-item a:hover {
-color: #ff4081;
-}
-/* Optional styling for a highlighted folder */
-.coursebook-folder {
-background-color: green;
-color: white;
-font-weight: bold;
-text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-}
-</style>
+    /* Media Queries for smaller screens */
+    @media (max-width: 768px) {
+      /* Make the exam countdown items one column */
+      #examsCountdownContainer {
+        grid-template-columns: 1fr; /* single column on smaller screens */
+      }
+    }
+  </style>
 </head>
 <body>
-<!-- Background Glow -->
-<div class="glow-container">
-<div class="glow-text">IB PHYSICS IB PHYSICS IB PHYSICS</div>
-<div class="glow-text" style="top:30%; animation-delay:-5s;">STUDY HARD STUDY HARD STUDY HARD</div>
-<div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
-</div>
+  <!-- Background Glow -->
+  <div class="glow-container">
+    <div class="glow-text">IB PHYSICS IB PHYSICS IB PHYSICS</div>
+    <div class="glow-text" style="top:30%; animation-delay:-5s;">STUDY HARD STUDY HARD STUDY HARD</div>
+    <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
+  </div>
 
-<!-- Updated Script for Extra Messages Without Overlap -->
-<script>
-// Increase the number of extra messages
-const extraMessages = [
-{ en: "NEVER STOP LEARNING",         es: "NUNCA DEJES DE APRENDER",         pl: "NIGDY NIE PRZESTAWAJ SIĘ UCZYĆ",           fa: "یادگیری را متوقف نکنید" },
-{ en: "BELIEVE IN YOURSELF",          es: "CREE EN TI MISMO",                 pl: "UWIERZ W SIEBIE",                           fa: "به خودت ایمان داشته باش" },
-{ en: "EMBRACE THE CHALLENGE",         es: "ABRAZA EL DESAFÍO",                pl: "PRZYJMIJ WYZWANIE",                         fa: "چالش را بپذیرید" },
-{ en: "ACHIEVE YOUR DREAMS",           es: "ALCANZA TUS SUEÑOS",               pl: "OSIĄGNIJ SWOJE MARZENIA",                   fa: "به رویاهای خود دست یاب" },
-{ en: "STAY CURIOUS, STAY INSPIRED",   es: "MANTENTE CURIOSO, MANTENTE INSPIRADO", pl: "POZOSTAŃ CIEKAWY, POZOSTAŃ ZAINSPIRUJANY",     fa: "کنجکاو بمان، الهام‌بخش بمان" },
-{ en: "KEEP MOVING FORWARD",           es: "SIGUE ADELANTE",                   pl: "IDŹ NAPRZÓD",                              fa: "به جلو حرکت کن" },
-{ en: "SUCCESS IS A JOURNEY",          es: "EL ÉXITO ES UN VIAJE",              pl: "SUKCES TO PODRÓŻ",                          fa: "موفقیت یک سفر است" },
-{ en: "YOUR POTENTIAL IS LIMITLESS",   es: "TU POTENCIAL ES ILIMITADO",         pl: "TWÓJ POTENCJAŁ JEST NIEOGRANICZONY",          fa: "پتانسیل شما بی‌حد و مرز است" },
-{ en: "STRIVE FOR EXCELLENCE",         es: "ESFUÉRZATE POR LA EXCELENCIA",       pl: "DĄŻ DO DOSKONAŁOŚCI",                       fa: "برای برتری تلاش کن" },
-{ en: "MAKE IT HAPPEN",                es: "HAZ QUE SUCEDA",                    pl: "SPRAW, ŻE SIĘ STAJE",                        fa: "به وقوع بپیوندد" }
-];
+  <!-- Updated Script for Extra Messages Without Overlap -->
+  <script>
+    // Increase the number of extra messages
+    const extraMessages = [
+      { en: "NEVER STOP LEARNING", es: "NUNCA DEJES DE APRENDER", pl: "NIGDY NIE PRZESTAWAJ SIĘ UCZYĆ", fa: "یادگیری را متوقف نکنید" },
+      { en: "BELIEVE IN YOURSELF", es: "CREE EN TI MISMO", pl: "UWIERZ W SIEBIE", fa: "به خودت ایمان داشته باش" },
+      { en: "EMBRACE THE CHALLENGE", es: "ABRAZA EL DESAFÍO", pl: "PRZYJMIJ WYZWANIE", fa: "چالش را بپذیرید" },
+      { en: "ACHIEVE YOUR DREAMS", es: "ALCANZA TUS SUEÑOS", pl: "OSIĄGNIJ SWOJE MARZENIA", fa: "به رویاهای خود دست یاب" },
+      { en: "STAY CURIOUS, STAY INSPIRED", es: "MANTENTE CURIOSO, MANTENTE INSPIRADO", pl: "POZOSTAŃ CIEKAWY, POZOSTAŃ ZAINSPIRUJANY", fa: "کنجکاو بمان، الهام‌بخش بمان" },
+      { en: "KEEP MOVING FORWARD", es: "SIGUE ADELANTE", pl: "IDŹ NAPRZÓD", fa: "به جلو حرکت کن" },
+      { en: "SUCCESS IS A JOURNEY", es: "EL ÉXITO ES UN VIAJE", pl: "SUKCES TO PODRÓŻ", fa: "موفقیت یک سفر است" },
+      { en: "YOUR POTENTIAL IS LIMITLESS", es: "TU POTENCIAL ES ILIMITADO", pl: "TWÓJ POTENCJAŁ JEST NIEOGRANICZONY", fa: "پتانسیل شما بی‌حد و مرز است" },
+      { en: "STRIVE FOR EXCELLENCE", es: "ESFUÉRZATE POR LA EXCELENCIA", pl: "DĄŻ DO DOSKONAŁOŚCI", fa: "برای برتری تلاش کن" },
+      { en: "MAKE IT HAPPEN", es: "HAZ QUE SUCEDA", pl: "SPRAW, ŻE SIĘ STAJE", fa: "به وقوع بپیوندد" }
+    ];
+    const languages = ["en", "es", "pl", "fa"];
+    const numMessages = extraMessages.length;
+    const slots = [];
+    // Spread between 5% and 95%
+    for (let i = 0; i < numMessages; i++) {
+      let slot = 5 + ((95 - 5) / (numMessages - 1)) * i;
+      slots.push(slot);
+    }
+    // Shuffle the slots
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+    shuffle(slots);
 
-// List of available languages
-const languages = ["en", "es", "pl", "fa"];
+    extraMessages.forEach((msg, index) => {
+      const randomLang = languages[Math.floor(Math.random() * languages.length)];
+      const newDiv = document.createElement('div');
+      newDiv.className = "glow-text";
+      newDiv.style.top = `${slots[index]}%`;
+      const randomDuration = Math.floor(Math.random() * 16) + 15; // between 15s and 30s
+      const randomDelay = -(Math.random() * randomDuration).toFixed(2);
+      newDiv.style.animation = `glowMoveFade ${randomDuration}s ease-in-out infinite`;
+      newDiv.style.animationDelay = `${randomDelay}s`;
+      newDiv.textContent = msg[randomLang];
+      document.querySelector('.glow-container').appendChild(newDiv);
+    });
+  </script>
 
-// Calculate evenly spaced vertical slots based on the number of messages
-const numMessages = extraMessages.length;
-const slots = [];
-// Spread between 5% and 95%
-for (let i = 0; i < numMessages; i++) {
-let slot = 5 + ((95 - 5) / (numMessages - 1)) * i;
-slots.push(slot);
-}
-// Shuffle the slots array so the order is random
-function shuffle(array) {
-for (let i = array.length - 1; i > 0; i--) {
-const j = Math.floor(Math.random() * (i + 1));
-[array[i], array[j]] = [array[j], array[i]];
-}
-}
-shuffle(slots);
+  <!-- Animated Welcome Page -->
+  <div class="welcome" id="welcomePage">
+    <h1>Time to lock-in... ⌚</h1>
+    <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
 
-// For each extra message, create a new glow-text element with random properties.
-extraMessages.forEach((msg, index) => {
-const randomLang = languages[Math.floor(Math.random() * languages.length)];
-const newDiv = document.createElement('div');
-newDiv.className = "glow-text";
-newDiv.style.top = `${slots[index]}%`;
-const randomDuration = Math.floor(Math.random() * 16) + 15; // between 15s and 30s
-const randomDelay = -(Math.random() * randomDuration).toFixed(2);
-newDiv.style.animation = `glowMoveFade ${randomDuration}s ease-in-out infinite`;
-newDiv.style.animationDelay = `${randomDelay}s`;
-newDiv.textContent = msg[randomLang];
-document.querySelector('.glow-container').appendChild(newDiv);
-});
-</script>
+    <!-- Main Countdown for the Next Upcoming Exam -->
+    <div class="countdown">
+      <div class="countdown-item">
+        <div class="countdown-number" id="months">00</div>
+        <div class="countdown-label">Months</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="days">00</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="hours">00</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="minutes">00</div>
+        <div class="countdown-label">Minutes</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="seconds">00</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
+    </div>
+    <p class="exam-date" id="mainExamDate">Next IB Exam: </p>
 
-<!-- Animated Welcome Page -->
-<div class="welcome" id="welcomePage">
-<h1>Time to lock-in... ⌚</h1>
-<p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
+    <div class="button-container">
+      <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
+      <a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a>
+      <a href="#" class="cta-button" id="lockInButton">Lock In 🔒</a>
+      <a href="#" class="cta-button" id="geoButton">Geo</a>
+    </div>
+  </div>
 
-<!-- Main Countdown for the Next Upcoming Exam -->
-<div class="countdown">
-<div class="countdown-item">
-<div class="countdown-number" id="months">00</div>
-<div class="countdown-label">Months</div>
-</div>
-<div class="countdown-item">
-<div class="countdown-number" id="days">00</div>
-<div class="countdown-label">Days</div>
-</div>
-<div class="countdown-item">
-<div class="countdown-number" id="hours">00</div>
-<div class="countdown-label">Hours</div>
-</div>
-<div class="countdown-item">
-<div class="countdown-number" id="minutes">00</div>
-<div class="countdown-label">Minutes</div>
-</div>
-<div class="countdown-item">
-<div class="countdown-number" id="seconds">00</div>
-<div class="countdown-label">Seconds</div>
-</div>
-</div>
-<!-- This paragraph will update with the next exam's date -->
-<p class="exam-date" id="mainExamDate">Next IB Exam: </p>
+  <!-- Upcoming Exams Section (hidden when exploring resources) -->
+  <div id="examsCountdownSection" class="hidden">
+    <h2>Upcoming Exams</h2>
+    <div id="examsCountdownContainer">
+      <!-- Exam countdown items injected via JS -->
+    </div>
+  </div>
 
-<div class="button-container">
-  <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
-  <a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a>
-  <a href="#" class="cta-button" id="lockInButton">Lock In 🔒</a>
-  <a href="#" class="cta-button" id="geoButton">Geo</a>
-</div>
+  <!-- File Browser Page -->
+  <div class="file-browser hidden" id="fileBrowser">
+    <a href="#" class="back-button" id="backButton">← Back to Welcome</a>
+    <h2>Resource Directory</h2>
 
-
-<!-- Upcoming Exams Section (hidden when exploring resources) -->
-<div id="examsCountdownSection" class="hidden">
-<h2>Upcoming Exams</h2>
-<div id="examsCountdownContainer">
-<!-- Exam countdown items will be injected here via JavaScript -->
-</div>
-</div>
-
-<!-- File Browser Page -->
-<div class="file-browser hidden" id="fileBrowser">
-<a href="#" class="back-button" id="backButton">← Back to Welcome</a>
-<h2>Resource Directory</h2>
-
-<!-- (Resource folders and content here) -->
+   <!-- (Resource folders and content here) -->
 <div class="folder coursebook-folder">
 <div class="folder-title"><i class="fas fa-folder-open"></i> Coursebook Answers</div>
 <ul class="file-list">
@@ -546,170 +511,166 @@ document.querySelector('.glow-container').appendChild(newDiv);
 </div>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
 
-/***** MAIN COUNTDOWN: Next Upcoming Exam *****/
-// Define the array of exams (must be in ascending order by date)
-const exams = [
-{ subject: 'PHYSICS SL', paper: 'P1', date: new Date('2025-04-29T00:00:00') },
-{ subject: 'PHYSICS SL', paper: 'P2', date: new Date('2025-04-30T00:00:00') },
-{ subject: 'ENGLISH A Language and Literature HL', paper: 'P1', date: new Date('2025-05-08T00:00:00') },
-{ subject: 'ENGLISH A Language and Literature HL', paper: 'P2', date: new Date('2025-05-09T00:00:00') },
-{ subject: 'GEOGRAPHY SL', paper: 'P1', date: new Date('2025-05-09T12:00:00') },
-{ subject: 'GEOGRAPHY SL', paper: 'P2', date: new Date('2025-05-12T00:00:00') },
-{ subject: 'ECONOMICS HL', paper: 'P2', date: new Date('2025-05-13T12:00:00') },
-{ subject: 'ECONOMICS HL', paper: 'P1', date: new Date('2025-05-14T00:00:00') },
-{ subject: 'ECONOMICS HL', paper: 'P3', date: new Date('2025-05-14T12:00:00') },
-{ subject: 'SPANISH B SL', paper: 'P1', date: new Date('2025-05-14T18:00:00') },
-{ subject: 'SPANISH B SL', paper: 'RE', date: new Date('2025-05-14T23:00:00') },
-{ subject: 'SPANISH B SL', paper: 'LI', date: new Date('2025-05-15T00:00:00') },
-{ subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P1', date: new Date('2025-05-15T12:00:00') },
-{ subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P2', date: new Date('2025-05-16T00:00:00') },
-{ subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P3', date: new Date('2025-05-21T00:00:00') }
-];
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      /***** MAIN COUNTDOWN: Next Upcoming Exam *****/
+      const exams = [
+        { subject: 'PHYSICS SL', paper: 'P1', date: new Date('2025-04-29T00:00:00') },
+        { subject: 'PHYSICS SL', paper: 'P2', date: new Date('2025-04-30T00:00:00') },
+        { subject: 'ENGLISH A Language and Literature HL', paper: 'P1', date: new Date('2025-05-08T00:00:00') },
+        { subject: 'ENGLISH A Language and Literature HL', paper: 'P2', date: new Date('2025-05-09T00:00:00') },
+        { subject: 'GEOGRAPHY SL', paper: 'P1', date: new Date('2025-05-09T12:00:00') },
+        { subject: 'GEOGRAPHY SL', paper: 'P2', date: new Date('2025-05-12T00:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P2', date: new Date('2025-05-13T12:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P1', date: new Date('2025-05-14T00:00:00') },
+        { subject: 'ECONOMICS HL', paper: 'P3', date: new Date('2025-05-14T12:00:00') },
+        { subject: 'SPANISH B SL', paper: 'P1', date: new Date('2025-05-14T18:00:00') },
+        { subject: 'SPANISH B SL', paper: 'RE', date: new Date('2025-05-14T23:00:00') },
+        { subject: 'SPANISH B SL', paper: 'LI', date: new Date('2025-05-15T00:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P1', date: new Date('2025-05-15T12:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P2', date: new Date('2025-05-16T00:00:00') },
+        { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P3', date: new Date('2025-05-21T00:00:00') }
+      ];
 
-let mainCountdownInterval = setInterval(updateMainCountdown, 1000);
-updateMainCountdown(); // initial call
+      let mainCountdownInterval = setInterval(updateMainCountdown, 1000);
+      updateMainCountdown();
 
-function updateMainCountdown() {
-const now = new Date().getTime();
-// Find the first exam whose date is in the future
-let nextExam = null;
-for (let i = 0; i < exams.length; i++) {
-if (exams[i].date.getTime() > now) {
-nextExam = exams[i];
-break;
-}
-}
-if (!nextExam) {
-// No upcoming exam – clear countdown
-clearInterval(mainCountdownInterval);
-document.getElementById('months').innerHTML = '0';
-document.getElementById('days').innerHTML = '0';
-document.getElementById('hours').innerHTML = '0';
-document.getElementById('minutes').innerHTML = '0';
-document.getElementById('seconds').innerHTML = '0';
-document.getElementById('mainExamDate').textContent = "No upcoming exam.";
-return;
-}
+      function updateMainCountdown() {
+        const now = new Date().getTime();
+        let nextExam = null;
+        for (let i = 0; i < exams.length; i++) {
+          if (exams[i].date.getTime() > now) {
+            nextExam = exams[i];
+            break;
+          }
+        }
+        if (!nextExam) {
+          clearInterval(mainCountdownInterval);
+          document.getElementById('months').textContent = '0';
+          document.getElementById('days').textContent = '0';
+          document.getElementById('hours').textContent = '0';
+          document.getElementById('minutes').textContent = '0';
+          document.getElementById('seconds').textContent = '0';
+          document.getElementById('mainExamDate').textContent = "No upcoming exam.";
+          return;
+        }
 
-const distance = nextExam.date.getTime() - now;
-const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
-const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        const distance = nextExam.date.getTime() - now;
+        const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
+        const days   = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+        const hours  = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes= Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds= Math.floor((distance % (1000 * 60)) / 1000);
 
-document.getElementById('months').innerHTML = months;
-document.getElementById('days').innerHTML = days;
-document.getElementById('hours').innerHTML = hours;
-document.getElementById('minutes').innerHTML = minutes;
-document.getElementById('seconds').innerHTML = seconds;
+        document.getElementById('months').textContent = months;
+        document.getElementById('days').textContent   = days;
+        document.getElementById('hours').textContent  = hours;
+        document.getElementById('minutes').textContent= minutes;
+        document.getElementById('seconds').textContent= seconds;
 
-document.getElementById('mainExamDate').textContent =
-"Next IB Exam: " + nextExam.date.toLocaleDateString() +
-" (" + nextExam.subject + " – " + nextExam.paper + ")";
-}
+        document.getElementById('mainExamDate').textContent =
+          "Next IB Exam: " + nextExam.date.toLocaleDateString() +
+          " (" + nextExam.subject + " – " + nextExam.paper + ")";
+      }
 
-/***** UPCOMING EXAMS COUNTDOWNS *****/
-const examsContainer = document.getElementById('examsCountdownContainer');
+      /***** UPCOMING EXAMS COUNTDOWNS *****/
+      const examsContainer = document.getElementById('examsCountdownContainer');
 
-// Create a countdown display for each exam.
-exams.forEach((exam, index) => {
-const examDiv = document.createElement('div');
-examDiv.className = 'exam-countdown-item';
-examDiv.innerHTML = `
-         <h3>Exam ${index + 1}: ${exam.subject} – ${exam.paper}</h3>
-         <p><strong>Date:</strong> ${exam.date.toLocaleDateString()}</p>
-         <div class="countdown">
-           <span id="examMonths${index}">00</span> Months 
-           <span id="examDays${index}">00</span> Days 
-           <span id="examHours${index}">00</span> Hours 
-           <span id="examMinutes${index}">00</span> Minutes 
-           <span id="examSeconds${index}">00</span> Seconds
-         </div>
-       `;
-examsContainer.appendChild(examDiv);
-});
+      // Create a countdown display for each exam
+      exams.forEach((exam, index) => {
+        const examDiv = document.createElement('div');
+        examDiv.className = 'exam-countdown-item';
+        examDiv.innerHTML = `
+          <h3>Exam ${index + 1}: ${exam.subject} – ${exam.paper}</h3>
+          <p><strong>Date:</strong> ${exam.date.toLocaleDateString()}</p>
+          <div class="countdown">
+            <span id="examMonths${index}">00</span> Months
+            <span id="examDays${index}">00</span> Days
+            <span id="examHours${index}">00</span> Hours
+            <span id="examMinutes${index}">00</span> Minutes
+            <span id="examSeconds${index}">00</span> Seconds
+          </div>
+        `;
+        examsContainer.appendChild(examDiv);
+      });
 
-function updateExamCountdowns() {
-const now = new Date().getTime();
-exams.forEach((exam, index) => {
-const distance = exam.date.getTime() - now;
-if (distance < 0) {
-document.getElementById(`examMonths${index}`).innerHTML = '0';
-document.getElementById(`examDays${index}`).innerHTML = '0';
-document.getElementById(`examHours${index}`).innerHTML = '0';
-document.getElementById(`examMinutes${index}`).innerHTML = '0';
-document.getElementById(`examSeconds${index}`).innerHTML = '0';
-return;
-}
-const months = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
-const days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
-const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      function updateExamCountdowns() {
+        const now = new Date().getTime();
+        exams.forEach((exam, index) => {
+          const distance = exam.date.getTime() - now;
+          if (distance < 0) {
+            document.getElementById(`examMonths${index}`).textContent = '0';
+            document.getElementById(`examDays${index}`).textContent   = '0';
+            document.getElementById(`examHours${index}`).textContent  = '0';
+            document.getElementById(`examMinutes${index}`).textContent= '0';
+            document.getElementById(`examSeconds${index}`).textContent= '0';
+            return;
+          }
+          const months  = Math.floor(distance / (1000 * 60 * 60 * 24 * 30));
+          const days    = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+          const hours   = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-document.getElementById(`examMonths${index}`).innerHTML = months;
-document.getElementById(`examDays${index}`).innerHTML = days;
-document.getElementById(`examHours${index}`).innerHTML = hours;
-document.getElementById(`examMinutes${index}`).innerHTML = minutes;
-document.getElementById(`examSeconds${index}`).innerHTML = seconds;
-});
-}
+          document.getElementById(`examMonths${index}`).textContent  = months;
+          document.getElementById(`examDays${index}`).textContent    = days;
+          document.getElementById(`examHours${index}`).textContent   = hours;
+          document.getElementById(`examMinutes${index}`).textContent = minutes;
+          document.getElementById(`examSeconds${index}`).textContent = seconds;
+        });
+      }
 
-setInterval(updateExamCountdowns, 1000);
-updateExamCountdowns();
+      setInterval(updateExamCountdowns, 1000);
+      updateExamCountdowns();
 
-/***** BUTTONS TO TOGGLE/SCROLL VIEWS *****/
-const exploreButton = document.getElementById('exploreButton');
-const examsButton = document.getElementById('examsButton');
-const backButton = document.getElementById('backButton');
-const welcomePage = document.getElementById('welcomePage');
-const fileBrowser = document.getElementById('fileBrowser');
-const examsSection = document.getElementById('examsCountdownSection');
-const lockInButton = document.getElementById('lockInButton');
+      /***** BUTTONS TO TOGGLE/SCROLL VIEWS *****/
+      const exploreButton = document.getElementById('exploreButton');
+      const examsButton   = document.getElementById('examsButton');
+      const backButton    = document.getElementById('backButton');
+      const welcomePage   = document.getElementById('welcomePage');
+      const fileBrowser   = document.getElementById('fileBrowser');
+      const examsSection  = document.getElementById('examsCountdownSection');
+      const lockInButton  = document.getElementById('lockInButton');
+      const geoButton     = document.getElementById('geoButton');
 
+      // "Explore Resources Now"
+      exploreButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        welcomePage.classList.add("hidden");
+        examsSection.classList.add("hidden");
+        fileBrowser.classList.remove("hidden");
+        fileBrowser.classList.add("visible");
+      });
 
-// When "Explore Resources Now" is clicked, hide the welcome page and upcoming exams section.
-exploreButton.addEventListener('click', function(e) {
-e.preventDefault();
-welcomePage.classList.add("hidden");
-examsSection.classList.add("hidden");
-fileBrowser.classList.remove("hidden");
-fileBrowser.classList.add("visible");
-});
+      // "View Upcoming Exams"
+      examsButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        examsSection.classList.remove("hidden");
+        examsSection.scrollIntoView({ behavior: 'smooth' });
+      });
 
-// When "View Upcoming Exams" is clicked, scroll to that section.
-examsButton.addEventListener('click', function(e) {
-e.preventDefault();
-examsSection.classList.remove("hidden");
-examsSection.scrollIntoView({ behavior: 'smooth' });
-});
+      // Back button
+      backButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        fileBrowser.classList.remove("visible");
+        fileBrowser.classList.add("hidden");
+        welcomePage.classList.remove("hidden");
+        examsSection.classList.remove("hidden");
+      });
 
-// Back button from file browser to welcome page.
-backButton.addEventListener('click', function(e) {
-e.preventDefault();
-fileBrowser.classList.remove("visible");
-fileBrowser.classList.add("hidden");
-welcomePage.classList.remove("hidden");
-examsSection.classList.remove("hidden");
-});
+      // "Lock In 🔒"
+      lockInButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = 'https://lock-the-fuck-in.github.io/lock-the-fuck-in/';
+      });
 
-lockInButton.addEventListener('click', function(e) {
-e.preventDefault();
-window.location.href = 'https://lock-the-fuck-in.github.io/lock-the-fuck-in/';
-});
-
- // Add the geoButton event listener here:
-  const geoButton = document.getElementById('geoButton');
-  geoButton.addEventListener('click', function(e) {
-    e.preventDefault();
-    window.location.href = 'geo.html';
-  });
-
-});
-</script>
+      // "Geo"
+      geoButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.location.href = 'geo.html';
+      });
+    });
+  </script>
 </body>
 </html>
