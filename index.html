@@ -11,31 +11,45 @@
   />
   <style>
 
+/* Hide scrollbar for the entire page in WebKit browsers */
 body::-webkit-scrollbar {
   display: none;
 }
-    /* Ensure the html and body fill the viewport */
-    html, body {
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-    }
 
-    /* Base Reset & Typography */
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    body {
-      background: #000;
-      position: relative;
-      color: #fff;
-      /* Let the entire page scroll if content overflows */
-      overflow-y: scroll;
-    -ms-overflow-style: none;  /* For IE and Edge */
-    scrollbar-width: none;    
-    }
+/* Hide scrollbar for the file-browser overlay in WebKit browsers */
+.file-browser::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure the html and body fill the viewport */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base Reset & Typography */
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Hide scrollbar for body in IE/Edge/Firefox, but allow scrolling */
+body {
+  background: #000;
+  position: relative;
+  color: #fff;
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+/* Hide scrollbar for .file-browser in IE/Edge/Firefox, but allow scrolling */
+.file-browser {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;    /* Firefox */
+}
     
 
     /* Utility Classes for Visibility */
