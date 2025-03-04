@@ -12,6 +12,15 @@
       --dark-bg: #000;
       --light-text: #fff;
     }
+     /* Hide scrollbars for WebKit browsers (Chrome, iOS Safari) */
+    body::-webkit-scrollbar {
+      display: none;
+    }
+    /* Hide scrollbar for Firefox and IE/Edge */
+    html {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
     * {
       margin: 0;
       padding: 0;
@@ -294,7 +303,7 @@
   </div>
   
   <script>
-    /***** Cookie Helper Functions *****/
+ /***** Cookie Helper Functions *****/
     function setCookie(name, value, days) {
       const d = new Date();
       d.setTime(d.getTime() + (days*24*60*60*1000));
@@ -319,6 +328,7 @@
     }
 
     /***** Login Logic *****/
+    // Valid accounts – note: for demonstration only
     const validAccounts = {
       "Admin": "YouFoundMe!",
       "Amaya": "AmayaIsStupid"
@@ -330,9 +340,8 @@
     const loginError = document.getElementById("loginError");
 
     // Check if a valid login cookie exists
-    const storedUser = getCookie("loggedInUser");
+    let storedUser = getCookie("loggedInUser");
     if (storedUser && validAccounts[storedUser]) {
-      // Auto-login if cookie exists
       loginOverlay.style.display = "none";
       mainContent.style.display = "block";
     }
@@ -341,18 +350,18 @@
       const enteredUsername = document.getElementById("username").value;
       const enteredPassword = document.getElementById("password").value;
       
-      // Validate credentials for either account
       if (validAccounts[enteredUsername] && validAccounts[enteredUsername] === enteredPassword) {
-        const storedUser = getCookie("loggedInUser");
-        // If a different user is already logged in, log out both
+        storedUser = getCookie("loggedInUser");
+        // If a different user is already logged in on this device, enforce logout
         if (storedUser && storedUser !== enteredUsername) {
           deleteCookie("loggedInUser");
           loginError.style.display = "block";
           loginError.textContent = "Simultaneous login detected. Logging out.";
-          // Optionally reload after a delay
           setTimeout(() => location.reload(), 2000);
         } else {
-          // Successful login; store the username as a cookie for 7 days
+          // For demonstration, we assume a user already logged in on another device cannot be detected,
+          // because cookies are stored per device. To enforce cross-device single sessions, a server-side
+          // solution is required.
           setCookie("loggedInUser", enteredUsername, 7);
           loginOverlay.style.display = "none";
           mainContent.style.display = "block";
@@ -367,7 +376,7 @@
       e.preventDefault();
     });
     document.onkeydown = function(e) {
-      // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+      // Block F12, Ctrl+Shift+I/J, Ctrl+U
       if (e.keyCode === 123 || 
           (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
           (e.ctrlKey && e.keyCode === 85)) {
