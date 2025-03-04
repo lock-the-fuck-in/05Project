@@ -10,47 +10,73 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
   />
   <style>
+    /* Hide scrollbar for the entire page in WebKit browsers */
+    body::-webkit-scrollbar {
+      display: none;
+    }
 
-/* Hide scrollbar for the entire page in WebKit browsers */
-body::-webkit-scrollbar {
-  display: none;
-}
+    /* Hide scrollbar for the file-browser overlay in WebKit browsers */
+    .file-browser::-webkit-scrollbar {
+      display: none;
+    }
 
-/* Hide scrollbar for the file-browser overlay in WebKit browsers */
-.file-browser::-webkit-scrollbar {
-  display: none;
-}
+    /* Ensure the html and body fill the viewport */
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-/* Ensure the html and body fill the viewport */
-html, body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
+    /* Base Reset & Typography */
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-/* Base Reset & Typography */
-* {
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+    /* Hide scrollbar for body in IE/Edge/Firefox, but allow scrolling */
+    body {
+      background: #000;
+      position: relative;
+      color: #fff;
+      overflow-y: scroll;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none;    /* Firefox */
+    }
 
-/* Hide scrollbar for body in IE/Edge/Firefox, but allow scrolling */
-body {
-  background: #000;
-  position: relative;
-  color: #fff;
-  overflow-y: scroll;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none;    /* Firefox */
-}
-
-/* Hide scrollbar for .file-browser in IE/Edge/Firefox, but allow scrolling */
-.file-browser {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none;    /* Firefox */
-}
+    /* Hide scrollbar for .file-browser in IE/Edge/Firefox, but allow scrolling */
+    .file-browser {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none;    /* Firefox */
+    }
     
+    /* Header Label: Fixed at top left */
+    #header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding: 10px 20px;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.5);
+    }
+    #header a {
+      color: #ff4081;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    /* Footer: Fixed at bottom */
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 0;
+      z-index: 10;
+    }
 
     /* Utility Classes for Visibility */
     .hidden { display: none; }
@@ -305,6 +331,11 @@ body {
   </style>
 </head>
 <body>
+  <!-- Header Label -->
+  <div id="header">
+    <a href="index.html">Main Page</a>
+  </div>
+
   <!-- Background Glow -->
   <div class="glow-container">
     <div class="glow-text">IB PHYSICS IB PHYSICS IB PHYSICS</div>
@@ -409,127 +440,126 @@ body {
     <a href="#" class="back-button" id="backButton">← Back to Welcome</a>
     <h2>Resource Directory</h2>
 
-   <!-- (Resource folders and content here) -->
-<div class="folder coursebook-folder">
-<div class="folder-title"><i class="fas fa-folder-open"></i> Coursebook Answers</div>
-<ul class="file-list">
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/Coursebook answers.pdf">
-<i class="fas fa-file-pdf"></i> Coursebook Answers
-</a>
-</li>
-</ul>
-</div>
-<!-- (Other folders go here) -->
-<!-- Main Workbook -->
-<div class="folder">
-<div class="folder-title"><i class="fas fa-folder-open"></i> Main Workbook</div>
-<ul class="file-list">
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Physics%20-%20WORKBOOK%20-%20K.A.%20Tsokos%20-%20Seventh%20Edition%20-%20Cambridge%202023%20(Digital%20Edition).pdf">
-<i class="fas fa-file-pdf"></i> Physics Workbook
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/Workbook%20answers.pdf">
-<i class="fas fa-file-pdf"></i> Workbook Answers
-</a>
-</li>
-</ul>
-</div>
+    <!-- (Resource folders and content here) -->
+    <div class="folder coursebook-folder">
+      <div class="folder-title"><i class="fas fa-folder-open"></i> Coursebook Answers</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/Coursebook answers.pdf">
+            <i class="fas fa-file-pdf"></i> Coursebook Answers
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- (Other folders go here) -->
+    <!-- Main Workbook -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open"></i> Main Workbook</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Physics%20-%20WORKBOOK%20-%20K.A.%20Tsokos%20-%20Seventh%20Edition%20-%20Cambridge%202023%20(Digital%20Edition).pdf">
+            <i class="fas fa-file-pdf"></i> Physics Workbook
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/Workbook%20answers.pdf">
+            <i class="fas fa-file-pdf"></i> Workbook Answers
+          </a>
+        </li>
+      </ul>
+    </div>
 
-<!-- Answers for Multiple Choice Questions -->
-<div class="folder">
-<div class="folder-title"><i class="fas fa-folder-open"></i> Answers for Multiple Choice Questions</div>
-<ul class="file-list">
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf">
-<i class="fas fa-file-pdf"></i> Answers For Topic Zero
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_A.pdf">
-<i class="fas fa-file-pdf"></i> Answers For Topic A
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_B.pdf">
-<i class="fas fa-file-pdf"></i> Answers For Topic B
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_C.pdf">
-<i class="fas fa-file-pdf"></i> Answers For Topic C
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf">
-<i class="fas fa-file-pdf"></i> Answers For Topic D
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf">
-<i class="fas fa-file-pdf"></i> Answers For Topic E
-</a>
-</li>
-</ul>
-</div>
+    <!-- Answers for Multiple Choice Questions -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open"></i> Answers for Multiple Choice Questions</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf">
+            <i class="fas fa-file-pdf"></i> Answers For Topic Zero
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_A.pdf">
+            <i class="fas fa-file-pdf"></i> Answers For Topic A
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_B.pdf">
+            <i class="fas fa-file-pdf"></i> Answers For Topic B
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_C.pdf">
+            <i class="fas fa-file-pdf"></i> Answers For Topic C
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf">
+            <i class="fas fa-file-pdf"></i> Answers For Topic D
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf">
+            <i class="fas fa-file-pdf"></i> Answers For Topic E
+          </a>
+        </li>
+      </ul>
+    </div>
 
-<!-- Specimen Papers -->
-<div class="folder">
-<div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers</div>
-<ul class="file-list">
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_HL.pdf">
-<i class="fas fa-file-pdf"></i> Specimen HL PP1
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_SL.pdf">
-<i class="fas fa-file-pdf"></i> Specimen SL PP1
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_HL.pdf">
-<i class="fas fa-file-pdf"></i> Specimen HL PP2
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_SL.pdf">
-<i class="fas fa-file-pdf"></i> Specimen SL PP2
-</a>
-</li>
-</ul>
-</div>
+    <!-- Specimen Papers -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_HL.pdf">
+            <i class="fas fa-file-pdf"></i> Specimen HL PP1
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_SL.pdf">
+            <i class="fas fa-file-pdf"></i> Specimen SL PP1
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_HL.pdf">
+            <i class="fas fa-file-pdf"></i> Specimen HL PP2
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_SL.pdf">
+            <i class="fas fa-file-pdf"></i> Specimen SL PP2
+          </a>
+        </li>
+      </ul>
+    </div>
 
-<!-- Specimen Papers Answers -->
-<div class="folder">
-<div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers Answers</div>
-<ul class="file-list">
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/P1 HL.pdf">
-<i class="fas fa-file-pdf"></i> Specimen HL PP1
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/P1 SL.pdf">
-<i class="fas fa-file-pdf"></i> Specimen SL PP1
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/P2 HL.pdf">
-<i class="fas fa-file-pdf"></i> Specimen HL PP2
-</a>
-</li>
-<li class="file-item">
-<a href="ib_phys_dc_all_files/Answers/P2 SL.pdf">
-<i class="fas fa-file-pdf"></i> Specimen SL PP2
-</a>
-</li>
-</ul>
-</div>
-</div>
-
+    <!-- Specimen Papers Answers -->
+    <div class="folder">
+      <div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers Answers</div>
+      <ul class="file-list">
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/P1 HL.pdf">
+            <i class="fas fa-file-pdf"></i> Specimen HL PP1
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/P1 SL.pdf">
+            <i class="fas fa-file-pdf"></i> Specimen SL PP1
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/P2 HL.pdf">
+            <i class="fas fa-file-pdf"></i> Specimen HL PP2
+          </a>
+        </li>
+        <li class="file-item">
+          <a href="ib_phys_dc_all_files/Answers/P2 SL.pdf">
+            <i class="fas fa-file-pdf"></i> Specimen SL PP2
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -691,5 +721,10 @@ body {
       });
     });
   </script>
+  
+  <!-- Footer -->
+  <footer>
+    Created by: Max Gum
+  </footer>
 </body>
 </html>
