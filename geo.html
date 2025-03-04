@@ -200,6 +200,17 @@
   </style>
 </head>
 <body>
+
+<div id="loginOverlay">
+    <h2 style="color: var(--light-text); margin-bottom: 20px;">Please Login</h2>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button id="loginBtn">Login</button>
+    <p id="loginError" style="display:none;">Incorrect credentials. Try again.</p>
+  </div>
+
+  <!-- Main content (hidden until login) -->
+  <div id="mainContent">
   <div class="glow-container">
     <div class="glow-text" style="top:10%;">GEOGRAPHY GEOGRAPHY GEOGRAPHY</div>
     <div class="glow-text" style="top:40%; animation-delay:-5s;">STUDY HARD, SUCCEED HARD</div>
