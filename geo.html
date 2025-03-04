@@ -294,31 +294,80 @@
   </div>
   
   <script>
-     // Client-side login (not secure – for demonstration only)
-    const correctUsername = "Admin";
-    const correctPassword = "YouFoundMe!";
+    /***** Cookie Helper Functions *****/
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days*24*60*60*1000));
+      document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+    }
+
+    function getCookie(name) {
+      const cname = name + "=";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const ca = decodedCookie.split(';');
+      for(let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(cname) === 0) {
+          return c.substring(cname.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    function deleteCookie(name) {
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+    }
+
+    /***** Login Logic *****/
+    const validAccounts = {
+      "Admin": "YouFoundMe!",
+      "Amaya": "AmayaIsStupid"
+    };
+
     const loginOverlay = document.getElementById("loginOverlay");
     const mainContent = document.getElementById("mainContent");
     const loginBtn = document.getElementById("loginBtn");
     const loginError = document.getElementById("loginError");
 
+    // Check if a valid login cookie exists
+    const storedUser = getCookie("loggedInUser");
+    if (storedUser && validAccounts[storedUser]) {
+      // Auto-login if cookie exists
+      loginOverlay.style.display = "none";
+      mainContent.style.display = "block";
+    }
+
     loginBtn.addEventListener("click", function() {
       const enteredUsername = document.getElementById("username").value;
       const enteredPassword = document.getElementById("password").value;
-      if (enteredUsername === correctUsername && enteredPassword === correctPassword) {
-        loginOverlay.style.display = "none";
-        mainContent.style.display = "block";
+      
+      // Validate credentials for either account
+      if (validAccounts[enteredUsername] && validAccounts[enteredUsername] === enteredPassword) {
+        const storedUser = getCookie("loggedInUser");
+        // If a different user is already logged in, log out both
+        if (storedUser && storedUser !== enteredUsername) {
+          deleteCookie("loggedInUser");
+          loginError.style.display = "block";
+          loginError.textContent = "Simultaneous login detected. Logging out.";
+          // Optionally reload after a delay
+          setTimeout(() => location.reload(), 2000);
+        } else {
+          // Successful login; store the username as a cookie for 7 days
+          setCookie("loggedInUser", enteredUsername, 7);
+          loginOverlay.style.display = "none";
+          mainContent.style.display = "block";
+        }
       } else {
         loginError.style.display = "block";
       }
     });
 
-    // Attempt to disable common developer tools shortcuts (can be bypassed)
+    /***** Attempt to disable common developer tool shortcuts (not foolproof) *****/
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     });
     document.onkeydown = function(e) {
-      // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+      // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
       if (e.keyCode === 123 || 
           (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
           (e.ctrlKey && e.keyCode === 85)) {
