@@ -29,6 +29,42 @@
       position: relative;
       overflow-y: auto;
     }
+    /* Login overlay styles */
+    #loginOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--dark-bg);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #loginOverlay input {
+      padding: 10px;
+      margin: 10px;
+      width: 250px;
+      font-size: 1rem;
+    }
+    #loginOverlay button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: var(--primary-color);
+      color: var(--light-text);
+      border: none;
+      cursor: pointer;
+    }
+    #loginOverlay p {
+      color: red;
+      margin-top: 10px;
+    }
+    /* Main content hidden until login */
+    #mainContent {
+      display: none;
+    }
     .glow-container {
       position: fixed;
       width: 100%;
@@ -200,8 +236,8 @@
   </style>
 </head>
 <body>
-
-<div id="loginOverlay">
+  <!-- Login Overlay -->
+  <div id="loginOverlay">
     <h2 style="color: var(--light-text); margin-bottom: 20px;">Please Login</h2>
     <input type="text" id="username" placeholder="Username" />
     <input type="password" id="password" placeholder="Password" />
@@ -255,7 +291,40 @@
     </div>
     <button class="print-btn" onclick="window.print()">Print All</button>
   </div>
+  </div>
+  
   <script>
+     // Client-side login (not secure – for demonstration only)
+    const correctUsername = "Admin";
+    const correctPassword = "YouFoundMe!";
+    const loginOverlay = document.getElementById("loginOverlay");
+    const mainContent = document.getElementById("mainContent");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginError = document.getElementById("loginError");
+
+    loginBtn.addEventListener("click", function() {
+      const enteredUsername = document.getElementById("username").value;
+      const enteredPassword = document.getElementById("password").value;
+      if (enteredUsername === correctUsername && enteredPassword === correctPassword) {
+        loginOverlay.style.display = "none";
+        mainContent.style.display = "block";
+      } else {
+        loginError.style.display = "block";
+      }
+    });
+
+    // Attempt to disable common developer tools shortcuts (can be bypassed)
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    });
+    document.onkeydown = function(e) {
+      // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+      if (e.keyCode === 123 || 
+          (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
+          (e.ctrlKey && e.keyCode === 85)) {
+        return false;
+      }
+    };
     // Template for adding new questions:
     // {
     //    year: <year>,
@@ -580,8 +649,8 @@
       }
     }
 
-    // Initialize on page load
-    init();
+   // Initialize after login
+    window.addEventListener("load", init);
   </script>
 </body>
 </html>
