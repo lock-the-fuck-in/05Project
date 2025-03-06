@@ -112,17 +112,19 @@
       margin-top: 1rem;
     }
     .welcome {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 2rem;
-      max-width: 800px;
-      margin: 0 auto;
-      min-height: 100vh; 
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+       position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: constant(safe-area-inset-bottom); /* for older iOS versions */
+  padding-bottom: env(safe-area-inset-bottom);      /* for modern iOS */
     }
     .welcome h1 {
       font-size: clamp(2rem, 5vw, 3.5rem);
