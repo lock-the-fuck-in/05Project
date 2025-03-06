@@ -12,7 +12,7 @@
       --dark-bg: #000;
       --light-text: #fff;
     }
-     /* Hide scrollbars for WebKit browsers (Chrome, iOS Safari) */
+    /* Hide scrollbars for WebKit browsers (Chrome, iOS Safari) */
     body::-webkit-scrollbar {
       display: none;
     }
@@ -80,6 +80,7 @@
       height: 100%;
       overflow: hidden;
       z-index: 0;
+      pointer-events: none; /* Allow scrolling on margins */
     }
     .glow-text {
       position: absolute;
@@ -209,7 +210,7 @@
       border-left: 4px solid var(--primary-color);
       border-radius: 4px;
     }
-    .toggle-answer {
+    .toggle-answer, .toggle-syllabus {
       background: none;
       border: none;
       color: var(--primary-color);
@@ -218,7 +219,7 @@
       transition: all 0.3s ease;
       margin-top: 10px;
     }
-    .toggle-answer:hover {
+    .toggle-answer:hover, .toggle-syllabus:hover {
       transform: scale(1.05);
     }
     .print-btn {
@@ -256,54 +257,54 @@
 
   <!-- Main content (hidden until login) -->
   <div id="mainContent">
-  <div class="glow-container">
-    <div class="glow-text" style="top:10%;">GEOGRAPHY GEOGRAPHY GEOGRAPHY</div>
-    <div class="glow-text" style="top:40%; animation-delay:-5s;">STUDY HARD, SUCCEED HARD</div>
-    <div class="glow-text" style="top:70%; animation-delay:-10s;">KNOWLEDGE IS POWER</div>
-  </div>
-  <div class="container">
-    <header class="header">
-      <h1>📚 Geography Revision Hub</h1>
-      <p>IBDP Geography Questions & Answers</p>
-    </header>
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search questions...">
+    <div class="glow-container">
+      <div class="glow-text" style="top:10%;">GEOGRAPHY GEOGRAPHY GEOGRAPHY</div>
+      <div class="glow-text" style="top:40%; animation-delay:-5s;">STUDY HARD, SUCCEED HARD</div>
+      <div class="glow-text" style="top:70%; animation-delay:-10s;">KNOWLEDGE IS POWER</div>
     </div>
-    <div class="filters">
-      <div class="filter-group">
-        <label for="yearFilter">Year</label>
-        <div id="yearFilter">
-          <!-- Year filter buttons will be populated by JavaScript -->
+    <div class="container">
+      <header class="header">
+        <h1>📚 Geography Revision Hub</h1>
+        <p>IBDP Geography Questions & Answers</p>
+      </header>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search questions...">
+      </div>
+      <div class="filters">
+        <div class="filter-group">
+          <label for="yearFilter">Year</label>
+          <div id="yearFilter">
+            <!-- Year filter buttons will be populated by JavaScript -->
+          </div>
+        </div>
+        <div class="filter-group">
+          <label for="paperFilter">Paper</label>
+          <div id="paperFilter">
+            <!-- Paper filter buttons will be populated by JavaScript -->
+          </div>
+        </div>
+        <div class="filter-group">
+          <label for="topicFilter">Topic</label>
+          <div id="topicFilter">
+            <!-- Topic filter buttons will be populated by JavaScript -->
+          </div>
+        </div>
+        <div class="filter-group">
+          <label for="syllabusSectionFilter">Syllabus</label>
+          <div id="syllabusSectionFilter">
+            <!-- Syllabus filter buttons will be populated by JavaScript -->
+          </div>
         </div>
       </div>
-      <div class="filter-group">
-        <label for="paperFilter">Paper</label>
-        <div id="paperFilter">
-          <!-- Paper filter buttons will be populated by JavaScript -->
-        </div>
+      <div id="questionContainer">
+        <!-- Questions will be populated by JavaScript -->
       </div>
-      <div class="filter-group">
-        <label for="topicFilter">Topic</label>
-        <div id="topicFilter">
-          <!-- Topic filter buttons will be populated by JavaScript -->
-        </div>
-      </div>
-      <div class="filter-group">
-        <label for="syllabusSectionFilter">Syllabus</label>
-        <div id="syllabusSectionFilter">
-          <!-- Syllabus filter buttons will be populated by JavaScript -->
-        </div>
-      </div>
+      <button class="print-btn" onclick="window.print()">Print All</button>
     </div>
-    <div id="questionContainer">
-      <!-- Questions will be populated by JavaScript -->
-    </div>
-    <button class="print-btn" onclick="window.print()">Print All</button>
-  </div>
   </div>
   
   <script>
- /***** Cookie Helper Functions *****/
+    /***** Cookie Helper Functions *****/
     function setCookie(name, value, days) {
       const d = new Date();
       d.setTime(d.getTime() + (days*24*60*60*1000));
@@ -359,9 +360,6 @@
           loginError.textContent = "Simultaneous login detected. Logging out.";
           setTimeout(() => location.reload(), 2000);
         } else {
-          // For demonstration, we assume a user already logged in on another device cannot be detected,
-          // because cookies are stored per device. To enforce cross-device single sessions, a server-side
-          // solution is required.
           setCookie("loggedInUser", enteredUsername, 7);
           loginOverlay.style.display = "none";
           mainContent.style.display = "block";
@@ -633,7 +631,7 @@
 ];
 
 
-    // Global filters
+     // Global filters
     let selectedYear = 'all';
     let selectedPaper = 'all';
     let selectedTopic = 'all';
@@ -653,7 +651,6 @@
     }
 
     // This function creates filter buttons for a given filter type.
-    // For syllabus, we use the container with ID "syllabusSectionFilter".
     function populateFilter(filterType, items) {
       const uniqueItems = ['all', ...new Set(items)];
       const container = document.getElementById(filterType === 'syllabusSection' ? 'syllabusSectionFilter' : filterType + 'Filter');
@@ -716,7 +713,8 @@
           </div>
           <button class="toggle-answer" onclick="toggleAnswer(this)">Show Answer ▼</button>
           <div class="answer">${q.answer}</div>
-          <div class="syllabus">
+          <button class="toggle-syllabus" onclick="toggleSyllabus(this)">Show Syllabus Reference ▼</button>
+          <div class="syllabus" style="display: none;">
             <strong>Syllabus Reference:</strong> ${q.syllabus}<br>
             <em>Syllabus Section:</em> ${q.syllabusSection}
           </div>
@@ -752,7 +750,18 @@
       }
     }
 
-   // Initialize after login
+    window.toggleSyllabus = function(button) {
+      const syllabusDiv = button.nextElementSibling;
+      if (syllabusDiv.style.display === 'block') {
+        syllabusDiv.style.display = 'none';
+        button.textContent = 'Show Syllabus Reference ▼';
+      } else {
+        syllabusDiv.style.display = 'block';
+        button.textContent = 'Hide Syllabus Reference ▲';
+      }
+    }
+
+    // Initialize after login
     window.addEventListener("load", init);
   </script>
 </body>
