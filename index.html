@@ -36,8 +36,9 @@
 
     /* --- Scrollable Wrapper for All Main Content --- */
     .scroll-wrapper {
-      height: 100vh;
-      overflow-y: scroll;
+      height: calc(100vh - env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow-y: scroll;
     }
 
     /* --- Hidden Header & Footer Styling --- */
