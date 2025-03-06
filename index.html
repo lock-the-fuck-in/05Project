@@ -10,17 +10,16 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
   />
   <style>
-    /* Hide scrollbar for the entire page in WebKit browsers */
+    /* --- Scrollbar Hiding Styles --- */
+    /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
     body::-webkit-scrollbar {
       display: none;
     }
-
-    /* Hide scrollbar for the file-browser overlay in WebKit browsers */
+    /* Hide scrollbar for .file-browser overlay in WebKit browsers */
     .file-browser::-webkit-scrollbar {
       display: none;
     }
-
-    /* Ensure the html and body fill the viewport */
+    /* Ensure html and body fill the viewport */
     html, body {
       height: 100%;
       width: 100%;
@@ -50,32 +49,45 @@
       scrollbar-width: none;    /* Firefox */
     }
     
-    /* Header Label: Fixed at top left */
+    /* --- Fun Header Styling --- */
     #header {
       position: fixed;
       top: 0;
       left: 0;
-      padding: 10px 20px;
+      padding: 15px 25px;
       z-index: 10;
-      background: rgba(0, 0, 0, 0.5);
+      background: linear-gradient(135deg, #ff4081, #ff80ab);
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     }
     #header a {
-      color: #ff4081;
+      color: #fff;
       text-decoration: none;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: bold;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
     }
 
-    /* Footer: Fixed at bottom */
+    /* --- Fun Footer Styling --- */
     footer {
       position: fixed;
       bottom: 0;
       width: 100%;
       text-align: center;
       color: #fff;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 10px 0;
+      background: linear-gradient(135deg, #ff80ab, #ff4081);
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+      padding: 15px 0;
       z-index: 10;
+      font-size: 1.2rem;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+    
+    /* --- Additional Fun Hover Effects --- */
+    #header:hover, footer:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
     }
 
     /* Utility Classes for Visibility */
@@ -722,9 +734,8 @@
     });
   </script>
   
-  <!-- Footer -->
-  <footer>
-    Created by: Max Gum
+ <footer>
+    &copy; 2025 05Project | Stay Cool & Keep Scrolling!
   </footer>
 </body>
 </html>
