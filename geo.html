@@ -38,6 +38,23 @@
       position: relative;
       overflow-y: auto;
     }
+    /* Dynamic Question Counter - Top Right Corner */
+    #questionCounter {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--primary-color);
+      color: var(--light-text);
+      padding: 10px 15px;
+      border-radius: 50px;
+      font-size: 1rem;
+      z-index: 10000;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    #questionCounter.animate {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
     /* Login overlay styles */
     #loginOverlay {
       position: fixed;
@@ -254,6 +271,9 @@
     <button id="loginBtn">Login</button>
     <p id="loginError" style="display:none;">Incorrect credentials. Try again.</p>
   </div>
+
+  <!-- Dynamic Question Counter -->
+  <div id="questionCounter">0 Questions</div>
 
   <!-- Main content (hidden until login) -->
   <div id="mainContent">
@@ -631,7 +651,7 @@
 ];
 
 
-     // Global filters
+ // Global filters
     let selectedYear = 'all';
     let selectedPaper = 'all';
     let selectedTopic = 'all';
@@ -696,31 +716,36 @@
       container.innerHTML = '';
       if (questionsArray.length === 0) {
         container.innerHTML = '<p>No questions found. Try different filters or search terms.</p>';
-        return;
+      } else {
+        questionsArray.forEach(q => {
+          const card = document.createElement('div');
+          card.className = 'question-card';
+          card.innerHTML = `
+            <div class="question-header">
+              <div>
+                <h3>${q.question}</h3>
+                <div class="question-topic">${q.topic}</div>
+              </div>
+              <div class="question-meta">
+                Year: ${q.year} | Paper: ${q.paper}
+              </div>
+            </div>
+            <button class="toggle-answer" onclick="toggleAnswer(this)">Show Answer ▼</button>
+            <div class="answer">${q.answer}</div>
+            <button class="toggle-syllabus" onclick="toggleSyllabus(this)">Show Syllabus Reference ▼</button>
+            <div class="syllabus" style="display: none;">
+              <strong>Syllabus Reference:</strong> ${q.syllabus}<br>
+              <em>Syllabus Section:</em> ${q.syllabusSection}
+            </div>
+          `;
+          container.appendChild(card);
+        });
       }
-      questionsArray.forEach(q => {
-        const card = document.createElement('div');
-        card.className = 'question-card';
-        card.innerHTML = `
-          <div class="question-header">
-            <div>
-              <h3>${q.question}</h3>
-              <div class="question-topic">${q.topic}</div>
-            </div>
-            <div class="question-meta">
-              Year: ${q.year} | Paper: ${q.paper}
-            </div>
-          </div>
-          <button class="toggle-answer" onclick="toggleAnswer(this)">Show Answer ▼</button>
-          <div class="answer">${q.answer}</div>
-          <button class="toggle-syllabus" onclick="toggleSyllabus(this)">Show Syllabus Reference ▼</button>
-          <div class="syllabus" style="display: none;">
-            <strong>Syllabus Reference:</strong> ${q.syllabus}<br>
-            <em>Syllabus Section:</em> ${q.syllabusSection}
-          </div>
-        `;
-        container.appendChild(card);
-      });
+      // Update the question counter
+      const counter = document.getElementById('questionCounter');
+      counter.textContent = questionsArray.length + " Questions";
+      counter.classList.add('animate');
+      setTimeout(() => counter.classList.remove('animate'), 300);
     }
 
     function setupSearch() {
