@@ -1984,11 +1984,21 @@
     window.addEventListener("load", init);
   </script>
 
-<script
-    data-goatcounter="https://geohtml.goatcounter.com/count"
-    async
-    src="//gc.zgo.at/count.js">
-  </script>
+ <!-- 1. Path override must appear before count.js -->
+  <script>
+    window.goatcounter = {
+      path: function(p) { return location.host + p }
+    };
+  </script> <!-- :contentReference[oaicite:7]{index=7} -->
+
+  <!-- 2. Core GoatCounter script -->
+  <script data-goatcounter="https://geohtml.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script> <!-- :contentReference[oaicite:8]{index=8} -->
+
+  <!-- 3. Display visitor count -->
+  <script>
+    window.goatcounter.visit_count({ append: 'body' });
+  </script> <!-- :contentReference[oaicite:9]{index=9} -->
   
 </body>
 </html>
