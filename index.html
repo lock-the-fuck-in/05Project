@@ -715,6 +715,23 @@ document.addEventListener("DOMContentLoaded", function() {
       });
     });
   </script>
+
+ <!-- 1. Path override must appear before count.js -->
+  <script>
+    window.goatcounter = {
+      path: function(p) { return location.host + p }
+    };
+  </script> <!-- :contentReference[oaicite:4]{index=4} -->
+
+  <!-- 2. Core GoatCounter script -->
+  <script data-goatcounter="https://geohtml.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script> <!-- :contentReference[oaicite:5]{index=5} -->
+
+  <!-- 3. Display visitor count -->
+  <script>
+    window.goatcounter.visit_count({ append: 'body' });
+  </script> <!-- :contentReference[oaicite:6]{index=6} -->
+
   
  <!-- Hidden Footer -->
   <footer>
