@@ -11,7 +11,6 @@
       --secondary: #334155;
       --accent: #b91c1c;
       --bg-atlas: #f8fafc;
-      --card-bg: #ffffff;
       --text-main: #0f172a;
       --text-muted: #64748b;
       --glass: rgba(255, 255, 255, 0.95);
@@ -28,9 +27,23 @@
       color: var(--text-main);
       overflow-x: hidden;
       line-height: 1.6;
+      position: relative;
     }
 
-    /* Secret DP Rain */
+    /* Topographic Overlay */
+    .topo-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='none' stroke='%23000000' stroke-width='1' d='M0,400 Q200,300 400,400 T800,400 M0,300 Q200,200 400,300 T800,300 M0,500 Q200,400 400,500 T800,500 M0,200 Q200,100 400,200 T800,200 M0,600 Q200,500 400,600 T800,600'/%3E%3C/svg%3E");
+      background-size: cover;
+    }
+
     .rain-letter {
       position: fixed;
       top: -50px;
@@ -43,7 +56,6 @@
       user-select: none;
     }
 
-    /* Subtle Easter Egg Compass - Minimized */
     #compassContainer {
       position: fixed;
       bottom: 60px;
@@ -62,13 +74,6 @@
       cursor: help;
     }
     #compassContainer:hover { opacity: 1; border-color: var(--primary); transform: scale(1.2); }
-    
-    #compassDial {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23e2e8f0' stroke-width='1'/%3E%3C/svg%3E");
-    }
     #compassNeedle {
       width: 1.5px;
       height: 20px;
@@ -78,13 +83,7 @@
       transition: transform 0.1s ease-out;
     }
 
-    .container { 
-      width: 95%; 
-      max-width: 1200px; 
-      margin: 0 auto; 
-      padding: 15px; 
-      position: relative; 
-    }
+    .container { width: 95%; max-width: 1200px; margin: 0 auto; padding: 15px; position: relative; }
 
     .stats-bar {
       position: sticky;
@@ -105,8 +104,7 @@
 
     .header { text-align: center; padding: 20px 20px 40px; }
     .header h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 950; color: var(--text-main); margin-bottom: 5px; letter-spacing: -1.5px; }
-    .header p { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
-
+    
     .controls-panel {
       background: white;
       padding: 20px;
@@ -122,25 +120,27 @@
       border: 2px solid #f1f5f9;
       border-radius: 8px;
       font-size: 1rem;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       outline: none;
       background: #f8fafc;
       transition: all 0.2s;
     }
-    #searchInput:focus { border-color: var(--primary); background: white; }
 
-    .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-    .filter-group label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+    .filter-grid { display: flex; flex-direction: column; gap: 20px; }
+    .filter-section { border-top: 1px solid #f1f5f9; padding-top: 15px; }
+    .filter-section:first-child { border: none; padding-top: 0; }
+    .filter-section label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
 
     .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
     .btn-filter {
-      padding: 7px 14px;
+      padding: 6px 12px;
       border: 1px solid #e2e8f0;
       background: white;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
       cursor: pointer;
+      transition: 0.2s;
     }
     .btn-filter.active { background: var(--primary); color: white; border-color: var(--primary); }
 
@@ -153,14 +153,14 @@
       position: relative;
       transition: transform 0.2s;
     }
-    .question-card:hover { transform: translateX(4px); border-color: #cbd5e1; }
+    .question-card:hover { transform: translateX(4px); }
 
     .status-toggle {
       position: absolute;
       top: 25px;
       left: -15px;
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       background: white;
       border: 2px solid #e2e8f0;
       border-radius: 50%;
@@ -170,16 +170,14 @@
       cursor: pointer;
       z-index: 10;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      transition: all 0.2s;
     }
     .status-toggle.unsure { background: #fffbeb; border-color: #f59e0b; color: #d97706; }
     .status-toggle.done { background: #f0fdf4; border-color: #22c55e; color: #15803d; }
 
-    .card-content { padding-left: 15px; }
-    .q-text { font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); }
+    .q-text { font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); padding-left: 15px; }
     
-    .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; }
-    .badge { font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 4px; background: #f1f5f9; color: var(--text-muted); text-transform: uppercase; border: 1px solid #e2e8f0; }
+    .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; padding-left: 15px; }
+    .badge { font-size: 0.6rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; background: #f1f5f9; color: var(--text-muted); text-transform: uppercase; border: 1px solid #e2e8f0; }
 
     .answer-box {
       display: none;
@@ -192,19 +190,17 @@
     }
 
     .action-btn {
-      padding: 10px 20px;
+      margin-left: 15px;
+      padding: 8px 16px;
       background: var(--primary);
       color: white;
       border: none;
       border-radius: 6px;
       font-weight: 800;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       cursor: pointer;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: background 0.2s;
     }
-    .action-btn:hover { background: #000; }
 
     .print-btn {
       position: fixed;
@@ -219,14 +215,13 @@
       cursor: pointer;
       z-index: 500;
       display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--shadow-md);
     }
 
     #coordTracker {
       position: fixed;
       bottom: 15px;
       left: 15px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: monospace;
       font-size: 10px;
       background: white;
       padding: 3px 8px;
@@ -236,92 +231,165 @@
       z-index: 100;
     }
 
-    #geoFactBar {
-      background: #0f172a;
-      color: #94a3b8;
+    #geoFactBar { background: #0f172a; color: #94a3b8; text-align: center; padding: 10px; font-size: 0.75rem; display: none; }
+
+    footer {
       text-align: center;
-      padding: 10px;
+      padding: 40px 20px;
+      color: var(--text-muted);
       font-size: 0.75rem;
-      font-family: 'JetBrains Mono', monospace;
-      display: none;
-      border-bottom: 1px solid #1e293b;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 40px;
     }
-    #geoFactBar strong { color: white; }
 
+    .teacher-name {
+      color: var(--secondary);
+      font-weight: 700;
+      transition: all 0.3s ease;
+      display: inline-block;
+      cursor: help;
+      position: relative;
+    }
+    .teacher-name:hover {
+      color: #ffd700;
+      text-shadow: 0 0 12px rgba(255, 215, 0, 0.9);
+      transform: scale(1.08);
+    }
+
+    /* Optimized Print Engine */
     @media print {
-      .header, .controls-panel, .stats-bar, .print-btn, .action-btn, #compassContainer, #coordTracker, .status-toggle, #geoFactBar { display: none !important; }
-      .answer-box { display: block !important; border: 1px solid #eee !important; page-break-inside: avoid; background: white !important; }
-      .question-card { border: 1px solid #ddd; padding: 20px; margin-bottom: 30px; page-break-inside: avoid; }
-    }
-
-    @media (max-width: 768px) {
-      .stats-bar { padding: 10px 15px; top: 10px; }
-      #coordTracker { display: none; }
+      * { background: transparent !important; color: black !important; box-shadow: none !important; transition: none !important; }
+      body { width: 100%; margin: 0; padding: 0; background: white; }
+      .container { width: 100%; margin: 0; padding: 0; }
+      .header, .controls-panel, .stats-bar, .print-btn, .action-btn, #compassContainer, #coordTracker, .status-toggle, #geoFactBar, footer { display: none !important; }
+      .answer-box { display: block !important; border: 1px solid #ccc !important; padding: 10px !important; margin: 10px 0 !important; font-size: 10pt; background: white !important; }
+      .question-card { border: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding: 20px 0; page-break-inside: avoid; }
+      .badge-row { margin-bottom: 5px; }
+      .q-text { padding: 0; font-size: 12pt; }
     }
   </style>
 </head>
 <body>
 
+  <div class="topo-overlay"></div>
   <div id="geoFactBar">Initiating Field Reconnaissance...</div>
   <div id="coordTracker">FIX: 0.0000 | 0.0000</div>
   
-  <div id="compassContainer" title="Calibration: Scroll to Rotate">
-    <div id="compassDial"></div>
-    <div id="compassNeedle"></div>
-  </div>
+  <div id="compassContainer"><div id="compassNeedle"></div></div>
 
   <div class="container">
     <div class="stats-bar">
-      <div class="stat-item" id="globalCounter">Global Index: 0</div>
+      <div class="stat-item" id="globalCounter">Inventory: 0</div>
       <div class="stat-item" id="progressCounter">Mastery: 0/0</div>
     </div>
 
     <header class="header">
       <h1>GeoHub Atlas</h1>
-      <p>High-Utility Revision Framework</p>
+      <p>Precision Revision for IBDP Geography</p>
     </header>
 
     <div class="controls-panel">
-      <input type="text" id="searchInput" placeholder="Query Knowledge Base (e.g. Albedo, Megacity, Energy Balance)...">
+      <input type="text" id="searchInput" placeholder="Search keywords (e.g. Albedo, Gentrification)...">
+      
       <div class="filter-grid">
-        <div class="filter-group">
-          <label>Chronicle</label>
-          <div id="yearFilter" class="btn-group"></div>
+        <div class="filter-section">
+          <label>Chronicle & Protocol</label>
+          <div class="btn-group" id="yearFilter"></div>
+          <div class="btn-group" id="paperFilter" style="margin-top:8px"></div>
         </div>
-        <div class="filter-group">
-          <label>Protocol</label>
-          <div id="paperFilter" class="btn-group"></div>
+
+        <div class="filter-section">
+          <label>Core Units</label>
+          <div class="btn-group" id="unitFilter"></div>
         </div>
-        <div class="filter-group">
-          <label>Territory</label>
-          <div id="topicFilter" class="btn-group"></div>
+
+        <div class="filter-section">
+          <label>Optional Themes</label>
+          <div class="btn-group" id="optionFilter"></div>
+        </div>
+
+        <div class="filter-section">
+          <label>Syllabus Sections</label>
+          <div class="btn-group" id="sectionFilter"></div>
         </div>
       </div>
     </div>
 
     <div id="questionContainer"></div>
 
-    <button class="print-btn" onclick="window.print()" title="Export Local Knowledge Base">
-      <i class="fas fa-file-pdf"></i>
-    </button>
+    <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i></button>
+
+    <footer>
+      <p>&copy; GeoHub Atlas. All rights reserved.</p>
+      <p>Independent revision resource. Not affiliated with the International Baccalaureate (IB).</p>
+      <div style="margin-top:10px">Special thanks to <span class="teacher-name">Jiahao Lin</span> for the guidance in geographical science.</div>
+    </footer>
   </div>
 
   <script>
     const questions = [
-      { id: "2025-p2-mega", year: 2025, paper: 2, topic: "Changing population", question: "Explain two positive consequences for individuals resulting from the growth of megacities.", answer: "• <strong>Economic Mobility:</strong> Concentration of diverse industries provides higher wage potential.<br>• <strong>Social Infrastructure:</strong> Specialised services like high-level healthcare and tertiary education are more accessible.", syllabus: "Urbanization impacts." },
-      { id: "2025-p2-fert", year: 2025, paper: 2, topic: "Changing population", question: "Explain two reasons why fertility rates often decline when economic growth occurs.", answer: "• <strong>Opportunity Costs:</strong> Improved female education and career paths lead to delayed marriage.<br>• <strong>Urban Burden:</strong> Children become an economic cost (education/housing) rather than a production asset.", syllabus: "DTM." },
-      { id: "2025-p2-energy", year: 2025, paper: 2, topic: "Global climate", question: "Outline two components of the global energy balance.", answer: "1. <strong>Insolation:</strong> Incoming shortwave UV radiation from the sun.<br>2. <strong>Terrestrial Radiation:</strong> Outgoing longwave infrared radiation emitted by the Earth.", syllabus: "Energy Balance." },
-      { id: "2025-p2-albedo", year: 2025, paper: 2, topic: "Global climate", question: "Suggest two ways in which human activity has changed terrestrial albedo.", answer: "• <strong>Deforestation:</strong> Removing dark forests increases surface albedo.<br>• <strong>Urbanization:</strong> Replacing vegetation with dark asphalt decreases albedo, intensifying heat absorption.", syllabus: "Albedo feedback." },
-      { id: "2025-p2-food", year: 2025, paper: 2, topic: "Global resource consumption", question: "Explain how two different factors may reduce the food security of a country.", answer: "• <strong>Geopolitical Friction:</strong> War disrupts supply chains and domestic output.<br>• <strong>Extreme Weather:</strong> Droughts leading to yield collapse and seed depletion.", syllabus: "Resource Security." },
-        {
-    year: 2024,
-    paper: 1,
-    topic: "Oceans and coastal margins",
-    question: "Outline one reason why hurricanes (tropical cyclones/typhoons) usually form over tropical oceans.",
-    answer: "Warm ocean provides the energy for a storm to develop<br>• Coriolis effect / rotation of the Earth allows storms to spin in the tropics.<br>• Low atmospheric pressure.<br>• High levels of insolation keeping water warm.",
-    syllabus: "Ocean-atmosphere interactions – Point 3: The formation, distribution and physical impacts of hurricanes on coastal margins, including storm surges.",
-    syllabusSection: "Ocean-atmosphere interactions"
-  },
+      // 2025 QUESTIONS (RETAINED)
+      {
+        id: "2025-p2-circular",
+        year: 2025,
+        paper: 2,
+        topic: "Unit 3: Global resource consumption and security",
+        question: "“The most effective way to manage resources sustainably is through the circular economy.” To what extent do you agree with this statement?",
+        answer: "• <strong>Circular Economy:</strong> Focuses on reuse, recycling, and refurbishing to close the loop of resource consumption.<br>• <strong>Strengths:</strong> Minimizes waste, lowers carbon emissions, and ensures longevity of materials.<br>• <strong>Weaknesses:</strong> High implementation costs, requires global coordination, and may not alone counteract rapid population growth.<br>• <strong>Conclusion:</strong> While effective, it must be combined with population management and renewable energy transitions.",
+        syllabus: "Resource stewardship - Point 3: The circular economy.",
+        syllabusSection: "Global resource consumption and security"
+      },
+      {
+        id: "2025-p2-water-class",
+        year: 2025,
+        paper: 2,
+        topic: "Unit 3: Global resource consumption and security",
+        question: "“The growth of the global middle class threatens the availability of water more than any other resource.” To what extent do you agree with this statement?",
+        answer: "• <strong>Arguments For:</strong> Increasing middle class consumption leads to higher water demand for meat production, electronics, and industrial goods.<br>• <strong>Arguments Against:</strong> Energy security and food security are equally at risk; climate change accelerates all resource threats simultaneously.<br>• <strong>Perspective:</strong> Technological improvements like desalination may mitigate water scarcity in some regions, whereas arable land loss is irreversible.",
+        syllabus: "Impacts of changing trends in resource consumption - Point 1: Pressure on resources.",
+        syllabusSection: "Global resource consumption and security"
+      },
+      {
+        id: "2025-p1-gentrification",
+        year: 2025,
+        paper: 1,
+        topic: "Option G: Urban environments",
+        question: "Examine the role of economic and demographic processes contributing to inner-city gentrification.",
+        answer: "• <strong>Economic:</strong> Capital investment in decaying areas, rising rent/land values, and the shift to high-end service economies.<br>• <strong>Demographic:</strong> Influx of high-income professionals ('yuppies'), displacement of lower-income families, and a decrease in average household size.<br>• <strong>Outcomes:</strong> Urban renewal at the cost of social exclusion and loss of community history.",
+        syllabus: "Urban environmental and social stresses - Point 2: Social stresses.",
+        syllabusSection: "Urban environments"
+      },
+      {
+        id: "2025-p1-15min-eco",
+        year: 2025,
+        paper: 1,
+        topic: "Option G: Urban environments",
+        question: "Outline one way in which becoming a 15-minute city could help reduce a city’s ecological footprint.",
+        answer: "By ensuring all essential services are within a 15-minute walk or cycle, it drastically reduces the reliance on private motor vehicles, lowering the per capita carbon emissions and energy consumption associated with urban transport.",
+        syllabus: "Building sustainable urban systems for the future - Point 1: Sustainable systems.",
+        syllabusSection: "Urban environments"
+      },
+      {
+        id: "2025-p2-mega",
+        year: 2025,
+        paper: 2,
+        topic: "Unit 1: Changing Population",
+        question: "Explain two positive consequences for individuals resulting from the growth of megacities.",
+        answer: "• <strong>Economic Mobility:</strong> Concentration of diverse industries provides higher wage potential.<br>• <strong>Social Infrastructure:</strong> Specialised services like high-level healthcare and tertiary education are more accessible.",
+        syllabus: "Changing populations and places - Point 2: Global patterns and classification.",
+        syllabusSection: "Changing Population"
+      },
+      {
+        id: "2025-p2-albedo",
+        year: 2025,
+        paper: 2,
+        topic: "Unit 2: Climate change – vulnerability and resilience",
+        question: "Suggest two ways in which human activity has changed terrestrial albedo.",
+        answer: "• <strong>Deforestation:</strong> Removing dark forests increases surface albedo.<br>• <strong>Urbanization:</strong> Replacing vegetation with dark asphalt decreases albedo, intensifying heat absorption.",
+        syllabus: "Causes of global climate change - Point 1: The atmospheric system.",
+        syllabusSection: "Climate change"
+      },
+
   {
     year: 2024,
     paper: 1,
@@ -1737,7 +1805,7 @@
 }
     ];
 
-    let filters = { year: 'all', paper: 'all', topic: 'all' };
+    let filters = { year: 'all', paper: 'all', unit: 'all', option: 'all', section: 'all' };
     let questionStates = JSON.parse(localStorage.getItem('geoHub_mastery') || '{}');
 
     function init() {
@@ -1748,37 +1816,34 @@
       fetchFieldIntel();
     }
 
-    async function fetchFieldIntel() {
-      const factBar = document.getElementById('geoFactBar');
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        if (data.city) {
-          const dist = Math.round(Math.abs(data.latitude) * 111.32);
-          const antLat = -data.latitude;
-          const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
-          
-          factBar.style.display = 'block';
-          factBar.innerHTML = `Field Intelligence: <strong>${data.city}, ${data.country_code}</strong> | You are <strong>${dist}km</strong> from the Equator. Your Antipode is currently <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>.`;
-        }
-      } catch (e) { factBar.style.display = 'none'; }
-    }
-
     function renderFilters() {
       const years = ['all', ...new Set(questions.map(q => q.year))].sort((a,b) => b-a);
-      const papers = ['all', ...new Set(questions.map(q => q.paper))];
-      const topics = ['all', ...new Set(questions.map(q => q.topic))];
+      const papers = ['all', ...new Set(questions.map(q => q.paper))].sort();
+      const units = ['all', ...new Set(questions.filter(q => q.topic.startsWith('Unit')).map(q => q.topic))].sort();
+      const options = ['all', ...new Set(questions.filter(q => q.topic.startsWith('Option')).map(q => q.topic))].sort();
+      const sections = ['all', ...new Set(questions.map(q => q.syllabusSection).filter(s => s))].sort();
+
       populateFilter('yearFilter', years, 'year');
       populateFilter('paperFilter', papers, 'paper');
-      populateFilter('topicFilter', topics, 'topic');
+      populateFilter('unitFilter', units, 'unit');
+      populateFilter('optionFilter', options, 'option');
+      populateFilter('sectionFilter', sections, 'section');
     }
 
     function populateFilter(id, values, key) {
       const container = document.getElementById(id);
+      container.innerHTML = '';
       values.forEach(val => {
         const btn = document.createElement('button');
         btn.className = 'btn-filter' + (filters[key] === val ? ' active' : '');
-        btn.textContent = val === 'all' ? 'All' : val;
+        
+        // Formatting label
+        let label = val === 'all' ? 'All' : val;
+        if (typeof val === 'string' && val.includes(': ')) {
+            label = val.split(': ')[1];
+        }
+        
+        btn.textContent = label;
         btn.onclick = () => {
           filters[key] = val;
           [...container.children].forEach(c => c.classList.remove('active'));
@@ -1793,32 +1858,58 @@
       const search = document.getElementById('searchInput').value.toLowerCase();
       const container = document.getElementById('questionContainer');
       container.innerHTML = '';
+
       const filtered = questions.filter(q => {
         const matchYear = filters.year === 'all' || q.year == filters.year;
         const matchPaper = filters.paper === 'all' || q.paper == filters.paper;
-        const matchTopic = filters.topic === 'all' || q.topic === filters.topic;
-        const matchSearch = q.question.toLowerCase().includes(search);
-        return matchYear && matchPaper && matchTopic && matchSearch;
+        
+        // Logic for Units/Options: If 'all' is selected, show everything. 
+        // Otherwise, only show if the question belongs to that specific Unit/Option category.
+        const matchUnit = filters.unit === 'all' || (q.topic.startsWith('Unit') && q.topic === filters.unit);
+        const matchOption = filters.option === 'all' || (q.topic.startsWith('Option') && q.topic === filters.option);
+        
+        // If a specific unit is selected, we shouldn't show options unless 'all' options is selected (which is default).
+        // However, standard behavior is intersection. 
+        // If user selects Unit 1, questions must be Unit 1. Options filter should probably reset or be ignored.
+        // Simplified logic: strict matching.
+        
+        const matchSection = filters.section === 'all' || q.syllabusSection === filters.section;
+        const matchSearch = q.question.toLowerCase().includes(search) || q.answer.toLowerCase().includes(search);
+        
+        // Complex filter logic for Unit vs Option mutually exclusive selection would be better,
+        // but for now, simple intersection.
+        // If user selects Unit 1 AND Option A, result is likely 0. This is expected behavior for "AND" filtering.
+        // To make it more user friendly, we might want to clear one when the other is set, but that requires UI logic changes.
+        // Sticking to strict filtering as requested.
+        
+        return matchYear && matchPaper && (filters.unit === 'all' || matchUnit) && (filters.option === 'all' || matchOption) && matchSection && matchSearch;
       });
-      document.getElementById('globalCounter').textContent = `Global Index: ${questions.length}`;
-      updateProgress();
+
+      document.getElementById('globalCounter').textContent = `Inventory: ${questions.length}`;
+      const completedCount = Object.values(questionStates).filter(s => s === 'done').length;
+      document.getElementById('progressCounter').textContent = `Mastery: ${completedCount}/${questions.length}`;
+
       filtered.forEach((q) => {
-        const state = questionStates[q.id] || 'todo';
+        const state = questionStates[q.id || (q.year + q.question.substring(0,5))] || 'todo'; 
+        // Fallback ID generation if not explicitly provided in new questions
+        const uniqueId = q.id || (q.year + q.question.substring(0,5));
+
         const card = document.createElement('div');
         card.className = 'question-card';
         card.innerHTML = `
-          <div class="status-toggle ${state}" onclick="toggleState('${q.id}', this)">
+          <div class="status-toggle ${state}" onclick="toggleState('${uniqueId}', this)">
             <i class="fas ${state === 'done' ? 'fa-check' : (state === 'unsure' ? 'fa-question' : 'fa-circle')}"></i>
           </div>
-          <div class="card-content">
-            <div class="badge-row">
-              <div class="badge">${q.topic}</div>
-              <div class="badge">Paper ${q.paper}</div>
-              <div class="badge">${q.year}</div>
-            </div>
-            <div class="q-text">${q.question}</div>
-            <button class="action-btn" onclick="toggleAnswer(this)">Access Mark Scheme</button>
-            <div class="answer-box"><p>${q.answer}</p></div>
+          <div class="q-text">${q.question}</div>
+          <div class="badge-row">
+            <div class="badge">${q.topic}</div>
+            <div class="badge">Paper ${q.paper}</div>
+            <div class="badge">${q.year}</div>
+          </div>
+          <button class="action-btn" onclick="toggleAnswer(this)">Access Mark Scheme</button>
+          <div class="answer-box">
+            <p>${q.answer}</p>
+            <div style="margin-top:10px; font-size:0.7rem; color:#94a3b8; border-top:1px solid #eee; padding-top:8px;">${q.syllabus}</div>
           </div>`;
         container.appendChild(card);
       });
@@ -1829,13 +1920,13 @@
       const next = (current === 'todo') ? 'unsure' : (current === 'unsure' ? 'done' : 'todo');
       questionStates[id] = next;
       localStorage.setItem('geoHub_mastery', JSON.stringify(questionStates));
-      renderQuestions();
+      // Update UI directly to avoid full re-render
+      el.className = `status-toggle ${next}`;
+      el.innerHTML = `<i class="fas ${next === 'done' ? 'fa-check' : (next === 'unsure' ? 'fa-question' : 'fa-circle')}"></i>`;
+      
+      const completedCount = Object.values(questionStates).filter(s => s === 'done').length;
+      document.getElementById('progressCounter').textContent = `Mastery: ${completedCount}/${questions.length}`;
     };
-
-    function updateProgress() {
-      const completed = Object.values(questionStates).filter(s => s === 'done').length;
-      document.getElementById('progressCounter').textContent = `Mastery: ${completed}/${questions.length}`;
-    }
 
     function toggleAnswer(btn) {
       const box = btn.nextElementSibling;
@@ -1861,24 +1952,37 @@
       let buffer = "";
       window.addEventListener('keydown', (e) => {
         buffer = (buffer + e.key.toUpperCase()).slice(-4);
-        if(buffer === "IBDP") startRain();
+        if(buffer === "IBDP") {
+          const chars = ['D', 'P', 'G', 'E', 'O'];
+          for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+              const el = document.createElement('div');
+              el.className = 'rain-letter';
+              el.textContent = chars[Math.floor(Math.random() * chars.length)];
+              el.style.left = Math.random() * 100 + 'vw';
+              document.body.appendChild(el);
+              const dur = 2000 + Math.random() * 2000;
+              el.animate([{ top: '-50px' }, { top: '110vh' }], { duration: dur });
+              setTimeout(() => el.remove(), dur);
+            }, i * 100);
+          }
+        }
       });
     }
 
-    function startRain() {
-      const chars = ['D', 'P', 'G', 'E', 'O'];
-      for (let i = 0; i < 50; i++) {
-        setTimeout(() => {
-          const el = document.createElement('div');
-          el.className = 'rain-letter';
-          el.textContent = chars[Math.floor(Math.random() * chars.length)];
-          el.style.left = Math.random() * 100 + 'vw';
-          document.body.appendChild(el);
-          const dur = 2000 + Math.random() * 2000;
-          el.animate([{ top: '-50px' }, { top: '110vh' }], { duration: dur });
-          setTimeout(() => el.remove(), dur);
-        }, i * 100);
-      }
+    async function fetchFieldIntel() {
+      const factBar = document.getElementById('geoFactBar');
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data.city) {
+          const dist = Math.round(Math.abs(data.latitude) * 111.32);
+          const antLat = -data.latitude;
+          const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
+          factBar.style.display = 'block';
+          factBar.innerHTML = `Field Intel: <strong>${data.city}, ${data.country_code}</strong> | Equator Dist: <strong>${dist}km</strong> | Antipode: <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>.`;
+        }
+      } catch (e) { factBar.style.display = 'none'; }
     }
 
     init();
