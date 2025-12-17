@@ -3,416 +3,317 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Geography Revision Hub</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <title>GeoHub | Atlas Professional</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
-      --primary-color: #ff4081;
-      --secondary-color: #3498db;
-      --dark-bg: #000;
-      --light-text: #fff;
+      --primary: #0f172a;
+      --secondary: #334155;
+      --accent: #b91c1c;
+      --bg-atlas: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --glass: rgba(255, 255, 255, 0.95);
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
-    /* Hide scrollbars for WebKit browsers (Chrome, iOS Safari) */
-    body::-webkit-scrollbar {
-      display: none;
-    }
-    /* Hide scrollbar for Firefox and IE/Edge */
-    html {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    html, body {
-      height: 100%;
-      width: 100%;
-      overflow-x: hidden;
-    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+
     body {
-      background: var(--dark-bg);
-      color: var(--light-text);
-      position: relative;
-      overflow-y: auto;
+      background-color: var(--bg-atlas);
+      background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+      background-size: 30px 30px;
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
     }
-    /* Dynamic Question Counter - Top Right Corner */
-    #questionCounter {
+
+    /* Secret DP Rain */
+    .rain-letter {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--primary-color);
-      color: var(--light-text);
-      padding: 10px 15px;
-      border-radius: 50px;
-      font-size: 1rem;
-      z-index: 10000;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-    #questionCounter.animate {
-      transform: scale(1.2);
+      top: -50px;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--primary);
       opacity: 0.8;
+      pointer-events: none;
+      z-index: 2000;
+      user-select: none;
     }
-    /* Login overlay styles */
-    #loginOverlay {
+
+    /* Subtle Easter Egg Compass - Minimized */
+    #compassContainer {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: var(--dark-bg);
-      z-index: 9999;
+      bottom: 60px;
+      left: 15px;
+      width: 28px;
+      height: 28px;
+      background: white;
+      border-radius: 50%;
+      border: 1px solid #cbd5e1;
+      z-index: 500;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
+      opacity: 0.15;
+      transition: all 0.3s;
+      cursor: help;
     }
-    #loginOverlay input {
-      padding: 10px;
-      margin: 10px;
-      width: 250px;
-      font-size: 1rem;
-    }
-    #loginOverlay button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      background: var(--primary-color);
-      color: var(--light-text);
-      border: none;
-      cursor: pointer;
-    }
-    #loginOverlay p {
-      color: red;
-      margin-top: 10px;
-    }
-    /* Main content hidden until login */
-    #mainContent {
-      display: none;
-    }
-    .glow-container {
-      position: fixed;
+    #compassContainer:hover { opacity: 1; border-color: var(--primary); transform: scale(1.2); }
+    
+    #compassDial {
+      position: absolute;
       width: 100%;
       height: 100%;
-      overflow: hidden;
-      z-index: 0;
-      pointer-events: none; /* Allow scrolling on margins */
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='45' fill='none' stroke='%23e2e8f0' stroke-width='1'/%3E%3C/svg%3E");
     }
-    .glow-text {
-      position: absolute;
-      font-size: 4rem;
-      font-weight: bold;
-      color: rgba(255, 255, 255, 0.1);
-      white-space: nowrap;
-      user-select: none;
-      animation: glowMove 20s linear infinite;
+    #compassNeedle {
+      width: 1.5px;
+      height: 20px;
+      background: linear-gradient(to bottom, var(--accent) 50%, #334155 50%);
+      border-radius: 1px;
+      z-index: 2;
+      transition: transform 0.1s ease-out;
     }
-    @keyframes glowMove {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
+
+    .container { 
+      width: 95%; 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 15px; 
+      position: relative; 
     }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      position: relative;
-      z-index: 1;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 2rem;
-      padding: 4rem 2rem;
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
-      border-radius: 15px;
-      backdrop-filter: blur(5px);
-    }
-    .header h1 {
-      font-size: 3.5rem;
-      margin-bottom: 1rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    .search-box {
-      margin: 20px 0;
-      padding: 15px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-      backdrop-filter: blur(5px);
-    }
-    #searchInput {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid var(--primary-color);
-      border-radius: 5px;
-      font-size: 16px;
-      background: rgba(0,0,0,0.5);
-      color: var(--light-text);
-    }
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-    }
-    .filter-group label {
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .filter-btn {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 20px;
-      background: var(--primary-color);
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255,64,129,0.4);
-      margin: 2px;
-    }
-    .filter-btn.active {
-      background: #2c3e50;
-      box-shadow: 0 4px 15px rgba(44,62,80,0.4);
-    }
-    .question-card {
-      background: rgba(255,255,255,0.1);
-      margin: 15px 0;
-      padding: 20px;
-      border-radius: 8px;
-      backdrop-filter: blur(5px);
-      transition: transform 0.2s ease;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .question-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 15px rgba(255,64,129,0.2);
-    }
-    .question-header {
+
+    .stats-bar {
+      position: sticky;
+      top: 15px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 10px 25px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
     }
-    .question-header h3 {
-      margin-bottom: 5px;
+    .stat-item { font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+
+    .header { text-align: center; padding: 20px 20px 40px; }
+    .header h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 950; color: var(--text-main); margin-bottom: 5px; letter-spacing: -1.5px; }
+    .header p { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
+
+    .controls-panel {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-sm);
     }
-    .question-meta {
-      font-size: 0.9em;
-      color: var(--primary-color);
+
+    #searchInput {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #f1f5f9;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      outline: none;
+      background: #f8fafc;
+      transition: all 0.2s;
     }
-    .question-topic {
-      display: inline-block;
-      background: var(--primary-color);
-      color: white;
-      padding: 4px 8px;
-      border-radius: 4px;
-      margin-top: 5px;
-    }
-    .syllabus {
-      margin-top: 10px;
-      font-size: 0.85em;
-      background: rgba(0,0,0,0.2);
-      padding: 8px;
-      border-left: 4px solid var(--secondary-color);
-      border-radius: 4px;
-    }
-    .answer {
-      display: none;
-      margin-top: 15px;
-      padding: 15px;
-      background: rgba(0,0,0,0.3);
-      border-left: 4px solid var(--primary-color);
-      border-radius: 4px;
-    }
-    .toggle-answer, .toggle-syllabus {
-      background: none;
-      border: none;
-      color: var(--primary-color);
+    #searchInput:focus { border-color: var(--primary); background: white; }
+
+    .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .filter-group label { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+
+    .btn-group { display: flex; flex-wrap: wrap; gap: 6px; }
+    .btn-filter {
+      padding: 7px 14px;
+      border: 1px solid #e2e8f0;
+      background: white;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
       cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      margin-top: 10px;
     }
-    .toggle-answer:hover, .toggle-syllabus:hover {
-      transform: scale(1.05);
+    .btn-filter.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .question-card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border: 1px solid #e2e8f0;
+      position: relative;
+      transition: transform 0.2s;
     }
+    .question-card:hover { transform: translateX(4px); border-color: #cbd5e1; }
+
+    .status-toggle {
+      position: absolute;
+      top: 25px;
+      left: -15px;
+      width: 34px;
+      height: 34px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: all 0.2s;
+    }
+    .status-toggle.unsure { background: #fffbeb; border-color: #f59e0b; color: #d97706; }
+    .status-toggle.done { background: #f0fdf4; border-color: #22c55e; color: #15803d; }
+
+    .card-content { padding-left: 15px; }
+    .q-text { font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); }
+    
+    .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; }
+    .badge { font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 4px; background: #f1f5f9; color: var(--text-muted); text-transform: uppercase; border: 1px solid #e2e8f0; }
+
+    .answer-box {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      font-size: 0.95rem;
+    }
+
+    .action-btn {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: background 0.2s;
+    }
+    .action-btn:hover { background: #000; }
+
     .print-btn {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 10px 20px;
-      background: var(--primary-color);
+      bottom: 25px;
+      right: 25px;
+      width: 50px;
+      height: 50px;
+      background: var(--primary);
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(255,64,129,0.4);
-      z-index: 2;
+      z-index: 500;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: var(--shadow-md);
     }
+
+    #coordTracker {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      background: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+      color: var(--text-muted);
+      z-index: 100;
+    }
+
+    #geoFactBar {
+      background: #0f172a;
+      color: #94a3b8;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      display: none;
+      border-bottom: 1px solid #1e293b;
+    }
+    #geoFactBar strong { color: white; }
+
     @media print {
-      .answer {
-        display: block !important;
-      }
-      .print-btn {
-        display: none;
-      }
+      .header, .controls-panel, .stats-bar, .print-btn, .action-btn, #compassContainer, #coordTracker, .status-toggle, #geoFactBar { display: none !important; }
+      .answer-box { display: block !important; border: 1px solid #eee !important; page-break-inside: avoid; background: white !important; }
+      .question-card { border: 1px solid #ddd; padding: 20px; margin-bottom: 30px; page-break-inside: avoid; }
+    }
+
+    @media (max-width: 768px) {
+      .stats-bar { padding: 10px 15px; top: 10px; }
+      #coordTracker { display: none; }
     }
   </style>
 </head>
 <body>
-  <!-- Login Overlay -->
-  <div id="loginOverlay">
-    <h2 style="color: var(--light-text); margin-bottom: 20px;">Please Login</h2>
-    <input type="text" id="username" placeholder="Username" />
-    <input type="password" id="password" placeholder="Password" />
-    <button id="loginBtn">Login</button>
-    <p id="loginError" style="display:none;">Incorrect credentials. Try again.</p>
-  </div>
 
-  <!-- Dynamic Question Counter -->
-  <div id="questionCounter">0 Questions</div>
-
-  <!-- Main content (hidden until login) -->
-  <div id="mainContent">
-    <div class="glow-container">
-      <div class="glow-text" style="top:10%;">GEOGRAPHY GEOGRAPHY GEOGRAPHY</div>
-      <div class="glow-text" style="top:40%; animation-delay:-5s;">STUDY HARD, SUCCEED HARD</div>
-      <div class="glow-text" style="top:70%; animation-delay:-10s;">KNOWLEDGE IS POWER</div>
-    </div>
-    <div class="container">
-      <header class="header">
-        <h1>📚 Geography Revision Hub</h1>
-        <p>IBDP Geography Questions & Answers</p>
-      </header>
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search questions...">
-      </div>
-      <div class="filters">
-        <div class="filter-group">
-          <label for="yearFilter">Year</label>
-          <div id="yearFilter">
-            <!-- Year filter buttons will be populated by JavaScript -->
-          </div>
-        </div>
-        <div class="filter-group">
-          <label for="paperFilter">Paper</label>
-          <div id="paperFilter">
-            <!-- Paper filter buttons will be populated by JavaScript -->
-          </div>
-        </div>
-        <div class="filter-group">
-          <label for="topicFilter">Topic</label>
-          <div id="topicFilter">
-            <!-- Topic filter buttons will be populated by JavaScript -->
-          </div>
-        </div>
-        <div class="filter-group">
-          <label for="syllabusSectionFilter">Syllabus</label>
-          <div id="syllabusSectionFilter">
-            <!-- Syllabus filter buttons will be populated by JavaScript -->
-          </div>
-        </div>
-      </div>
-      <div id="questionContainer">
-        <!-- Questions will be populated by JavaScript -->
-      </div>
-      <button class="print-btn" onclick="window.print()">Print All</button>
-    </div>
-  </div>
+  <div id="geoFactBar">Initiating Field Reconnaissance...</div>
+  <div id="coordTracker">FIX: 0.0000 | 0.0000</div>
   
+  <div id="compassContainer" title="Calibration: Scroll to Rotate">
+    <div id="compassDial"></div>
+    <div id="compassNeedle"></div>
+  </div>
+
+  <div class="container">
+    <div class="stats-bar">
+      <div class="stat-item" id="globalCounter">Global Index: 0</div>
+      <div class="stat-item" id="progressCounter">Mastery: 0/0</div>
+    </div>
+
+    <header class="header">
+      <h1>GeoHub Atlas</h1>
+      <p>High-Utility Revision Framework</p>
+    </header>
+
+    <div class="controls-panel">
+      <input type="text" id="searchInput" placeholder="Query Knowledge Base (e.g. Albedo, Megacity, Energy Balance)...">
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label>Chronicle</label>
+          <div id="yearFilter" class="btn-group"></div>
+        </div>
+        <div class="filter-group">
+          <label>Protocol</label>
+          <div id="paperFilter" class="btn-group"></div>
+        </div>
+        <div class="filter-group">
+          <label>Territory</label>
+          <div id="topicFilter" class="btn-group"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="questionContainer"></div>
+
+    <button class="print-btn" onclick="window.print()" title="Export Local Knowledge Base">
+      <i class="fas fa-file-pdf"></i>
+    </button>
+  </div>
+
   <script>
-    /***** Cookie Helper Functions *****/
-    function setCookie(name, value, days) {
-      const d = new Date();
-      d.setTime(d.getTime() + (days*24*60*60*1000));
-      document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
-    }
-
-    function getCookie(name) {
-      const cname = name + "=";
-      const decodedCookie = decodeURIComponent(document.cookie);
-      const ca = decodedCookie.split(';');
-      for(let i = 0; i < ca.length; i++) {
-        let c = ca[i].trim();
-        if (c.indexOf(cname) === 0) {
-          return c.substring(cname.length, c.length);
-        }
-      }
-      return "";
-    }
-
-    function deleteCookie(name) {
-      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-    }
-
-    /***** Login Logic *****/
-    // Valid accounts – note: for demonstration only
-    const validAccounts = {
-      "Admin": "YouFoundMe!",
-      "Amaya": "AmayaIsStupid"
-    };
-
-    const loginOverlay = document.getElementById("loginOverlay");
-    const mainContent = document.getElementById("mainContent");
-    const loginBtn = document.getElementById("loginBtn");
-    const loginError = document.getElementById("loginError");
-
-    // Check if a valid login cookie exists
-    let storedUser = getCookie("loggedInUser");
-    if (storedUser && validAccounts[storedUser]) {
-      loginOverlay.style.display = "none";
-      mainContent.style.display = "block";
-    }
-
-    loginBtn.addEventListener("click", function() {
-      const enteredUsername = document.getElementById("username").value;
-      const enteredPassword = document.getElementById("password").value;
-      
-      if (validAccounts[enteredUsername] && validAccounts[enteredUsername] === enteredPassword) {
-        storedUser = getCookie("loggedInUser");
-        // If a different user is already logged in on this device, enforce logout
-        if (storedUser && storedUser !== enteredUsername) {
-          deleteCookie("loggedInUser");
-          loginError.style.display = "block";
-          loginError.textContent = "Simultaneous login detected. Logging out.";
-          setTimeout(() => location.reload(), 2000);
-        } else {
-          setCookie("loggedInUser", enteredUsername, 7);
-          loginOverlay.style.display = "none";
-          mainContent.style.display = "block";
-        }
-      } else {
-        loginError.style.display = "block";
-      }
-    });
-
-    /***** Attempt to disable common developer tool shortcuts (not foolproof) *****/
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-    });
-    document.onkeydown = function(e) {
-      // Block F12, Ctrl+Shift+I/J, Ctrl+U
-      if (e.keyCode === 123 || 
-          (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
-          (e.ctrlKey && e.keyCode === 85)) {
-        return false;
-      }
-    };
-    // Template for adding new questions:
-    // {
-    //    year: <year>,
-    //    paper: <paper number (1 or 2)>,
-    //    topic: "<topic>",
-    //    question: "<question text>",
-    //    answer: "<answer text with optional HTML for bullet points>",
-    //    syllabus: "<full syllabus reference text>",
-    //    syllabusSection: "<brief syllabus section (for filtering)>"
-    // },
-   const questions = [
-  {
+    const questions = [
+      { id: "2025-p2-mega", year: 2025, paper: 2, topic: "Changing population", question: "Explain two positive consequences for individuals resulting from the growth of megacities.", answer: "• <strong>Economic Mobility:</strong> Concentration of diverse industries provides higher wage potential.<br>• <strong>Social Infrastructure:</strong> Specialised services like high-level healthcare and tertiary education are more accessible.", syllabus: "Urbanization impacts." },
+      { id: "2025-p2-fert", year: 2025, paper: 2, topic: "Changing population", question: "Explain two reasons why fertility rates often decline when economic growth occurs.", answer: "• <strong>Opportunity Costs:</strong> Improved female education and career paths lead to delayed marriage.<br>• <strong>Urban Burden:</strong> Children become an economic cost (education/housing) rather than a production asset.", syllabus: "DTM." },
+      { id: "2025-p2-energy", year: 2025, paper: 2, topic: "Global climate", question: "Outline two components of the global energy balance.", answer: "1. <strong>Insolation:</strong> Incoming shortwave UV radiation from the sun.<br>2. <strong>Terrestrial Radiation:</strong> Outgoing longwave infrared radiation emitted by the Earth.", syllabus: "Energy Balance." },
+      { id: "2025-p2-albedo", year: 2025, paper: 2, topic: "Global climate", question: "Suggest two ways in which human activity has changed terrestrial albedo.", answer: "• <strong>Deforestation:</strong> Removing dark forests increases surface albedo.<br>• <strong>Urbanization:</strong> Replacing vegetation with dark asphalt decreases albedo, intensifying heat absorption.", syllabus: "Albedo feedback." },
+      { id: "2025-p2-food", year: 2025, paper: 2, topic: "Global resource consumption", question: "Explain how two different factors may reduce the food security of a country.", answer: "• <strong>Geopolitical Friction:</strong> War disrupts supply chains and domestic output.<br>• <strong>Extreme Weather:</strong> Droughts leading to yield collapse and seed depletion.", syllabus: "Resource Security." },
+        {
     year: 2024,
     paper: 1,
     topic: "Oceans and coastal margins",
@@ -1833,172 +1734,154 @@
     answer: "The location of low-quality residential areas in cities may vary over space and time. It may vary between cities in low-income and high-income countries. Their location is affected by a variety of economic, social, political and physical factors, and importance is affected by the relative power of different stakeholders.<br>• Examples may be taken from one or more cities.<br>• Economic factors include variations in land value and the relative wealth/poverty of the populations. Also, employment, industrial activity and proximity to other types of urban land use.<br>• Transportation networks and accessibility.<br>• Political factors include urban planning, including possible segregation of low-income groups.<br>• Political factors may be more important in autocratic than democratic governments and societies.<br>• Other factors may also be important, such as physical (eg, high relief and poorly drained areas) and social (ethnic minorities and immigrant groups, segregation).",
     syllabus: "The variety of urban environments - Point 3: Factors affecting the pattern of residential areas within urban areas, including physical factors, land values, ethnicity and planning",
     syllabusSection: "The variety of urban environments"
-},
+}
+    ];
 
-
-
-
-
-
-     
-  // Add more questions here following the template above.
-];
-
-
- // Global filters
-    let selectedYear = 'all';
-    let selectedPaper = 'all';
-    let selectedTopic = 'all';
-    let selectedSyllabus = 'all';
+    let filters = { year: 'all', paper: 'all', topic: 'all' };
+    let questionStates = JSON.parse(localStorage.getItem('geoHub_mastery') || '{}');
 
     function init() {
-      populateFilters();
-      displayQuestions(questions);
-      setupSearch();
+      renderFilters();
+      renderQuestions();
+      setupInteractive();
+      setupEasterEgg();
+      fetchFieldIntel();
     }
 
-    function populateFilters() {
-      populateFilter('year', questions.map(q => q.year));
-      populateFilter('paper', questions.map(q => q.paper));
-      populateFilter('topic', questions.map(q => q.topic));
-      populateFilter('syllabusSection', questions.map(q => q.syllabusSection));
+    async function fetchFieldIntel() {
+      const factBar = document.getElementById('geoFactBar');
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data.city) {
+          const dist = Math.round(Math.abs(data.latitude) * 111.32);
+          const antLat = -data.latitude;
+          const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
+          
+          factBar.style.display = 'block';
+          factBar.innerHTML = `Field Intelligence: <strong>${data.city}, ${data.country_code}</strong> | You are <strong>${dist}km</strong> from the Equator. Your Antipode is currently <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>.`;
+        }
+      } catch (e) { factBar.style.display = 'none'; }
     }
 
-    // This function creates filter buttons for a given filter type.
-    function populateFilter(filterType, items) {
-      const uniqueItems = ['all', ...new Set(items)];
-      const container = document.getElementById(filterType === 'syllabusSection' ? 'syllabusSectionFilter' : filterType + 'Filter');
-      container.innerHTML = '';
-      uniqueItems.forEach(item => {
+    function renderFilters() {
+      const years = ['all', ...new Set(questions.map(q => q.year))].sort((a,b) => b-a);
+      const papers = ['all', ...new Set(questions.map(q => q.paper))];
+      const topics = ['all', ...new Set(questions.map(q => q.topic))];
+      populateFilter('yearFilter', years, 'year');
+      populateFilter('paperFilter', papers, 'paper');
+      populateFilter('topicFilter', topics, 'topic');
+    }
+
+    function populateFilter(id, values, key) {
+      const container = document.getElementById(id);
+      values.forEach(val => {
         const btn = document.createElement('button');
-        btn.className = 'filter-btn';
-        btn.textContent = item;
-        btn.onclick = function() {
-          if (filterType === 'year') selectedYear = item;
-          else if (filterType === 'paper') selectedPaper = item;
-          else if (filterType === 'topic') selectedTopic = item;
-          else if (filterType === 'syllabusSection') selectedSyllabus = item;
-          updateActiveFilters(filterType, item);
-          filterAndDisplayQuestions();
+        btn.className = 'btn-filter' + (filters[key] === val ? ' active' : '');
+        btn.textContent = val === 'all' ? 'All' : val;
+        btn.onclick = () => {
+          filters[key] = val;
+          [...container.children].forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          renderQuestions();
         };
         container.appendChild(btn);
       });
     }
 
-    function updateActiveFilters(filterType, activeItem) {
-      const containerID = filterType === 'syllabusSection' ? 'syllabusSectionFilter' : filterType + 'Filter';
-      const buttons = document.getElementById(containerID).querySelectorAll('button');
-      buttons.forEach(btn => {
-        if (btn.textContent === activeItem) btn.classList.add('active');
-        else btn.classList.remove('active');
-      });
-    }
-
-    function filterAndDisplayQuestions() {
-      const filtered = questions.filter(q => {
-        const matchYear = (selectedYear === 'all' || q.year.toString() === selectedYear.toString());
-        const matchPaper = (selectedPaper === 'all' || q.paper.toString() === selectedPaper.toString());
-        const matchTopic = (selectedTopic === 'all' || q.topic === selectedTopic);
-        const matchSyllabus = (selectedSyllabus === 'all' || q.syllabusSection === selectedSyllabus);
-        return matchYear && matchPaper && matchTopic && matchSyllabus;
-      });
-      displayQuestions(filtered);
-    }
-
-    function displayQuestions(questionsArray) {
+    function renderQuestions() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
       const container = document.getElementById('questionContainer');
       container.innerHTML = '';
-      if (questionsArray.length === 0) {
-        container.innerHTML = '<p>No questions found. Try different filters or search terms.</p>';
-      } else {
-        questionsArray.forEach(q => {
-          const card = document.createElement('div');
-          card.className = 'question-card';
-          card.innerHTML = `
-            <div class="question-header">
-              <div>
-                <h3>${q.question}</h3>
-                <div class="question-topic">${q.topic}</div>
-              </div>
-              <div class="question-meta">
-                Year: ${q.year} | Paper: ${q.paper}
-              </div>
+      const filtered = questions.filter(q => {
+        const matchYear = filters.year === 'all' || q.year == filters.year;
+        const matchPaper = filters.paper === 'all' || q.paper == filters.paper;
+        const matchTopic = filters.topic === 'all' || q.topic === filters.topic;
+        const matchSearch = q.question.toLowerCase().includes(search);
+        return matchYear && matchPaper && matchTopic && matchSearch;
+      });
+      document.getElementById('globalCounter').textContent = `Global Index: ${questions.length}`;
+      updateProgress();
+      filtered.forEach((q) => {
+        const state = questionStates[q.id] || 'todo';
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `
+          <div class="status-toggle ${state}" onclick="toggleState('${q.id}', this)">
+            <i class="fas ${state === 'done' ? 'fa-check' : (state === 'unsure' ? 'fa-question' : 'fa-circle')}"></i>
+          </div>
+          <div class="card-content">
+            <div class="badge-row">
+              <div class="badge">${q.topic}</div>
+              <div class="badge">Paper ${q.paper}</div>
+              <div class="badge">${q.year}</div>
             </div>
-            <button class="toggle-answer" onclick="toggleAnswer(this)">Show Answer ▼</button>
-            <div class="answer">${q.answer}</div>
-            <button class="toggle-syllabus" onclick="toggleSyllabus(this)">Show Syllabus Reference ▼</button>
-            <div class="syllabus" style="display: none;">
-              <strong>Syllabus Reference:</strong> ${q.syllabus}<br>
-              <em>Syllabus Section:</em> ${q.syllabusSection}
-            </div>
-          `;
-          container.appendChild(card);
-        });
-      }
-      // Update the question counter
-      const counter = document.getElementById('questionCounter');
-      counter.textContent = questionsArray.length + " Questions";
-      counter.classList.add('animate');
-      setTimeout(() => counter.classList.remove('animate'), 300);
-    }
-
-    function setupSearch() {
-      document.getElementById('searchInput').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const filtered = questions.filter(q =>
-          q.question.toLowerCase().includes(searchTerm) ||
-          q.answer.toLowerCase().includes(searchTerm) ||
-          q.topic.toLowerCase().includes(searchTerm) ||
-          q.year.toString().includes(searchTerm) ||
-          q.paper.toString().includes(searchTerm) ||
-          (q.syllabus && q.syllabus.toLowerCase().includes(searchTerm)) ||
-          (q.syllabusSection && q.syllabusSection.toLowerCase().includes(searchTerm))
-        );
-        displayQuestions(filtered);
+            <div class="q-text">${q.question}</div>
+            <button class="action-btn" onclick="toggleAnswer(this)">Access Mark Scheme</button>
+            <div class="answer-box"><p>${q.answer}</p></div>
+          </div>`;
+        container.appendChild(card);
       });
     }
 
-    window.toggleAnswer = function(button) {
-      const answer = button.nextElementSibling;
-      if (answer.style.display === 'block') {
-        answer.style.display = 'none';
-        button.textContent = 'Show Answer ▼';
-      } else {
-        answer.style.display = 'block';
-        button.textContent = 'Hide Answer ▲';
-      }
-    }
-
-    window.toggleSyllabus = function(button) {
-      const syllabusDiv = button.nextElementSibling;
-      if (syllabusDiv.style.display === 'block') {
-        syllabusDiv.style.display = 'none';
-        button.textContent = 'Show Syllabus Reference ▼';
-      } else {
-        syllabusDiv.style.display = 'block';
-        button.textContent = 'Hide Syllabus Reference ▲';
-      }
-    }
-
-    // Initialize after login
-    window.addEventListener("load", init);
-  </script>
-
- <!-- 1. Path override must appear before count.js -->
-  <script>
-    window.goatcounter = {
-      path: function(p) { return location.host + p }
+    window.toggleState = (id, el) => {
+      const current = questionStates[id] || 'todo';
+      const next = (current === 'todo') ? 'unsure' : (current === 'unsure' ? 'done' : 'todo');
+      questionStates[id] = next;
+      localStorage.setItem('geoHub_mastery', JSON.stringify(questionStates));
+      renderQuestions();
     };
-  </script> <!-- :contentReference[oaicite:7]{index=7} -->
 
-  <!-- 2. Core GoatCounter script -->
-  <script data-goatcounter="https://geohtml.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script> <!-- :contentReference[oaicite:8]{index=8} -->
+    function updateProgress() {
+      const completed = Object.values(questionStates).filter(s => s === 'done').length;
+      document.getElementById('progressCounter').textContent = `Mastery: ${completed}/${questions.length}`;
+    }
 
-  <!-- 3. Display visitor count -->
-  <script>
-    window.goatcounter.visit_count({ append: 'body' });
-  </script> <!-- :contentReference[oaicite:9]{index=9} -->
-  
+    function toggleAnswer(btn) {
+      const box = btn.nextElementSibling;
+      const visible = box.style.display === 'block';
+      box.style.display = visible ? 'none' : 'block';
+      btn.textContent = visible ? 'Access Mark Scheme' : 'Terminate Analysis';
+    }
+
+    function setupInteractive() {
+      window.addEventListener('mousemove', (e) => {
+        const lat = (90 - (e.clientY / window.innerHeight * 180)).toFixed(4);
+        const lng = (e.clientX / window.innerWidth * 360 - 180).toFixed(4);
+        document.getElementById('coordTracker').textContent = `FIX: ${lat} | ${lng}`;
+      });
+      window.addEventListener('scroll', () => {
+        const rotation = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 720;
+        document.getElementById('compassNeedle').style.transform = `rotate(${rotation}deg)`;
+      });
+      document.getElementById('searchInput').addEventListener('input', renderQuestions);
+    }
+
+    function setupEasterEgg() {
+      let buffer = "";
+      window.addEventListener('keydown', (e) => {
+        buffer = (buffer + e.key.toUpperCase()).slice(-4);
+        if(buffer === "IBDP") startRain();
+      });
+    }
+
+    function startRain() {
+      const chars = ['D', 'P', 'G', 'E', 'O'];
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const el = document.createElement('div');
+          el.className = 'rain-letter';
+          el.textContent = chars[Math.floor(Math.random() * chars.length)];
+          el.style.left = Math.random() * 100 + 'vw';
+          document.body.appendChild(el);
+          const dur = 2000 + Math.random() * 2000;
+          el.animate([{ top: '-50px' }, { top: '110vh' }], { duration: dur });
+          setTimeout(() => el.remove(), dur);
+        }, i * 100);
+      }
+    }
+
+    init();
+  </script>
 </body>
 </html>
