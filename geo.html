@@ -231,7 +231,17 @@
       z-index: 100;
     }
 
-    #geoFactBar { background: #0f172a; color: #94a3b8; text-align: center; padding: 10px; font-size: 0.75rem; display: none; }
+    #geoFactBar { 
+      background: #0f172a; 
+      color: #e2e8f0; 
+      text-align: center; 
+      padding: 10px; 
+      font-size: 0.75rem; 
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      border-bottom: 1px solid #334155;
+      transition: opacity 0.5s ease-in-out;
+    }
 
     footer {
       text-align: center;
@@ -272,7 +282,7 @@
 <body>
 
   <div class="topo-overlay"></div>
-  <div id="geoFactBar">Initiating Field Reconnaissance...</div>
+  <div id="geoFactBar">Establishing Global Connection...</div>
   <div id="coordTracker">FIX: 0.0000 | 0.0000</div>
   
   <div id="compassContainer"><div id="compassNeedle"></div></div>
@@ -322,7 +332,7 @@
     <footer>
       <p>&copy; GeoHub Atlas. All rights reserved.</p>
       <p>Independent revision resource. Not affiliated with the International Baccalaureate (IB).</p>
-      <div style="margin-top:10px">Special thanks to <span class="teacher-name">Jiahao Lin</span> for the guidance in geographical science.</div>
+      <div style="margin-top:10px">Special thanks to <span class="teacher-name">Jiahao Lin</span> for the guidance from class of 2025.</div>
     </footer>
   </div>
 
@@ -1822,9 +1832,10 @@
       "Did you know? Russia spans 11 time zones."
     ];
 
-
     let filters = { year: 'all', paper: 'all', unit: 'all', option: 'all', section: 'all' };
     let questionStates = JSON.parse(localStorage.getItem('geoHub_mastery') || '{}');
+    let currentFactIndex = 0;
+    let fieldIntelData = null;
 
     function init() {
       renderFilters();
@@ -1832,6 +1843,53 @@
       setupInteractive();
       setupEasterEgg();
       fetchFieldIntel();
+      startFactTicker();
+    }
+
+    function startFactTicker() {
+      const factBar = document.getElementById('geoFactBar');
+      
+      setInterval(() => {
+        factBar.style.opacity = 0;
+        setTimeout(() => {
+          if (fieldIntelData && currentFactIndex === -1) {
+             factBar.innerHTML = fieldIntelData;
+             currentFactIndex = 0;
+          } else {
+             factBar.innerHTML = geoFacts[currentFactIndex];
+             currentFactIndex++;
+             if (currentFactIndex >= geoFacts.length) {
+                // Cycle back to Field Intel if available, or start of facts
+                currentFactIndex = fieldIntelData ? -1 : 0;
+             }
+          }
+          factBar.style.opacity = 1;
+        }, 500);
+      }, 6000); // Change every 6 seconds
+    }
+
+    async function fetchFieldIntel() {
+      const factBar = document.getElementById('geoFactBar');
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if (data.city) {
+          const dist = Math.round(Math.abs(data.latitude) * 111.32);
+          const antLat = -data.latitude;
+          const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
+          fieldIntelData = `Field Intel: <strong>${data.city}, ${data.country_code}</strong> | Equator Dist: <strong>${dist}km</strong> | Antipode: <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>`;
+          
+          // Initialize with Field Intel
+          factBar.innerHTML = fieldIntelData;
+          currentFactIndex = 0;
+        }
+      } catch (e) { 
+        console.log("Field Intel Unavailable");
+        // Start with first fact if intel fails
+        factBar.innerHTML = geoFacts[0];
+        currentFactIndex = 1;
+      }
+      factBar.style.display = 'block';
     }
 
     function renderFilters() {
@@ -1855,7 +1913,6 @@
         const btn = document.createElement('button');
         btn.className = 'btn-filter' + (filters[key] === val ? ' active' : '');
         
-        // Formatting label
         let label = val === 'all' ? 'All' : val;
         if (typeof val === 'string' && val.includes(': ')) {
             label = val.split(': ')[1];
@@ -1881,24 +1938,10 @@
         const matchYear = filters.year === 'all' || q.year == filters.year;
         const matchPaper = filters.paper === 'all' || q.paper == filters.paper;
         
-        // Logic for Units/Options: If 'all' is selected, show everything. 
-        // Otherwise, only show if the question belongs to that specific Unit/Option category.
         const matchUnit = filters.unit === 'all' || (q.topic.startsWith('Unit') && q.topic === filters.unit);
         const matchOption = filters.option === 'all' || (q.topic.startsWith('Option') && q.topic === filters.option);
-        
-        // If a specific unit is selected, we shouldn't show options unless 'all' options is selected (which is default).
-        // However, standard behavior is intersection. 
-        // If user selects Unit 1, questions must be Unit 1. Options filter should probably reset or be ignored.
-        // Simplified logic: strict matching.
-        
         const matchSection = filters.section === 'all' || q.syllabusSection === filters.section;
         const matchSearch = q.question.toLowerCase().includes(search) || q.answer.toLowerCase().includes(search);
-        
-        // Complex filter logic for Unit vs Option mutually exclusive selection would be better,
-        // but for now, simple intersection.
-        // If user selects Unit 1 AND Option A, result is likely 0. This is expected behavior for "AND" filtering.
-        // To make it more user friendly, we might want to clear one when the other is set, but that requires UI logic changes.
-        // Sticking to strict filtering as requested.
         
         return matchYear && matchPaper && (filters.unit === 'all' || matchUnit) && (filters.option === 'all' || matchOption) && matchSection && matchSearch;
       });
@@ -1909,7 +1952,6 @@
 
       filtered.forEach((q) => {
         const state = questionStates[q.id || (q.year + q.question.substring(0,5))] || 'todo'; 
-        // Fallback ID generation if not explicitly provided in new questions
         const uniqueId = q.id || (q.year + q.question.substring(0,5));
 
         const card = document.createElement('div');
@@ -1938,7 +1980,6 @@
       const next = (current === 'todo') ? 'unsure' : (current === 'unsure' ? 'done' : 'todo');
       questionStates[id] = next;
       localStorage.setItem('geoHub_mastery', JSON.stringify(questionStates));
-      // Update UI directly to avoid full re-render
       el.className = `status-toggle ${next}`;
       el.innerHTML = `<i class="fas ${next === 'done' ? 'fa-check' : (next === 'unsure' ? 'fa-question' : 'fa-circle')}"></i>`;
       
@@ -1986,21 +2027,6 @@
           }
         }
       });
-    }
-
-    async function fetchFieldIntel() {
-      const factBar = document.getElementById('geoFactBar');
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        if (data.city) {
-          const dist = Math.round(Math.abs(data.latitude) * 111.32);
-          const antLat = -data.latitude;
-          const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
-          factBar.style.display = 'block';
-          factBar.innerHTML = `Field Intel: <strong>${data.city}, ${data.country_code}</strong> | Equator Dist: <strong>${dist}km</strong> | Antipode: <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>.`;
-        }
-      } catch (e) { factBar.style.display = 'none'; }
     }
 
     init();
