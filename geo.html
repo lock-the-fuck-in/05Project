@@ -266,6 +266,14 @@
       text-shadow: 0 0 12px rgba(255, 215, 0, 0.9);
       transform: scale(1.08);
     }
+    
+    .dev-credit {
+        display: block;
+        margin-top: 8px;
+        font-weight: 700;
+        color: var(--text-main);
+        letter-spacing: 0.5px;
+    }
 
     /* Optimized Print Engine */
     @media print {
@@ -309,14 +317,10 @@
           <div class="btn-group" id="paperFilter" style="margin-top:8px"></div>
         </div>
 
+        <!-- CONSOLIDATED TOPICS FILTER -->
         <div class="filter-section">
-          <label>Core Units</label>
-          <div class="btn-group" id="unitFilter"></div>
-        </div>
-
-        <div class="filter-section">
-          <label>Optional Themes</label>
-          <div class="btn-group" id="optionFilter"></div>
+          <label>Topics</label>
+          <div class="btn-group" id="topicFilter"></div>
         </div>
 
         <div class="filter-section">
@@ -334,6 +338,7 @@
       <p>&copy; GeoHub Atlas. All rights reserved.</p>
       <p>Independent revision resource. Not affiliated with the International Baccalaureate (IB).</p>
       <div style="margin-top:10px">Special thanks to <span class="teacher-name">Jiahao Lin</span> for the guidance from class of 2025.</div>
+      <span class="dev-credit">Developed, created & designed by Max Gum</span>
     </footer>
   </div>
 
@@ -1929,8 +1934,8 @@
       "Did you know? More people live in the circle containing China, India, and SE Asia than outside of it."
     ];
 
-    // UPDATED: Filters now hold arrays for multi-selection. Empty array [] implies 'all'.
-    let filters = { year: [], paper: [], unit: [], option: [], section: [] };
+    // UPDATED: Filters object now uses 'topic' instead of 'unit' and 'option'
+    let filters = { year: [], paper: [], topic: [], section: [] };
     let questionStates = JSON.parse(localStorage.getItem('geoHub_mastery') || '{}');
     let currentFactIndex = 0;
     let fieldIntelData = null;
@@ -1990,18 +1995,18 @@
     function renderFilters() {
       const years = ['all', ...new Set(questions.map(q => q.year))].sort((a,b) => b-a);
       const papers = ['all', ...new Set(questions.map(q => q.paper))].sort();
-      const units = ['all', ...new Set(questions.filter(q => q.topic.startsWith('Unit')).map(q => q.topic))].sort();
-      const options = ['all', ...new Set(questions.filter(q => q.topic.startsWith('Option')).map(q => q.topic))].sort();
+      
+      // NEW: Consolidated 'topic' filter (replaces Unit/Option)
+      const topics = ['all', ...new Set(questions.map(q => q.topic))].sort();
+      
       const sections = ['all', ...new Set(questions.map(q => q.syllabusSection).filter(s => s))].sort();
 
       populateFilter('yearFilter', years, 'year');
       populateFilter('paperFilter', papers, 'paper');
-      populateFilter('unitFilter', units, 'unit');
-      populateFilter('optionFilter', options, 'option');
+      populateFilter('topicFilter', topics, 'topic');
       populateFilter('sectionFilter', sections, 'section');
     }
 
-    // UPDATED: Populate filters now handles Multi-Select and Toggle logic
     function populateFilter(id, values, key) {
       const container = document.getElementById(id);
       container.innerHTML = '';
@@ -2009,6 +2014,7 @@
         const btn = document.createElement('button');
         
         let label = val === 'all' ? 'All' : val;
+        // Strip prefixes if they exist (just in case you still use "Unit X: Name")
         if (typeof val === 'string' && val.includes(': ')) {
             label = val.split(': ')[1];
         }
@@ -2025,31 +2031,23 @@
         
         btn.onclick = () => {
           if (val === 'all') {
-            // If "All" is clicked, clear everything (reset to default)
             filters[key] = []; 
           } else {
-            // Check if value exists in array
             const index = filters[key].indexOf(val);
             if (index > -1) {
-              // If exists, remove it (toggle off)
               filters[key].splice(index, 1);
             } else {
-              // If doesn't exist, add it
               filters[key].push(val);
             }
           }
           
-          // Refresh visuals for this group ONLY (more efficient than re-rendering all filters)
           updateFilterGroupVisuals(container, key, values);
-          
-          // Re-filter questions
           renderQuestions();
         };
         container.appendChild(btn);
       });
     }
 
-    // NEW: Helper function to update button states without rebuilding DOM
     function updateFilterGroupVisuals(container, key, values) {
       const buttons = container.querySelectorAll('.btn-filter');
       buttons.forEach((btn, idx) => {
@@ -2057,10 +2055,8 @@
         btn.classList.remove('active');
         
         if (val === 'all') {
-           // 'All' is active only if the filter array is empty
            if (filters[key].length === 0) btn.classList.add('active');
         } else {
-           // Specific buttons are active if they are in the array
            if (filters[key].includes(val)) btn.classList.add('active');
         }
       });
@@ -2072,17 +2068,16 @@
       container.innerHTML = '';
 
       const filtered = questions.filter(q => {
-        // UPDATED: Logic to check if property exists in array OR if array is empty (all)
         const matchYear = filters.year.length === 0 || filters.year.includes(q.year);
         const matchPaper = filters.paper.length === 0 || filters.paper.includes(q.paper);
         
-        const matchUnit = filters.unit.length === 0 || (q.topic.startsWith('Unit') && filters.unit.includes(q.topic));
-        const matchOption = filters.option.length === 0 || (q.topic.startsWith('Option') && filters.option.includes(q.topic));
-        const matchSection = filters.section.length === 0 || filters.section.includes(q.syllabusSection);
+        // NEW: Filter by Topic
+        const matchTopic = filters.topic.length === 0 || filters.topic.includes(q.topic);
         
+        const matchSection = filters.section.length === 0 || filters.section.includes(q.syllabusSection);
         const matchSearch = q.question.toLowerCase().includes(search) || q.answer.toLowerCase().includes(search);
         
-        return matchYear && matchPaper && matchUnit && matchOption && matchSection && matchSearch;
+        return matchYear && matchPaper && matchTopic && matchSection && matchSearch;
       });
 
       document.getElementById('globalCounter').textContent = `Inventory: ${questions.length}`;
@@ -2101,7 +2096,7 @@
           </div>
           <div class="q-text">${q.question}</div>
           <div class="badge-row">
-            <div class="badge">${q.topic}</div>
+            <div class="badge" style="background:var(--primary); color:white; border-color:var(--primary)">${q.topic}</div>
             <div class="badge">Paper ${q.paper}</div>
             <div class="badge">${q.year}</div>
           </div>
