@@ -141,6 +141,7 @@
       font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
+      user-select: none;
     }
     .btn-filter.active { background: var(--primary); color: white; border-color: var(--primary); }
 
@@ -1895,10 +1896,41 @@
       "Did you know? There are no rivers in Saudi Arabia.",
       "Did you know? Africa is the only continent that covers four hemispheres.",
       "Did you know? The Dead Sea is currently 429 meters below sea level.",
-      "Did you know? Russia spans 11 time zones."
+      "Did you know? Russia spans 11 time zones.",
+      "Did you know? Mauna Kea is taller than Everest if measured from its underwater base.",
+      "Did you know? Antarctica contains 70% of Earth's fresh water and 90% of its ice.",
+      "Did you know? Canada has more lakes than the rest of the world's lakes combined.",
+      "Did you know? The Himalayas are growing about 2cm every year due to tectonic activity.",
+      "Did you know? There is enough gold in Earth's core to coat the planet in 1.5 feet of gold.",
+      "Did you know? The Philippines consists of 7,641 islands.",
+      "Did you know? Iceland is growing by about 5cm per year as the North American and Eurasian plates pull apart.",
+      "Did you know? Japan experiences about 1,500 earthquakes every year.",
+      "Did you know? Lake Baikal holds 20% of the world's unfrozen fresh water.",
+      "Did you know? The Pacific Ocean shrinks by about 2.5cm yearly while the Atlantic widens.",
+      "Did you know? Lesotho, Vatican City, and San Marino are the only countries completely surrounded by one other country.",
+      "Did you know? The driest place in Antarctica hasn't seen rain for 2 million years.",
+      "Did you know? 75% of the world's volcanos are in the Pacific Ring of Fire.",
+      "Did you know? Kiribati is the only country in the world to be in all four hemispheres.",
+      "Did you know? Greenland is the world's largest island that is not a continent.",
+      "Did you know? Nauru is the only country without an official capital city.",
+      "Did you know? Finland has almost 180,000 islands.",
+      "Did you know? Indonesia has the largest Muslim population in the world.",
+      "Did you know? Chamarel in Mauritius has sand dunes of seven distinct colors.",
+      "Did you know? The boundary between the mantle and the crust is called the Moho Discontinuity.",
+      "Did you know? Approximately 71% of the Earth's surface is covered by water.",
+      "Did you know? The shortest commercial flight in the world lasts 57 seconds (Westray to Papa Westray, Scotland).",
+      "Did you know? Yellowstone National Park sits on top of a supervolcano.",
+      "Did you know? Angel Falls in Venezuela is the world's highest uninterrupted waterfall (979m).",
+      "Did you know? Only 3% of the world's water is fresh water.",
+      "Did you know? The Marianas Trench is deeper than Mount Everest is tall.",
+      "Did you know? Earth is the only planet not named after a god.",
+      "Did you know? A day on Earth increases by 1.7 milliseconds every century.",
+      "Did you know? The Danakil Depression in Ethiopia is one of the hottest inhabited places on Earth.",
+      "Did you know? More people live in the circle containing China, India, and SE Asia than outside of it."
     ];
 
-    let filters = { year: 'all', paper: 'all', unit: 'all', option: 'all', section: 'all' };
+    // UPDATED: Filters now hold arrays for multi-selection. Empty array [] implies 'all'.
+    let filters = { year: [], paper: [], unit: [], option: [], section: [] };
     let questionStates = JSON.parse(localStorage.getItem('geoHub_mastery') || '{}');
     let currentFactIndex = 0;
     let fieldIntelData = null;
@@ -1925,13 +1957,12 @@
              factBar.innerHTML = geoFacts[currentFactIndex];
              currentFactIndex++;
              if (currentFactIndex >= geoFacts.length) {
-                // Cycle back to Field Intel if available, or start of facts
                 currentFactIndex = fieldIntelData ? -1 : 0;
              }
           }
           factBar.style.opacity = 1;
         }, 500);
-      }, 6000); // Change every 6 seconds
+      }, 6000);
     }
 
     async function fetchFieldIntel() {
@@ -1945,13 +1976,11 @@
           const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
           fieldIntelData = `Field Intel: <strong>${data.city}, ${data.country_code}</strong> | Equator Dist: <strong>${dist}km</strong> | Antipode: <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>`;
           
-          // Initialize with Field Intel
           factBar.innerHTML = fieldIntelData;
           currentFactIndex = 0;
         }
       } catch (e) { 
         console.log("Field Intel Unavailable");
-        // Start with first fact if intel fails
         factBar.innerHTML = geoFacts[0];
         currentFactIndex = 1;
       }
@@ -1972,12 +2001,12 @@
       populateFilter('sectionFilter', sections, 'section');
     }
 
+    // UPDATED: Populate filters now handles Multi-Select and Toggle logic
     function populateFilter(id, values, key) {
       const container = document.getElementById(id);
       container.innerHTML = '';
       values.forEach(val => {
         const btn = document.createElement('button');
-        btn.className = 'btn-filter' + (filters[key] === val ? ' active' : '');
         
         let label = val === 'all' ? 'All' : val;
         if (typeof val === 'string' && val.includes(': ')) {
@@ -1985,13 +2014,55 @@
         }
         
         btn.textContent = label;
+        btn.className = 'btn-filter';
+
+        // Set initial active state
+        if (val === 'all') {
+          if (filters[key].length === 0) btn.classList.add('active');
+        } else {
+          if (filters[key].includes(val)) btn.classList.add('active');
+        }
+        
         btn.onclick = () => {
-          filters[key] = val;
-          [...container.children].forEach(c => c.classList.remove('active'));
-          btn.classList.add('active');
+          if (val === 'all') {
+            // If "All" is clicked, clear everything (reset to default)
+            filters[key] = []; 
+          } else {
+            // Check if value exists in array
+            const index = filters[key].indexOf(val);
+            if (index > -1) {
+              // If exists, remove it (toggle off)
+              filters[key].splice(index, 1);
+            } else {
+              // If doesn't exist, add it
+              filters[key].push(val);
+            }
+          }
+          
+          // Refresh visuals for this group ONLY (more efficient than re-rendering all filters)
+          updateFilterGroupVisuals(container, key, values);
+          
+          // Re-filter questions
           renderQuestions();
         };
         container.appendChild(btn);
+      });
+    }
+
+    // NEW: Helper function to update button states without rebuilding DOM
+    function updateFilterGroupVisuals(container, key, values) {
+      const buttons = container.querySelectorAll('.btn-filter');
+      buttons.forEach((btn, idx) => {
+        const val = values[idx];
+        btn.classList.remove('active');
+        
+        if (val === 'all') {
+           // 'All' is active only if the filter array is empty
+           if (filters[key].length === 0) btn.classList.add('active');
+        } else {
+           // Specific buttons are active if they are in the array
+           if (filters[key].includes(val)) btn.classList.add('active');
+        }
       });
     }
 
@@ -2001,15 +2072,17 @@
       container.innerHTML = '';
 
       const filtered = questions.filter(q => {
-        const matchYear = filters.year === 'all' || q.year == filters.year;
-        const matchPaper = filters.paper === 'all' || q.paper == filters.paper;
+        // UPDATED: Logic to check if property exists in array OR if array is empty (all)
+        const matchYear = filters.year.length === 0 || filters.year.includes(q.year);
+        const matchPaper = filters.paper.length === 0 || filters.paper.includes(q.paper);
         
-        const matchUnit = filters.unit === 'all' || (q.topic.startsWith('Unit') && q.topic === filters.unit);
-        const matchOption = filters.option === 'all' || (q.topic.startsWith('Option') && q.topic === filters.option);
-        const matchSection = filters.section === 'all' || q.syllabusSection === filters.section;
+        const matchUnit = filters.unit.length === 0 || (q.topic.startsWith('Unit') && filters.unit.includes(q.topic));
+        const matchOption = filters.option.length === 0 || (q.topic.startsWith('Option') && filters.option.includes(q.topic));
+        const matchSection = filters.section.length === 0 || filters.section.includes(q.syllabusSection);
+        
         const matchSearch = q.question.toLowerCase().includes(search) || q.answer.toLowerCase().includes(search);
         
-        return matchYear && matchPaper && (filters.unit === 'all' || matchUnit) && (filters.option === 'all' || matchOption) && matchSection && matchSearch;
+        return matchYear && matchPaper && matchUnit && matchOption && matchSection && matchSearch;
       });
 
       document.getElementById('globalCounter').textContent = `Inventory: ${questions.length}`;
