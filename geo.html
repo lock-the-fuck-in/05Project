@@ -30,7 +30,6 @@
       position: relative;
     }
 
-    /* Topographic Overlay */
     .topo-overlay {
       position: fixed;
       top: 0;
@@ -268,21 +267,19 @@
     }
     
     .dev-credit {
-        display: block;
-        margin-top: 8px;
-        font-weight: 400;
-        color: var(--text-muted);
-        letter-spacing: 0.5px;
+      display: block;
+      margin-top: 8px;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
     }
 
-    /* MOBILE OPTIMIZATION - Hide compass and coordinates */
     @media (max-width: 768px) {
       #compassContainer, #coordTracker {
         display: none !important;
       }
     }
 
-    /* Optimized Print Engine */
     @media print {
       * { background: transparent !important; color: black !important; box-shadow: none !important; transition: none !important; }
       body { width: 100%; margin: 0; padding: 0; background: white; }
@@ -1968,7 +1965,6 @@
           const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
           fieldIntelData = `Field Intel: <strong>${data.city}, ${data.country_code}</strong> | IP: <strong>${data.ip}</strong> | Equator Dist: <strong>${dist}km</strong> | Antipode: <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>`;
           
-          // Show the IP welcome immediately
           factBar.innerHTML = fieldIntelData;
           currentFactIndex = 0;
         }
@@ -2101,11 +2097,13 @@
       window.addEventListener('mousemove', (e) => {
         const lat = (90 - (e.clientY / window.innerHeight * 180)).toFixed(4);
         const lng = (e.clientX / window.innerWidth * 360 - 180).toFixed(4);
-        document.getElementById('coordTracker').textContent = `FIX: ${lat} | ${lng}`;
+        const tracker = document.getElementById('coordTracker');
+        if (tracker) tracker.textContent = `FIX: ${lat} | ${lng}`;
       });
       window.addEventListener('scroll', () => {
         const rotation = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 720;
-        document.getElementById('compassNeedle').style.transform = `rotate(${rotation}deg)`;
+        const needle = document.getElementById('compassNeedle');
+        if (needle) needle.style.transform = `rotate(${rotation}deg)`;
       });
       document.getElementById('searchInput').addEventListener('input', renderQuestions);
     }
