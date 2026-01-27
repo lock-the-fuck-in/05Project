@@ -270,9 +270,16 @@
     .dev-credit {
         display: block;
         margin-top: 8px;
-        font-weight: 400; /* Made normal weight */
-        color: var(--text-muted); /* Matched footer color */
+        font-weight: 400;
+        color: var(--text-muted);
         letter-spacing: 0.5px;
+    }
+
+    /* MOBILE OPTIMIZATION - Hide compass and coordinates */
+    @media (max-width: 768px) {
+      #compassContainer, #coordTracker {
+        display: none !important;
+      }
     }
 
     /* Optimized Print Engine */
@@ -317,7 +324,6 @@
           <div class="btn-group" id="paperFilter" style="margin-top:8px"></div>
         </div>
 
-        <!-- CONSOLIDATED TOPICS FILTER -->
         <div class="filter-section">
           <label>Topics</label>
           <div class="btn-group" id="topicFilter"></div>
@@ -1890,7 +1896,7 @@
 }
     ];
 
-    const geoFacts = [
+     const geoFacts = [
       "Did you know? The Diomede Islands are just 2.4 miles apart but separated by 21 hours in time.",
       "Did you know? The Atacama Desert in Chile is the driest non-polar desert on Earth.",
       "Did you know? Mount Thor in Canada has the world's greatest vertical drop (1,250m).",
@@ -1900,50 +1906,21 @@
       "Did you know? Point Nemo is the most remote point in the ocean, 2,688km from nearest land.",
       "Did you know? The Amazon Rainforest produces 20% of the world's oxygen.",
       "Did you know? Australia is wider than the moon.",
-      "Did you know? There are no rivers in Saudi Arabia.",
       "Did you know? Africa is the only continent that covers four hemispheres.",
       "Did you know? The Dead Sea is currently 429 meters below sea level.",
       "Did you know? Russia spans 11 time zones.",
-      "Did you know? Mauna Kea is taller than Everest if measured from its underwater base.",
-      "Did you know? Antarctica contains 70% of Earth's fresh water and 90% of its ice.",
       "Did you know? Canada has more lakes than the rest of the world's lakes combined.",
-      "Did you know? The Himalayas are growing about 2cm every year due to tectonic activity.",
-      "Did you know? There is enough gold in Earth's core to coat the planet in 1.5 feet of gold.",
-      "Did you know? The Philippines consists of 7,641 islands.",
-      "Did you know? Iceland is growing by about 5cm per year as the North American and Eurasian plates pull apart.",
       "Did you know? Japan experiences about 1,500 earthquakes every year.",
-      "Did you know? Lake Baikal holds 20% of the world's unfrozen fresh water.",
-      "Did you know? The Pacific Ocean shrinks by about 2.5cm yearly while the Atlantic widens.",
-      "Did you know? Lesotho, Vatican City, and San Marino are the only countries completely surrounded by one other country.",
-      "Did you know? The driest place in Antarctica hasn't seen rain for 2 million years.",
-      "Did you know? 75% of the world's volcanos are in the Pacific Ring of Fire.",
-      "Did you know? Kiribati is the only country in the world to be in all four hemispheres.",
-      "Did you know? Greenland is the world's largest island that is not a continent.",
-      "Did you know? Nauru is the only country without an official capital city.",
-      "Did you know? Finland has almost 180,000 islands.",
-      "Did you know? Indonesia has the largest Muslim population in the world.",
-      "Did you know? Chamarel in Mauritius has sand dunes of seven distinct colors.",
-      "Did you know? The boundary between the mantle and the crust is called the Moho Discontinuity.",
-      "Did you know? Approximately 71% of the Earth's surface is covered by water.",
-      "Did you know? The shortest commercial flight in the world lasts 57 seconds (Westray to Papa Westray, Scotland).",
-      "Did you know? Yellowstone National Park sits on top of a supervolcano.",
-      "Did you know? Angel Falls in Venezuela is the world's highest uninterrupted waterfall (979m).",
-      "Did you know? Only 3% of the world's water is fresh water.",
-      "Did you know? The Marianas Trench is deeper than Mount Everest is tall.",
-      "Did you know? Earth is the only planet not named after a god.",
-      "Did you know? A day on Earth increases by 1.7 milliseconds every century.",
-      "Did you know? The Danakil Depression in Ethiopia is one of the hottest inhabited places on Earth.",
-      "Did you know? More people live in the circle containing China, India, and SE Asia than outside of it."
+      "Did you know? Greenland is the world's largest island that is not a continent."
     ];
 
-    // UPDATED: Filters object now uses 'topic' instead of 'unit' and 'option'
     let filters = { year: [], paper: [], topic: [], section: [] };
     let questionStates = JSON.parse(localStorage.getItem('geoHub_mastery') || '{}');
     let currentFactIndex = 0;
     let fieldIntelData = null;
 
     function init() {
-      shuffleArray(geoFacts); // Randomize fact order on load
+      shuffleArray(geoFacts);
       renderFilters();
       renderQuestions();
       setupInteractive();
@@ -1952,7 +1929,6 @@
       startFactTicker();
     }
     
-    // Fisher-Yates shuffle algorithm
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -1978,7 +1954,7 @@
           }
           factBar.style.opacity = 1;
         }, 500);
-      }, 6000);
+      }, 7000);
     }
 
     async function fetchFieldIntel() {
@@ -1990,8 +1966,9 @@
           const dist = Math.round(Math.abs(data.latitude) * 111.32);
           const antLat = -data.latitude;
           const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
-          fieldIntelData = `Field Intel: <strong>${data.city}, ${data.country_code}</strong> | Equator Dist: <strong>${dist}km</strong> | Antipode: <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>`;
+          fieldIntelData = `Field Intel: <strong>${data.city}, ${data.country_code}</strong> | IP: <strong>${data.ip}</strong> | Equator Dist: <strong>${dist}km</strong> | Antipode: <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>`;
           
+          // Show the IP welcome immediately
           factBar.innerHTML = fieldIntelData;
           currentFactIndex = 0;
         }
@@ -2000,16 +1977,12 @@
         factBar.innerHTML = geoFacts[0];
         currentFactIndex = 1;
       }
-      factBar.style.display = 'block';
     }
 
     function renderFilters() {
       const years = ['all', ...new Set(questions.map(q => q.year))].sort((a,b) => b-a);
       const papers = ['all', ...new Set(questions.map(q => q.paper))].sort();
-      
-      // NEW: Consolidated 'topic' filter (replaces Unit/Option)
       const topics = ['all', ...new Set(questions.map(q => q.topic))].sort();
-      
       const sections = ['all', ...new Set(questions.map(q => q.syllabusSection).filter(s => s))].sort();
 
       populateFilter('yearFilter', years, 'year');
@@ -2023,17 +1996,9 @@
       container.innerHTML = '';
       values.forEach(val => {
         const btn = document.createElement('button');
-        
         let label = val === 'all' ? 'All' : val;
-        // Strip prefixes if they exist (just in case you still use "Unit X: Name")
-        if (typeof val === 'string' && val.includes(': ')) {
-            label = val.split(': ')[1];
-        }
-        
         btn.textContent = label;
         btn.className = 'btn-filter';
-
-        // Set initial active state
         if (val === 'all') {
           if (filters[key].length === 0) btn.classList.add('active');
         } else {
@@ -2051,7 +2016,6 @@
               filters[key].push(val);
             }
           }
-          
           updateFilterGroupVisuals(container, key, values);
           renderQuestions();
         };
@@ -2064,7 +2028,6 @@
       buttons.forEach((btn, idx) => {
         const val = values[idx];
         btn.classList.remove('active');
-        
         if (val === 'all') {
            if (filters[key].length === 0) btn.classList.add('active');
         } else {
@@ -2081,13 +2044,9 @@
       const filtered = questions.filter(q => {
         const matchYear = filters.year.length === 0 || filters.year.includes(q.year);
         const matchPaper = filters.paper.length === 0 || filters.paper.includes(q.paper);
-        
-        // NEW: Filter by Topic
         const matchTopic = filters.topic.length === 0 || filters.topic.includes(q.topic);
-        
         const matchSection = filters.section.length === 0 || filters.section.includes(q.syllabusSection);
         const matchSearch = q.question.toLowerCase().includes(search) || q.answer.toLowerCase().includes(search);
-        
         return matchYear && matchPaper && matchTopic && matchSection && matchSearch;
       });
 
@@ -2096,8 +2055,8 @@
       document.getElementById('progressCounter').textContent = `Mastery: ${completedCount}/${questions.length}`;
 
       filtered.forEach((q) => {
-        const state = questionStates[q.id || (q.year + q.question.substring(0,5))] || 'todo'; 
         const uniqueId = q.id || (q.year + q.question.substring(0,5));
+        const state = questionStates[uniqueId] || 'todo'; 
 
         const card = document.createElement('div');
         card.className = 'question-card';
@@ -2127,7 +2086,6 @@
       localStorage.setItem('geoHub_mastery', JSON.stringify(questionStates));
       el.className = `status-toggle ${next}`;
       el.innerHTML = `<i class="fas ${next === 'done' ? 'fa-check' : (next === 'unsure' ? 'fa-question' : 'fa-circle')}"></i>`;
-      
       const completedCount = Object.values(questionStates).filter(s => s === 'done').length;
       document.getElementById('progressCounter').textContent = `Mastery: ${completedCount}/${questions.length}`;
     };
