@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-BM2X8GXYV2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-BM2X8GXYV2');
+  </script>
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "v8pqv6i5ec");
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GeoHub | Atlas Professional</title>
@@ -14,6 +32,7 @@
       --text-main: #0f172a;
       --text-muted: #64748b;
       --glass: rgba(255, 255, 255, 0.95);
+      --glass-dark: rgba(15, 23, 42, 0.9);
       --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
       --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
@@ -243,6 +262,56 @@
       transition: opacity 0.5s ease-in-out;
     }
 
+    /* Updated Privacy Banner Style - Elegant Floating Design */
+    #privacyBanner {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 600px;
+      background: rgba(2, 6, 23, 0.95); /* Deep slate black */
+      backdrop-filter: blur(16px);
+      color: #f1f5f9;
+      padding: 16px 24px;
+      z-index: 3000;
+      display: none;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      font-family: 'Inter', sans-serif;
+    }
+    .privacy-content { 
+      font-size: 0.8rem; 
+      line-height: 1.5;
+      margin-right: 20px;
+      color: #cbd5e1;
+    }
+    .privacy-content strong {
+      color: white;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+    }
+    .privacy-btn { 
+      background: #f8fafc; 
+      color: #0f172a; 
+      border: none; 
+      padding: 8px 16px; 
+      border-radius: 8px; 
+      font-weight: 700; 
+      font-size: 0.75rem; 
+      cursor: pointer; 
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .privacy-btn:hover {
+      background: #e2e8f0;
+      transform: translateY(-1px);
+    }
+
     footer {
       text-align: center;
       padding: 40px 20px;
@@ -275,8 +344,18 @@
     }
 
     @media (max-width: 768px) {
-      #compassContainer, #coordTracker {
-        display: none !important;
+      #compassContainer, #coordTracker { display: none !important; }
+      #privacyBanner { 
+        bottom: 0; 
+        left: 0; 
+        transform: none; 
+        width: 100%; 
+        max-width: 100%;
+        border-radius: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
       }
     }
 
@@ -284,7 +363,7 @@
       * { background: transparent !important; color: black !important; box-shadow: none !important; transition: none !important; }
       body { width: 100%; margin: 0; padding: 0; background: white; }
       .container { width: 100%; margin: 0; padding: 0; }
-      .header, .controls-panel, .stats-bar, .print-btn, .action-btn, #compassContainer, #coordTracker, .status-toggle, #geoFactBar, footer { display: none !important; }
+      .header, .controls-panel, .stats-bar, .print-btn, .action-btn, #compassContainer, #coordTracker, .status-toggle, #geoFactBar, #privacyBanner, footer { display: none !important; }
       .answer-box { display: block !important; border: 1px solid #ccc !important; padding: 10px !important; margin: 10px 0 !important; font-size: 10pt; background: white !important; }
       .question-card { border: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding: 20px 0; page-break-inside: avoid; }
       .badge-row { margin-bottom: 5px; }
@@ -299,6 +378,15 @@
   <div id="coordTracker">FIX: 0.0000 | 0.0000</div>
   
   <div id="compassContainer"><div id="compassNeedle"></div></div>
+
+  <!-- Privacy Banner -->
+  <div id="privacyBanner">
+    <div class="privacy-content">
+      <strong>Protocol Notification</strong>
+      We use GoatCounter, Microsoft Clarity, and Google Analytics to monitor system performance and improve revision precision. Data is collected for analytical refinement only and is not utilized for advertising.
+    </div>
+    <button class="privacy-btn" onclick="acknowledgePrivacy()">ACKNOWLEDGE</button>
+  </div>
 
   <div class="container">
     <div class="stats-bar">
@@ -1917,6 +2005,7 @@
     let fieldIntelData = null;
 
     function init() {
+      checkPrivacyAck();
       shuffleArray(geoFacts);
       renderFilters();
       renderQuestions();
@@ -1931,6 +2020,24 @@
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
       }
+    }
+
+    function checkPrivacyAck() {
+      // Logic to check persistence - if 'geoHub_privacy_ack' exists, don't show.
+      if (!localStorage.getItem('geoHub_privacy_ack')) {
+        document.getElementById('privacyBanner').style.display = 'flex';
+      }
+    }
+
+    function acknowledgePrivacy() {
+      // Save acknowledgment to localStorage to persist across visits
+      localStorage.setItem('geoHub_privacy_ack', 'true');
+      const banner = document.getElementById('privacyBanner');
+      banner.style.opacity = '0';
+      banner.style.transform = 'translate(-50%, 20px)'; // Slide down effect
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 300);
     }
 
     function startFactTicker() {
@@ -1958,18 +2065,19 @@
       const factBar = document.getElementById('geoFactBar');
       try {
         const res = await fetch('https://ipapi.co/json/');
+        if (!res.ok) throw new Error('API Blocked');
         const data = await res.json();
         if (data.city) {
           const dist = Math.round(Math.abs(data.latitude) * 111.32);
           const antLat = -data.latitude;
           const antLng = data.longitude > 0 ? data.longitude - 180 : data.longitude + 180;
           fieldIntelData = `Field Intel: <strong>${data.city}, ${data.country_code}</strong> | IP: <strong>${data.ip}</strong> | Equator Dist: <strong>${dist}km</strong> | Antipode: <strong>${antLat.toFixed(2)}°, ${antLng.toFixed(2)}°</strong>`;
-          
           factBar.innerHTML = fieldIntelData;
           currentFactIndex = 0;
         }
       } catch (e) { 
-        console.log("Field Intel Unavailable");
+        console.warn("Field Intel Blocked (AdBlocker detected on PC)");
+        fieldIntelData = "System Status: Tracking Protections Enabled | Location Stealth Active";
         factBar.innerHTML = geoFacts[0];
         currentFactIndex = 1;
       }
