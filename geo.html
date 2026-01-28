@@ -287,7 +287,7 @@
       align-items: flex-end;
       overflow: hidden; 
       padding-bottom: 20px;
-      padding-top: 50px; /* Space to prevent animation clipping */
+      padding-top: 50px;
     }
 
     #privacyBanner {
@@ -298,7 +298,6 @@
       padding: 14px 24px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
-      /* Shadow removed */
       font-family: 'Inter', sans-serif;
       display: flex;
       justify-content: space-between;
@@ -347,18 +346,14 @@
       margin-top: 40px;
     }
 
-    /* Footer Visit Counter Style */
+    /* Footer Visit Counter Style - Text Embedded */
     #site-visits {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 6px 14px;
-      background: rgba(255,255,255,0.5);
-      border: 1px solid rgba(0,0,0,0.05);
-      border-radius: 20px;
-      font-weight: 600;
+      display: block;
+      margin-top: 8px;
       color: var(--text-muted);
-      font-size: 0.7rem;
-      min-height: 28px; 
+      font-size: 0.75rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
     }
 
     .teacher-name {
@@ -462,8 +457,8 @@
       <div style="margin-top:10px">Special thanks to <span class="teacher-name">Jiahao Lin</span> for the guidance from class of 2025.</div>
       <span class="dev-credit">Developed, created & designed by Max Gum</span>
       
-      <!-- Moved Visit Counter Here with Fallback -->
-      <div id="site-visits" title="Global Visits This Year">Initializing...</div>
+      <!-- Footer Visit Counter - Text Embedded -->
+      <div id="site-visits"></div>
     </footer>
   </div>
   
@@ -2050,9 +2045,10 @@
       loadVisitCounter();
     }
     
-    // GoatCounter Visit Logic - Targeting Footer with Polling
+    // GoatCounter Visit Logic - Embedded Text Style
     function loadVisitCounter() {
       let attempts = 0;
+      const currentYear = new Date().getFullYear();
       const interval = setInterval(() => {
         attempts++;
         if (window.goatcounter && window.goatcounter.visit_count) {
@@ -2062,25 +2058,31 @@
             append: '#site-visits',
             path: 'TOTAL', 
             // Start date filtering for THIS year (YTD)
-            start: new Date().getFullYear() + '-01-01',
+            start: currentYear + '-01-01',
             no_branding: true,
             style: `
               div { 
-                font-family: 'Inter', sans-serif; 
-                font-size: 0.7rem; 
-                color: #64748b; 
-                font-weight: 700; 
-                display: flex; 
-                align-items: center; 
-                justify-content: center;
-                gap: 4px;
+                border: none !important;
+                background: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-family: 'Inter', sans-serif !important;
+                font-size: 0.75rem !important;
+                color: #64748b !important; /* Matches --text-muted */
+                width: auto !important;
+                display: inline !important;
               }
-              #gcvc-views::after { content: ' Visits (YTD)'; font-weight: 400; opacity: 0.8; }
+              #gcvc-for { display: none !important; }
+              #gcvc-views { font-weight: 700; color: #334155; } /* Matches --secondary */
+              #gcvc-views::before { content: 'In ${currentYear}, '; font-weight: 400; color: #64748b; }
+              #gcvc-views::after { content: ' students found this website helpful.'; font-weight: 400; color: #64748b; }
             `
           });
         } else if (attempts > 50) { // Timeout after 10 seconds
           clearInterval(interval);
-          document.getElementById('site-visits').textContent = 'Traffic Monitor Active';
+          // Optional: clear container if fails
+          document.getElementById('site-visits').textContent = '';
         }
       }, 200); 
     }
