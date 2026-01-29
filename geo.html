@@ -360,7 +360,7 @@
     <footer>
       <!-- Real-Time Visitor Count (JSON API) -->
       <div class="visitor-stats">
-        <span id="visitor-count">...</span> students found this website helpful
+        <span id="visitor-count">...</span> students found this website helpful <span id="dynamic-year-text"></span>
       </div>
 
       <p>&copy; GeoHub Atlas. All rights reserved.</p>
@@ -1920,7 +1920,7 @@
 }
     ];
 
-  /* Ticker Content */
+ /* Ticker Content */
     const geoFacts = [
       "Did you know? The Diomede Islands are just 2.4 miles apart but separated by 21 hours in time.",
       "Did you know? The Atacama Desert in Chile is the driest non-polar desert on Earth.",
@@ -1949,20 +1949,25 @@
       setupEasterEgg();
       fetchFieldIntel();
       startFactTicker();
-      fetchVisitorCount(); // NEW: Fetch real user count
+      fetchVisitorCount(); // Real user count with updated logic
     }
     
     /* Logic: Real-Time Visitor Count Fetch */
     async function fetchVisitorCount() {
       const countEl = document.getElementById('visitor-count');
+      const yearTextEl = document.getElementById('dynamic-year-text');
+      
+      // Dynamic Year Logic
+      const currentYear = new Date().getFullYear();
+      yearTextEl.textContent = `from 1 January ${currentYear} till 31 December ${currentYear}`;
+
       try {
-        // Fetch current path stats. Default to / if just path.
-        const path = window.location.pathname || '/';
-        const response = await fetch(`https://geohtml.goatcounter.com/counter/${encodeURIComponent(path)}.json`);
+        // Enforce specific path stats
+        const targetPath = '/05Project/geo.html';
+        const response = await fetch(`https://geohtml.goatcounter.com/counter/${encodeURIComponent(targetPath)}.json`);
         
         if (response.ok) {
            const data = await response.json();
-           // Display real count
            countEl.textContent = data.count; 
         } else {
            countEl.textContent = "1,200+"; // Fallback if API fails
@@ -2030,7 +2035,21 @@
 
     /* Rendering: Filter Buttons */
     function renderFilters() {
-      const years = ['all', ...new Set(questions.map(q => q.year))].sort((a,b) => b-a);
+      // Create set from existing questions
+      let availableYears = [...new Set(questions.map(q => q.year))];
+      
+      // Add current year dynamically (ensures 2026 appears even without data)
+      const currentYear = new Date().getFullYear();
+      if (!availableYears.includes(currentYear)) {
+        availableYears.push(currentYear);
+      }
+      
+      const years = ['all', ...availableYears].sort((a,b) => {
+        if(a === 'all') return -1;
+        if(b === 'all') return 1;
+        return b - a; // Descending sort
+      });
+
       const papers = ['all', ...new Set(questions.map(q => q.paper))].sort();
       const topics = ['all', ...new Set(questions.map(q => q.topic))].sort();
       const sections = ['all', ...new Set(questions.map(q => q.syllabusSection).filter(s => s))].sort();
