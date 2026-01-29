@@ -90,8 +90,26 @@
     /* Main Content Layout */
     .container { width: 95%; max-width: 1200px; margin: 0 auto; padding: 15px; position: relative; }
 
+    /* Stats Bar (Restored) */
+    .stats-bar {
+      position: sticky;
+      top: 15px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 10px 25px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      box-shadow: var(--shadow-md);
+      z-index: 1000;
+    }
+    .stat-item { font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+
     /* Header Section */
-    .header { text-align: center; padding: 40px 20px; }
+    .header { text-align: center; padding: 20px 20px 40px; } /* Adjusted padding */
     .header h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 950; color: var(--text-main); margin-bottom: 5px; letter-spacing: -1.5px; }
 
     /* Filtering Controls */
@@ -245,16 +263,11 @@
       margin-top: 40px;
     }
 
-    .footer-counters {
+    .visitor-stats {
       margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      font-weight: 900;
+      font-weight: 600;
       color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
     }
 
     .teacher-name {
@@ -290,7 +303,7 @@
     @media print {
       * { background: transparent !important; color: black !important; box-shadow: none !important; transition: none !important; }
       body { width: 100%; margin: 0; padding: 0; background: white; }
-      .header, .controls-panel, .print-btn, .action-btn, #compassContainer, #coordTracker, .status-toggle, #geoFactBar, footer { display: none !important; }
+      .header, .controls-panel, .print-btn, .action-btn, #compassContainer, #coordTracker, .status-toggle, #geoFactBar, footer, .stats-bar { display: none !important; }
       .answer-box { display: block !important; border: 1px solid #ccc !important; padding: 10px !important; margin: 10px 0 !important; font-size: 10pt; background: white !important; }
       .question-card { border: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding: 20px 0; page-break-inside: avoid; }
       .q-text { padding: 0; font-size: 12pt; }
@@ -305,6 +318,12 @@
   <div id="compassContainer"><div id="compassNeedle"></div></div>
 
   <div class="container">
+    <!-- Restored Sticky Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-item" id="globalCounter">Inventory: 0</div>
+      <div class="stat-item" id="progressCounter">Mastery: 0/0</div>
+    </div>
+
     <header class="header">
       <h1>GeoHub Atlas</h1>
       <p>Precision Revision for IBDP Geography</p>
@@ -339,10 +358,9 @@
     <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i></button>
 
     <footer>
-      <!-- Plain Text Counters in Footer -->
-      <div class="footer-counters">
-        <span id="globalCounter">Inventory: 0</span>
-        <span id="progressCounter">Mastery: 0/0</span>
+      <!-- Plain Text Visitor Count -->
+      <div class="visitor-stats">
+        <span id="visitor-count">1,248</span> students found this website helpful
       </div>
 
       <p>&copy; GeoHub Atlas. All rights reserved.</p>
@@ -352,6 +370,7 @@
     </footer>
   </div>
   
+  <!-- Analytics Script -->
   <script data-goatcounter="https://geohtml.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   
   <script>
@@ -1900,7 +1919,7 @@
 }
     ];
 
-    /* Ticker Content */
+  /* Ticker Content */
     const geoFacts = [
       "Did you know? The Diomede Islands are just 2.4 miles apart but separated by 21 hours in time.",
       "Did you know? The Atacama Desert in Chile is the driest non-polar desert on Earth.",
