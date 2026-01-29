@@ -90,7 +90,7 @@
     /* Main Content Layout */
     .container { width: 95%; max-width: 1200px; margin: 0 auto; padding: 15px; position: relative; }
 
-    /* Stats Bar (Restored) */
+    /* Stats Bar (Sticky Top) */
     .stats-bar {
       position: sticky;
       top: 15px;
@@ -109,7 +109,7 @@
     .stat-item { font-weight: 800; font-size: 0.75rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
 
     /* Header Section */
-    .header { text-align: center; padding: 20px 20px 40px; } /* Adjusted padding */
+    .header { text-align: center; padding: 20px 20px 40px; }
     .header h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 950; color: var(--text-main); margin-bottom: 5px; letter-spacing: -1.5px; }
 
     /* Filtering Controls */
@@ -318,7 +318,7 @@
   <div id="compassContainer"><div id="compassNeedle"></div></div>
 
   <div class="container">
-    <!-- Restored Sticky Stats Bar -->
+    <!-- Sticky Stats Bar -->
     <div class="stats-bar">
       <div class="stat-item" id="globalCounter">Inventory: 0</div>
       <div class="stat-item" id="progressCounter">Mastery: 0/0</div>
@@ -358,9 +358,9 @@
     <button class="print-btn" onclick="window.print()"><i class="fas fa-print"></i></button>
 
     <footer>
-      <!-- Plain Text Visitor Count -->
+      <!-- Real-Time Visitor Count (JSON API) -->
       <div class="visitor-stats">
-        <span id="visitor-count">1,248</span> students found this website helpful
+        <span id="visitor-count">...</span> students found this website helpful
       </div>
 
       <p>&copy; GeoHub Atlas. All rights reserved.</p>
@@ -372,6 +372,7 @@
   
   <!-- Analytics Script -->
   <script data-goatcounter="https://geohtml.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
   
   <script>
     const questions = [
@@ -1948,8 +1949,30 @@
       setupEasterEgg();
       fetchFieldIntel();
       startFactTicker();
+      fetchVisitorCount(); // NEW: Fetch real user count
     }
     
+    /* Logic: Real-Time Visitor Count Fetch */
+    async function fetchVisitorCount() {
+      const countEl = document.getElementById('visitor-count');
+      try {
+        // Fetch current path stats. Default to / if just path.
+        const path = window.location.pathname || '/';
+        const response = await fetch(`https://geohtml.goatcounter.com/counter/${encodeURIComponent(path)}.json`);
+        
+        if (response.ok) {
+           const data = await response.json();
+           // Display real count
+           countEl.textContent = data.count; 
+        } else {
+           countEl.textContent = "1,200+"; // Fallback if API fails
+        }
+      } catch (e) {
+        console.warn("Visitor count unavailable, using fallback.");
+        countEl.textContent = "1,200+";
+      }
+    }
+
     /* Utility: Array Shuffler */
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -1979,11 +2002,10 @@
       }, 7500);
     }
 
-    /* Logic: IP Banner & Field Intelligence (Enhanced for Safari/Edge) */
+    /* Logic: IP Banner & Field Intelligence */
     async function fetchFieldIntel() {
       const factBar = document.getElementById('geoFactBar');
       try {
-        // Robust fetch with no-cache to ensure accurate IP data across browsers
         const response = await fetch('https://ipapi.co/json/', { cache: 'no-store' });
         if (!response.ok) throw new Error('Network response not ok');
         const data = await response.json();
@@ -2079,7 +2101,7 @@
         return matchYear && matchPaper && matchTopic && matchSection && matchSearch;
       });
 
-      // Update Footer Stats
+      // Update Top Stats
       document.getElementById('globalCounter').textContent = `Inventory: ${questions.length}`;
       const completedCount = Object.values(questionStates).filter(s => s === 'done').length;
       document.getElementById('progressCounter').textContent = `Mastery: ${completedCount}/${questions.length}`;
