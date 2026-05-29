@@ -1,741 +1,843 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
-  <meta charset="UTF-8" />
-  <!-- Ensures mobile browsers scale properly -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>05Project</title>
-
-   <!-- Favicon link -->
-  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-  
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-  />
-  <style>
-    /* --- Global Scrollbar Hiding --- */
-    /* For WebKit browsers */
-    *::-webkit-scrollbar {
-      display: none;
-    }
-    /* For IE/Edge/Firefox on any scrollable element */
-    * {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-
-    /* Ensure html and body fill the viewport */
-    html, body {
-      height: 100%;
-      width: 100%;
-      margin: 0;
-      padding: 0;
-      background: #000;
-      color: #fff;
-      /* Prevent the body from scrolling directly */
-      overflow: hidden;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    /* --- Scrollable Wrapper for All Main Content --- */
-    .scroll-wrapper {
-      height: calc(100vh - env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
-  overflow-y: scroll;
-    }
-
-    /* --- Hidden Header & Footer Styling --- */
-    /* These elements are fixed but initially hidden (opacity: 0).
-       They will fade in on hover so users can still interact with them if needed. */
-    #header, footer {
-      position: fixed;
-      left: 0;
-      width: 100%;
-      padding: 10px 20px;
-      z-index: 10;
-      background: rgba(0, 0, 0, 0.2);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    /* Position header at the top */
-    #header {
-      top: 0;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-    }
-    #header a {
-      color: #ccc;
-      text-decoration: none;
-      font-size: 1.2rem;
-    }
-    /* Position footer at the bottom */
-    footer {
-      bottom: 0;
-      text-align: center;
-      padding: 5px 0;
-      font-size: 0.9rem;
-    }
-    /* Reveal header and footer on hover */
-    #header:hover, footer:hover {
-      opacity: 1;
-    }
-
-    /* Background Glow Animation */
-    .glow-container {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 0;
-    }
-    .glow-text {
-      position: absolute;
-      /* Make the glow-text more responsive: clamp(min, preferred, max) */
-      font-size: clamp(2rem, 8vw, 4rem);
-      font-weight: bold;
-      color: rgba(255, 255, 255, 0.1);
-      white-space: nowrap;
-      user-select: none;
-      animation: glowMove 20s linear infinite;
-    }
-    @keyframes glowMove {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-    @keyframes glowMoveFade {
-      0%   { transform: translateX(-100%); opacity: 0; }
-      25%  { opacity: 1; }
-      75%  { opacity: 1; }
-      100% { transform: translateX(100%); opacity: 0; }
-    }
-
-.button-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .welcome {
-       position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-  min-height: 100vh; 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding-bottom: constant(safe-area-inset-bottom); /* for older iOS versions */
-  padding-bottom: env(safe-area-inset-bottom);      /* for modern iOS */
-    }
-    .welcome h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      margin-bottom: 1rem;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    .welcome p {
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-    .countdown {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1.5rem;
-      border-radius: 15px;
-      margin: 2rem 0;
-      backdrop-filter: blur(5px);
-    }
-    .countdown-item {
-      display: inline-block;
-      margin: 0 1rem;
-      text-align: center;
-    }
-    .countdown-number {
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      font-weight: bold;
-      color: #ff4081;
-      text-shadow: 0 0 10px rgba(255,64,129,0.5);
-    }
-    .countdown-label {
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .cta-button, .exams-button {
-      padding: 1rem 2rem;
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-      background: #ff4081;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-      box-shadow: 0 4px 15px rgba(255,64,129,0.4);
-      animation: pulse 2s infinite;
-      margin-top: 1.5rem;
-    }
-    .cta-button:hover, .exams-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(255,64,129,0.6);
-    }
-    @keyframes pulse {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
-    /* Upcoming Exams Section */
-    #examsCountdownSection {
-      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('11920460.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      padding: 2rem;
-      margin-top: 2rem;
-      position: relative;
-    }
-    #examsCountdownSection::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 0;
-    }
-    #examsCountdownSection h2 {
-      color: #ff4081;
-      margin-bottom: 1rem;
-      position: relative;
-      z-index: 1;
-      font-size: clamp(1.5rem, 4vw, 2rem);
-    }
-    #examsCountdownContainer {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      position: relative;
-      z-index: 1;
-    }
-    .exam-countdown-item {
-      padding: 1rem;
-      background: rgba(255,255,255,0.1);
-      border-radius: 15px;
-    }
-    .exam-countdown-item h3 {
-      margin-bottom: 0.5rem;
-      font-size: clamp(1rem, 3vw, 1.2rem);
-      color: #ff4081;
-    }
-    .exam-countdown-item p {
-      margin-bottom: 0.5rem;
-      font-size: clamp(0.9rem, 3vw, 1rem);
-    }
-    .exam-countdown-item .countdown span {
-      font-weight: bold;
-      margin: 0 0.3rem;
-    }
-
-  /* File Tree (Resources) Page */
-  .file-browser {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #111;
-    overflow-y: auto;
-    padding: 2rem;
-    z-index: 2;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  .back-button {
-    display: inline-block;
-    margin-bottom: 1rem;
-    color: #ff4081;
-    text-decoration: none;
-    font-size: 1.1rem;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s;
-  }
-  .back-button:hover {
-    border-color: #ff4081;
-  }
-  .file-browser h2 {
-    margin-bottom: 1.5rem;
-    color: #ff4081;
-    font-size: 2rem;
-    text-align: center;
-  }
-  .folder {
-    margin-bottom: 2rem;
-    border: 1px solid #222;
-    border-radius: 8px;
-    padding: 1rem;
-    background: #1a1a1a;
-  }
-  .folder-title {
-    font-size: 1.5rem;
-    color: #ff4081;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid #333;
-    padding-bottom: 0.5rem;
-  }
-  .file-list {
-    list-style: none;
-    padding-left: 1rem;
-  }
-  .file-item {
-    margin-bottom: 0.8rem;
-    font-size: 1.1rem;
-  }
-  .file-item a {
-    text-decoration: none;
-    color: #ccc;
-    transition: color 0.3s;
-  }
-  .file-item a:hover {
-    color: #ff4081;
-  }
-  .coursebook-folder {
-    background-color: green;
-    color: white;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-  }
-
-  /* Media Queries for smaller screens */
-  @media (max-width: 768px) {
-    /* Make the exam countdown items one column */
-    #examsCountdownContainer {
-      grid-template-columns: 1fr; /* single column on smaller screens */
-    }
-  }
-
-  /* Add this section here */
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-  .hidden { display: none; }
-  .visible { display: block; }
-</style>
-</head>
-<body>
- <!-- Hidden Header -->
-  <div id="header">
-    <a href="index.html">Main Page</a>
-  </div>
-
-  <!-- Wrap all scrollable main content in .scroll-wrapper -->
-  <div class="scroll-wrapper">
-    <!-- Background Glow -->
-    <div class="glow-container">
-      <div class="glow-text">IB PHYSICS IB PHYSICS IB PHYSICS</div>
-      <div class="glow-text" style="top:30%; animation-delay:-5s;">STUDY HARD STUDY HARD STUDY HARD</div>
-      <div class="glow-text" style="top:70%; animation-delay:-10s;">SUCCESS AWAITS SUCCESS AWAITS</div>
-    </div>
-
-    <!-- Updated Script for Extra Messages Without Overlap -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Command Center | 05Project</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
     <script>
-    // Increase the number of extra messages
-    const extraMessages = [
-      { en: "NEVER STOP LEARNING", es: "NUNCA DEJES DE APRENDER", pl: "NIGDY NIE PRZESTAWAJ SIĘ UCZYĆ", fa: "یادگیری را متوقف نکنید" },
-      { en: "BELIEVE IN YOURSELF", es: "CREE EN TI MISMO", pl: "UWIERZ W SIEBIE", fa: "به خودت ایمان داشته باش" },
-      { en: "EMBRACE THE CHALLENGE", es: "ABRAZA EL DESAFÍO", pl: "PRZYJMIJ WYZWANIE", fa: "چالش را بپذیرید" },
-      { en: "ACHIEVE YOUR DREAMS", es: "ALCANZA TUS SUEÑOS", pl: "OSIĄGNIJ SWOJE MARZENIA", fa: "به رویاهای خود دست یاب" },
-      { en: "STAY CURIOUS, STAY INSPIRED", es: "MANTENTE CURIOSO, MANTENTE INSPIRADO", pl: "POZOSTAŃ CIEKAWY, POZOSTAŃ ZAINSPIRUJANY", fa: "کنجکاو بمان، الهام‌بخش بمان" },
-      { en: "KEEP MOVING FORWARD", es: "SIGUE ADELANTE", pl: "IDŹ NAPRZÓD", fa: "به جلو حرکت کن" },
-      { en: "SUCCESS IS A JOURNEY", es: "EL ÉXITO ES UN VIAJE", pl: "SUKCES TO PODRÓŻ", fa: "موفقیت یک سفر است" },
-      { en: "YOUR POTENTIAL IS LIMITLESS", es: "TU POTENCIAL ES ILIMITADO", pl: "TWÓJ POTENCJAŁ JEST NIEOGRANICZONY", fa: "پتانسیل شما بی‌حد و مرز است" },
-      { en: "STRIVE FOR EXCELLENCE", es: "ESFUÉRZATE POR LA EXCELENCIA", pl: "DĄŻ DO DOSKONAŁOŚCI", fa: "برای برتری تلاش کن" },
-      { en: "MAKE IT HAPPEN", es: "HAZ QUE SUCEDA", pl: "SPRAW, ŻE SIĘ STAJE", fa: "به وقوع بپیوندد" }
-    ];
-    const languages = ["en", "es", "pl", "fa"];
-    const numMessages = extraMessages.length;
-    const slots = [];
-    // Spread between 5% and 95%
-    for (let i = 0; i < numMessages; i++) {
-      let slot = 5 + ((95 - 5) / (numMessages - 1)) * i;
-      slots.push(slot);
-    }
-    // Shuffle the slots
-    function shuffle(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-    shuffle(slots);
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ios: {
+                            blue: '#0a84ff',
+                            red: '#ff453a',
+                            orange: '#ff9f0a',
+                            green: '#30d158',
+                            indigo: '#5e5ce6',
+                            purple: '#bf5af2',
+                            bgCard: 'rgba(15, 23, 42, 0.55)',
+                            bgActive: 'rgba(30, 41, 59, 0.8)'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Global Styles & Scrollbar Hiding */
+        * { box-sizing: border-box; font-family: 'Urbanist', sans-serif; }
+        *::-webkit-scrollbar { display: none; }
+        * { -ms-overflow-style: none; scrollbar-width: none; }
 
-    extraMessages.forEach((msg, index) => {
-      const randomLang = languages[Math.floor(Math.random() * languages.length)];
-      const newDiv = document.createElement('div');
-      newDiv.className = "glow-text";
-      newDiv.style.top = ${slots[index]}%;
-      const randomDuration = Math.floor(Math.random() * 16) + 15; // between 15s and 30s
-      const randomDelay = -(Math.random() * randomDuration).toFixed(2);
-      newDiv.style.animation = glowMoveFade ${randomDuration}s ease-in-out infinite;
-      newDiv.style.animationDelay = ${randomDelay}s;
-      newDiv.textContent = msg[randomLang];
-      document.querySelector('.glow-container').appendChild(newDiv);
-    });
-  </script>
+        body {
+            background: url('11920460.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #f8fafc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-  <!-- Animated Welcome Page -->
-  <div class="welcome" id="welcomePage">
-    <h1>Time to lock-in... ⌚</h1>
-    <p>Explore a comprehensive collection of IB Physics materials available for instant viewing in your browser!</p>
+        /* Ambient Animated Mesh Background Overlay with Blur */
+        .animated-bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 15% 15%, rgba(10, 132, 255, 0.15) 0%, transparent 35%),
+                        radial-gradient(circle at 85% 85%, rgba(255, 69, 58, 0.12) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 50%, rgba(94, 92, 230, 0.1) 0%, transparent 45%),
+                        rgba(9, 11, 20, 0.94);
+            z-index: -2;
+            animation: gradientShift 20s ease infinite alternate;
+        }
 
-    <!-- Main Countdown for the Next Upcoming Exam -->
-    <div class="countdown">
-      <div class="countdown-item">
-        <div class="countdown-number" id="months">00</div>
-        <div class="countdown-label">Months</div>
-      </div>
-      <div class="countdown-item">
-        <div class="countdown-number" id="days">00</div>
-        <div class="countdown-label">Days</div>
-      </div>
-      <div class="countdown-item">
-        <div class="countdown-number" id="hours">00</div>
-        <div class="countdown-label">Hours</div>
-      </div>
-      <div class="countdown-item">
-        <div class="countdown-number" id="minutes">00</div>
-        <div class="countdown-label">Minutes</div>
-      </div>
-      <div class="countdown-item">
-        <div class="countdown-number" id="seconds">00</div>
-        <div class="countdown-label">Seconds</div>
-      </div>
-    </div>
-    <p class="exam-date" id="mainExamDate">Next IB Exam: </p>
+        @keyframes gradientShift {
+            0% { filter: hue-rotate(0deg) saturate(1); }
+            50% { filter: hue-rotate(10deg) saturate(1.1); }
+            100% { filter: hue-rotate(-10deg) saturate(1); }
+        }
 
-    <div class="button-container">
-      <a href="#" class="cta-button" id="exploreButton">Explore Resources Now 🚀</a>
-      <a href="#" class="exams-button" id="examsButton">View Upcoming Exams</a>
-      <a href="#" class="cta-button" id="lockInButton">Lock In 🔒</a>
-      <a href="#" class="cta-button" id="geoButton">Geo</a>
-    </div>
-  </div>
+        /* Ambient Glow Blobs */
+        .glow-blob {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(94, 92, 230, 0.12) 0%, rgba(10, 132, 255, 0.04) 50%, transparent 100%);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-  <!-- Upcoming Exams Section (hidden when exploring resources) -->
-  <div id="examsCountdownSection" class="hidden">
-    <h2>Upcoming Exams</h2>
-    <div id="examsCountdownContainer">
-      <!-- Exam countdown items injected via JS -->
-    </div>
-  </div>
+        .blob-1 {
+            top: 5%;
+            right: 10%;
+            animation: floatBlob1 25s infinite ease-in-out;
+        }
 
-  <!-- File Browser Page -->
-  <div class="file-browser hidden" id="fileBrowser">
-    <a href="#" class="back-button" id="backButton">← Back to Welcome</a>
-    <h2>Resource Directory</h2>
+        .blob-2 {
+            bottom: 10%;
+            left: 5%;
+            animation: floatBlob2 25s infinite ease-in-out;
+        }
 
-    <!-- (Resource folders and content here) -->
-    <div class="folder coursebook-folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Coursebook Answers</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/Coursebook answers.pdf">
-            <i class="fas fa-file-pdf"></i> Coursebook Answers
-          </a>
-        </li>
-      </ul>
-    </div>
-    <!-- (Other folders go here) -->
-    <!-- Main Workbook -->
-    <div class="folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Main Workbook</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Physics%20-%20WORKBOOK%20-%20K.A.%20Tsokos%20-%20Seventh%20Edition%20-%20Cambridge%202023%20(Digital%20Edition).pdf">
-            <i class="fas fa-file-pdf"></i> Physics Workbook
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/Workbook%20answers.pdf">
-            <i class="fas fa-file-pdf"></i> Workbook Answers
-          </a>
-        </li>
-      </ul>
-    </div>
+        @keyframes floatBlob1 {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-60px, 40px) scale(1.05); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
 
-    <!-- Answers for Multiple Choice Questions -->
-    <div class="folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Answers for Multiple Choice Questions</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_0.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic Zero
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_A.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic A
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_B.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic B
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_C.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic C
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_D.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic D
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/ib_phys_dc_answers_ESQ_E.pdf">
-            <i class="fas fa-file-pdf"></i> Answers For Topic E
-          </a>
-        </li>
-      </ul>
-    </div>
+        @keyframes floatBlob2 {
+            0% { transform: translate(0, 0) scale(1.05); }
+            50% { transform: translate(40px, -60px) scale(0.95); }
+            100% { transform: translate(0, 0) scale(1.05); }
+        }
 
-    <!-- Specimen Papers -->
-    <div class="folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_HL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen HL PP1
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_1_SL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen SL PP1
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_HL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen HL PP2
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Specimen Papers/ib_phys_dc_sp_2_SL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen SL PP2
-          </a>
-        </li>
-      </ul>
-    </div>
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--ios-bgCard);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.6);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    <!-- Specimen Papers Answers -->
-    <div class="folder">
-      <div class="folder-title"><i class="fas fa-folder-open"></i> Specimen Papers Answers</div>
-      <ul class="file-list">
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/P1 HL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen HL PP1
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/P1 SL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen SL PP1
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/P2 HL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen HL PP2
-          </a>
-        </li>
-        <li class="file-item">
-          <a href="ib_phys_dc_all_files/Answers/P2 SL.pdf">
-            <i class="fas fa-file-pdf"></i> Specimen SL PP2
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.14);
+            box-shadow: 0 14px 40px 0 rgba(0, 0, 0, 0.75);
+        }
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const exams = [
-    { subject: 'PHYSICS SL', paper: 'P1', date: new Date('2025-04-29T00:00:00') },
-    { subject: 'PHYSICS SL', paper: 'P2', date: new Date('2025-04-30T00:00:00') },
-    { subject: 'ENGLISH A Language and Literature HL', paper: 'P1', date: new Date('2025-05-08T00:00:00') },
-    { subject: 'ENGLISH A Language and Literature HL', paper: 'P2', date: new Date('2025-05-09T00:00:00') },
-    { subject: 'GEOGRAPHY SL', paper: 'P1', date: new Date('2025-05-09T12:00:00') },
-    { subject: 'GEOGRAPHY SL', paper: 'P2', date: new Date('2025-05-12T00:00:00') },
-    { subject: 'ECONOMICS HL', paper: 'P2', date: new Date('2025-05-13T12:00:00') },
-    { subject: 'ECONOMICS HL', paper: 'P1', date: new Date('2025-05-14T00:00:00') },
-    { subject: 'ECONOMICS HL', paper: 'P3', date: new Date('2025-05-14T12:00:00') },
-    { subject: 'SPANISH B SL', paper: 'P1', date: new Date('2025-05-14T18:00:00') },
-    { subject: 'SPANISH B SL', paper: 'RE', date: new Date('2025-05-14T23:00:00') },
-    { subject: 'SPANISH B SL', paper: 'LI', date: new Date('2025-05-15T00:00:00') },
-    { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P1', date: new Date('2025-05-15T12:00:00') },
-    { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P2', date: new Date('2025-05-16T00:00:00') },
-    { subject: 'MATHEMATICS ANALYSIS AND APPROACHES HL', paper: 'P3', date: new Date('2025-05-21T00:00:00') }
-  ];
+        .calendar-day-selected {
+            background-color: #0a84ff !important;
+            color: white !important;
+            box-shadow: 0 0 12px rgba(10, 132, 255, 0.5);
+            border-radius: 50%;
+        }
 
-  // --- Normalize all times: morning → 10:00, afternoon → 14:00 ---
-  const normalizedExams = exams.map(exam => {
-    const d = new Date(exam.date);
-    if (d.getHours() < 12) {
-      d.setHours(10, 0, 0, 0);
-    } else {
-      d.setHours(14, 0, 0, 0);
-    }
-    return { ...exam, date: d };
-  });
+        /* Dynamic category pills */
+        .cat-badge {
+            font-size: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
 
-  /***** MAIN COUNTDOWN: Next Upcoming Exam *****/
-  let mainCountdownInterval = setInterval(updateMainCountdown, 1000);
-  updateMainCountdown();
+        .cat-ec { background: rgba(48, 209, 88, 0.12); color: #30d158; border-color: rgba(48, 209, 88, 0.25); }
+        .cat-me { background: rgba(255, 159, 10, 0.12); color: #ff9f0a; border-color: rgba(255, 159, 10, 0.25); }
+        .cat-math { background: rgba(94, 92, 230, 0.12); color: #5e5ce6; border-color: rgba(94, 92, 230, 0.25); }
+        .cat-meas { background: rgba(191, 90, 242, 0.12); color: #bf5af2; border-color: rgba(191, 90, 242, 0.25); }
+        .cat-num { background: rgba(255, 69, 58, 0.12); color: #ff453a; border-color: rgba(255, 69, 58, 0.25); }
+        .cat-circ { background: rgba(10, 132, 255, 0.12); color: #0a84ff; border-color: rgba(10, 132, 255, 0.25); }
+        .cat-gen { background: rgba(142, 142, 147, 0.12); color: #8e8e93; border-color: rgba(142, 142, 147, 0.25); }
 
-  function updateMainCountdown() {
-    const now = Date.now();
-    const nextExam = normalizedExams.find(e => e.date.getTime() > now);
+        /* Color classes for event dots matching tag colors */
+        .dot-ec { background-color: #30d158; box-shadow: 0 0 4px #30d158; }
+        .dot-me { background-color: #ff9f0a; box-shadow: 0 0 4px #ff9f0a; }
+        .dot-math { background-color: #5e5ce6; box-shadow: 0 0 4px #5e5ce6; }
+        .dot-meas { background-color: #bf5af2; box-shadow: 0 0 4px #bf5af2; }
+        .dot-num { background-color: #ff453a; box-shadow: 0 0 4px #ff453a; }
+        .dot-circ { background-color: #0a84ff; box-shadow: 0 0 4px #0a84ff; }
+        .dot-gen { background-color: #8e8e93; box-shadow: 0 0 4px #8e8e93; }
 
-    if (!nextExam) {
-      clearInterval(mainCountdownInterval);
-      ['months','days','hours','minutes','seconds'].forEach(id =>
-        document.getElementById(id).textContent = '0'
-      );
-      document.getElementById('mainExamDate').textContent = "No upcoming exam.";
-      return;
-    }
+        /* Category dynamic borders and texts */
+        .border-l-ec { border-left-color: #30d158 !important; }
+        .border-l-me { border-left-color: #ff9f0a !important; }
+        .border-l-math { border-left-color: #5e5ce6 !important; }
+        .border-l-meas { border-left-color: #bf5af2 !important; }
+        .border-l-num { border-left-color: #ff453a !important; }
+        .border-l-circ { border-left-color: #0a84ff !important; }
+        .border-l-gen { border-left-color: #8e8e93 !important; }
 
-    const distance = nextExam.date.getTime() - now;
-    const months  = Math.floor(distance / (1000*60*60*24*30));
-    const days    = Math.floor((distance % (1000*60*60*24*30)) / (1000*60*60*24));
-    const hours   = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
-    const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
-    const seconds = Math.floor((distance % (1000*60)) / 1000);
+        .text-ec { color: #30d158 !important; }
+        .text-me { color: #ff9f0a !important; }
+        .text-math { color: #5e5ce6 !important; }
+        .text-meas { color: #bf5af2 !important; }
+        .text-num { color: #ff453a !important; }
+        .text-circ { color: #0a84ff !important; }
+        .text-gen { color: #8e8e93 !important; }
 
-    document.getElementById('months').textContent  = months;
-    document.getElementById('days').textContent    = days;
-    document.getElementById('hours').textContent   = hours;
-    document.getElementById('minutes').textContent = minutes;
-    document.getElementById('seconds').textContent = seconds;
+        .btn-action {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-action:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.1);
+        }
+        .btn-action:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body class="p-3 md:p-6 antialiased">
 
-    document.getElementById('mainExamDate').textContent =
-      `Next IB Exam: ${nextExam.date.toLocaleDateString()} (${nextExam.subject} – ${nextExam.paper})`;
-  }
+    <!-- Ambient Animation Layer -->
+    <div class="animated-bg-overlay"></div>
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
 
-  /***** UPCOMING EXAMS COUNTDOWNS *****/
-  const examsContainer = document.getElementById('examsCountdownContainer');
-  normalizedExams.forEach((exam, i) => {
-    const div = document.createElement('div');
-    div.className = 'exam-countdown-item';
-    div.innerHTML = `
-      <h3>Exam ${i+1}: ${exam.subject} – ${exam.paper}</h3>
-      <p><strong>Date:</strong> ${exam.date.toLocaleDateString()} @ ${exam.date.getHours()}:00</p>
-      <div class="countdown">
-        <span id="examMonths${i}">00</span> Months
-        <span id="examDays${i}">00</span> Days
-        <span id="examHours${i}">00</span> Hours
-        <span id="examMinutes${i}">00</span> Minutes
-        <span id="examSeconds${i}">00</span> Seconds
-      </div>
-    `;
-    examsContainer.appendChild(div);
-  });
+    <!-- Header Block -->
+    <header class="max-w-7xl mx-auto mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div>
+            <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-ios-red animate-pulse"></span>
+                05PROJECT: ACADEMIC COMMAND CENTER
+            </h1>
+            <p class="text-[10px] text-slate-300 font-mono uppercase tracking-[0.2em] mt-0.5">Polish Academic Sequence | UK English standard</p>
+        </div>
+        
+        <div class="glass-card px-4 py-2 flex items-center gap-3 border-l-2 border-l-ios-blue text-xs">
+            <i class="fa-solid fa-clock-rotate-left text-ios-blue"></i>
+            <div class="text-right">
+                <div class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">Warsaw Time (GMT+2)</div>
+                <div id="polish-clock" class="font-mono font-bold text-white">29.05.2026 09:33:00</div>
+            </div>
+        </div>
+    </header>
 
-  function updateExamCountdowns() {
-    const now = Date.now();
-    normalizedExams.forEach((exam, i) => {
-      const dist = exam.date.getTime() - now;
-      let mths=0, dys=0, hrs=0, mins=0, secs=0;
-      if (dist > 0) {
-        mths = Math.floor(dist / (1000*60*60*24*30));
-        dys  = Math.floor((dist % (1000*60*60*24*30)) / (1000*60*60*24));
-        hrs  = Math.floor((dist % (1000*60*60*24)) / (1000*60*60));
-        mins = Math.floor((dist % (1000*60*60)) / (1000*60));
-        secs = Math.floor((dist % (1000*60)) / 1000);
-      }
-      document.getElementById(`examMonths${i}`).textContent  = mths;
-      document.getElementById(`examDays${i}`).textContent    = dys;
-      document.getElementById(`examHours${i}`).textContent   = hrs;
-      document.getElementById(`examMinutes${i}`).textContent = mins;
-      document.getElementById(`examSeconds${i}`).textContent = secs;
-    });
-  }
+    <!-- Main Dynamic Interface -->
+    <main class="max-w-7xl mx-auto space-y-4">
+        
+        <!-- HERO PANEL: Upcoming Exams & Deadlines -->
+        <section class="glass-card p-4">
+            <div class="flex items-center justify-between border-b border-white/10 pb-2 mb-3">
+                <h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-hourglass-half text-ios-orange animate-pulse"></i>
+                    Upcoming Tests & Exams Countdowns
+                </h2>
+                <span class="text-[9px] font-mono text-slate-400 uppercase">Chronological Order</span>
+            </div>
+            
+            <div id="countdown-hero-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <!-- Dynamically Injected Countdown Cards -->
+            </div>
+        </section>
 
-  setInterval(updateExamCountdowns, 1000);
-  updateExamCountdowns();
+        <!-- VERTICAL SCROLLING FULL MONTH CALENDAR & AGENDA -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            <!-- Vertically Scrollable Full Calendar Card (7 columns) -->
+            <section class="glass-card p-4 lg:col-span-7 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-white/10">
+                        <h2 class="text-[11px] font-bold uppercase tracking-widest text-slate-300 flex items-center gap-1.5">
+                            <i class="fa-regular fa-calendar-days text-ios-blue"></i>
+                            Vertical Calendar Stream
+                        </h2>
+                        <button onclick="scrollToToday()" class="text-[9px] bg-ios-blue/20 hover:bg-ios-blue/35 border border-ios-blue/30 text-ios-blue font-bold py-1 px-2.5 rounded transition">
+                            <i class="fa-solid fa-location-crosshairs mr-1"></i> Jump to Today
+                        </button>
+                    </div>
+                    
+                    <!-- Fixed Weekday Header -->
+                    <div class="grid grid-cols-7 text-center text-[9px] font-bold text-slate-400 uppercase mb-2 tracking-wider border-b border-white/5 pb-1">
+                        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                    </div>
 
-  
-      /***** BUTTONS TO TOGGLE/SCROLL VIEWS *****/
-      const exploreButton = document.getElementById('exploreButton');
-      const examsButton   = document.getElementById('examsButton');
-      const backButton    = document.getElementById('backButton');
-      const welcomePage   = document.getElementById('welcomePage');
-      const fileBrowser   = document.getElementById('fileBrowser');
-      const examsSection  = document.getElementById('examsCountdownSection');
-      const lockInButton  = document.getElementById('lockInButton');
-      const geoButton     = document.getElementById('geoButton');
+                    <!-- Scrollable Months Container -->
+                    <div id="vertical-calendar-scroll-container" class="space-y-6 max-h-[340px] overflow-y-auto pr-1">
+                        <!-- JS Injected Continuous Months (May & June 2026) -->
+                    </div>
+                </div>
+                <div class="mt-4 pt-2 border-t border-white/5 flex flex-wrap justify-between items-center text-[9px] text-slate-400 gap-2">
+                    <span class="flex items-center gap-1">Color-coded dots correspond with countdown tags</span>
+                    <span>Click any day to view planned agenda details</span>
+                </div>
+            </section>
 
-      // "Explore Resources Now"
-      exploreButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        welcomePage.classList.add("hidden");
-        examsSection.classList.add("hidden");
-        fileBrowser.classList.remove("hidden");
-        fileBrowser.classList.add("visible");
-      });
+            <!-- Day Agenda Card (5 columns) -->
+            <section class="glass-card p-4 lg:col-span-5 h-full flex flex-col justify-between min-h-[300px]">
+                <div class="flex flex-col flex-grow">
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2 mb-3">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-slate-300">Daily Agenda</h3>
+                        <span id="agenda-date" class="text-[11px] text-ios-blue font-mono font-bold">29 May 2026</span>
+                    </div>
+                    <div id="agenda-list" class="space-y-2 overflow-y-auto pr-1 flex-grow max-h-[260px]">
+                        <!-- JS Injected Day Agenda -->
+                    </div>
+                </div>
+            </section>
+        </div>
 
-      // "View Upcoming Exams"
-      examsButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        examsSection.classList.remove("hidden");
-        examsSection.scrollIntoView({ behavior: 'smooth' });
-      });
+        <!-- PROTOCOLS & CHECKLIST (Bottom Section) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 pb-4">
+            
+            <!-- Study Protocol Quotas (5 Columns) -->
+            <section class="glass-card p-4 lg:col-span-5 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-300 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-graduation-cap text-ios-indigo"></i>
+                        Daily Study Protocol Quotas
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="bg-black/35 p-3 rounded-xl border border-white/5 hover:border-white/10 transition">
+                            <span class="text-[8px] font-bold text-ios-red uppercase tracking-wider">60 Min Quota</span>
+                            <h4 class="text-xs font-bold mt-0.5 text-slate-100">Numerical Methods</h4>
+                            <p class="text-[10px] text-slate-400 mt-1">Focus on continuous practice of iterative solvers.</p>
+                            <button onclick="addQuickChecklistItem('Practice Numerical Methods solver systems', 'Numerical Methods')" class="btn-action mt-2 text-[9px] text-ios-blue hover:text-blue-300 font-bold block">+ Queue Session</button>
+                        </div>
+                        <div class="bg-black/35 p-3 rounded-xl border border-white/5 hover:border-white/10 transition">
+                            <span class="text-[8px] font-bold text-ios-orange uppercase tracking-wider">30 Min Quota</span>
+                            <h4 class="text-xs font-bold mt-0.5 text-slate-100">Mech Eng: Beams & Trusses</h4>
+                            <p class="text-[10px] text-slate-400 mt-1">Focus specifically on structural truss reaction forces.</p>
+                            <button onclick="addQuickChecklistItem('Resolve structural beams & truss member forces', 'Mechanical Engineering')" class="btn-action mt-2 text-[9px] text-ios-blue hover:text-blue-300 font-bold block">+ Queue Session</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] text-slate-400 font-mono">
+                    <span>Priority focus subjects</span>
+                    <span>Last updated today</span>
+                </div>
+            </section>
 
-      // Back button
-      backButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        fileBrowser.classList.remove("visible");
-        fileBrowser.classList.add("hidden");
-        welcomePage.classList.remove("hidden");
-        examsSection.classList.remove("hidden");
-      });
+            <!-- Active Task Matrix (7 Columns) -->
+            <section class="glass-card p-4 lg:col-span-7 flex flex-col">
+                <h3 class="text-[11px] font-bold uppercase tracking-widest text-slate-300 mb-3 flex items-center gap-1.5">
+                    <i class="fa-solid fa-list-check text-ios-green"></i>
+                    Active Task Matrix
+                </h3>
+                <form onsubmit="handleNewTaskInput(event)" class="mb-3 flex gap-2">
+                    <input type="text" id="task-text-field" placeholder="Enter academic or revision task..." class="flex-grow bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:border-ios-blue focus:bg-white/10 transition placeholder-slate-500">
+                    <select id="task-cat-field" class="bg-black/40 border border-white/10 rounded-lg px-2 text-xs text-slate-300 focus:outline-none focus:border-ios-blue">
+                        <option value="Numerical Methods">Numerical Methods</option>
+                        <option value="Mechanical Engineering">Mech Engineering</option>
+                        <option value="Energy Conversions">Energy Conversions</option>
+                        <option value="Circuits & Systems">Circuits & Systems</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Electrical Measurements">Electrical Measurements</option>
+                        <option value="General Track">General</option>
+                    </select>
+                    <button type="submit" class="btn-action bg-ios-blue hover:bg-blue-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">Add</button>
+                </form>
+                <div id="task-matrix-list" class="space-y-1.5 overflow-y-auto max-h-[140px] pr-1 flex-grow">
+                    <!-- Dynamic Checklist Injected here -->
+                </div>
+            </section>
+        </div>
+    </main>
 
-      // "Lock In 🔒"
-      lockInButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = 'https://lock-the-fuck-in.github.io/lock-the-fuck-in/';
-      });
+    <script>
+        // System baseline time: Friday, May 29, 2026, 09:33:00 Polish Time
+        let systemClock = new Date('2026-05-29T09:33:00');
+        
+        // Active selection state matching May 29, 2026 initially
+        let activeSelectedDay = 29;
+        let activeSelectedMonth = 4; // May
+        let activeSelectedYear = 2026;
 
-      // "Geo"
-      geoButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.location.href = 'geo.html';
-      });
-    });
-  </script>
+        // Comprehensive database of academic exams
+        const academicEvents = [
+            {
+                id: 'me_makeup',
+                name: 'Mechanical Engineering (Make-up Class)',
+                date: '2026-05-29T08:15:00',
+                endDate: '2026-05-29T10:00:00',
+                cat: 'Mechanical Engineering',
+                catKey: 'me',
+                location: 'Room SK 108',
+                description: 'Compulsory make-up exercise class under Tutor mgr inż. Wiktor Wróblewski.'
+            },
+            {
+                id: 'ec_lec_1',
+                name: 'Energy Conversions (Lec/Exe Part 1)',
+                date: '2026-06-02T16:00:00',
+                endDate: '2026-06-02T18:00:00',
+                cat: 'Energy Conversions',
+                catKey: 'ec',
+                location: 'Main Auditorium',
+                description: 'First examination block on theoretical systems.'
+            },
+            {
+                id: 'me_exam_1',
+                name: 'Mechanical Engineering (Exam 1 - Lec)',
+                date: '2026-06-03T08:15:00',
+                endDate: '2026-06-03T10:00:00',
+                cat: 'Mechanical Engineering',
+                catKey: 'me',
+                location: 'Room SK 108',
+                description: 'First lecture examination target under dr hab. inż. Łukasz Nogal.'
+            },
+            {
+                id: 'me_exe_test_1',
+                name: 'Mechanical Engineering (Exe Test T1)',
+                date: '2026-06-03T10:15:00',
+                endDate: '2026-06-03T12:00:00',
+                cat: 'Mechanical Engineering',
+                catKey: 'me',
+                location: 'Room SK 108',
+                description: 'Exercise class test under Tutor mgr inż. Wiktor Wróblewski.'
+            },
+            {
+                id: 'circ_exe_1',
+                name: 'Circuits & Systems (Exe)',
+                date: '2026-06-08T09:00:00',
+                endDate: '2026-06-08T11:00:00',
+                cat: 'Circuits & Systems',
+                catKey: 'circ',
+                location: 'Room GE-b AE',
+                description: 'Written exercise covering networks.'
+            },
+            {
+                id: 'ec_redo',
+                name: 'Energy Conversions (Test Redo)',
+                date: '2026-06-09T16:00:00',
+                endDate: '2026-06-09T18:00:00',
+                cat: 'Energy Conversions',
+                catKey: 'ec',
+                location: 'Main Auditorium',
+                description: 'Crucial self-assessment redo targeting prior exams.'
+            },
+            {
+                id: 'math_lec_1',
+                name: 'Mathematics Exam (Session A)',
+                date: '2026-06-10T10:00:00',
+                endDate: '2026-06-10T12:00:00',
+                cat: 'Mathematics',
+                catKey: 'math',
+                location: 'Central Exam Hall',
+                description: 'Session A written assessment - EXACTLY at 10:00am!'
+            },
+            {
+                id: 'me_exam_2',
+                name: 'Mechanical Engineering (Exam 2 - Lec)',
+                date: '2026-06-12T08:15:00',
+                endDate: '2026-06-12T10:00:00',
+                cat: 'Mechanical Engineering',
+                catKey: 'me',
+                location: 'Room SK 108',
+                description: 'Second lecture examination target under dr hab. inż. Łukasz Nogal.'
+            },
+            {
+                id: 'me_exe_test_2',
+                name: 'Mechanical Engineering (Exe Retake Test T2)',
+                date: '2026-06-12T10:15:00',
+                endDate: '2026-06-12T12:00:00',
+                cat: 'Mechanical Engineering',
+                catKey: 'me',
+                location: 'Room SK 108',
+                description: 'Exercise class retake test under Tutor mgr inż. Wiktor Wróblewski.'
+            },
+            {
+                id: 'circ_lec',
+                name: 'Circuits & Systems (Lec Exam)',
+                date: '2026-06-16T13:00:00',
+                endDate: '2026-06-16T15:00:00',
+                cat: 'Circuits & Systems',
+                catKey: 'circ',
+                location: 'Room GE-b AE',
+                description: 'Circuits and systems lecture examination target.'
+            },
+            {
+                id: 'em_lec',
+                name: 'Electrical Measurements (Lec)',
+                date: '2026-06-16T10:15:00',
+                endDate: '2026-06-16T11:00:00',
+                cat: 'Electrical Measurements',
+                catKey: 'meas',
+                location: 'Room GE-b AE',
+                description: 'Informational lecture review before examination.'
+            },
+            {
+                id: 'em_test',
+                name: 'Electrical Measurements TEST',
+                date: '2026-06-16T11:15:00',
+                endDate: '2026-06-16T12:00:00',
+                cat: 'Electrical Measurements',
+                catKey: 'meas',
+                location: 'Room GE-b AE',
+                description: '45-minute critical written test beginning exactly at 11:15am.'
+            },
+            {
+                id: 'num_term_1',
+                name: 'Numerical Methods (Session A)',
+                date: '2026-06-17T14:30:00',
+                endDate: '2026-06-17T16:00:00',
+                cat: 'Numerical Methods',
+                catKey: 'num',
+                location: 'Room SK 107a',
+                description: 'Dr inż. Robert Szmurło - Starts at 14:30 sharp! Application not required.'
+            },
+            {
+                id: 'math_lec_alt',
+                name: 'Mathematics Exam (Alternative Session)',
+                date: '2026-06-17T10:00:00',
+                endDate: '2026-06-17T12:00:00',
+                cat: 'Mathematics',
+                catKey: 'math',
+                location: 'Central Exam Hall',
+                description: 'Alternate window for math validation - EXACTLY at 10:00am!'
+            },
+            {
+                id: 'circ_term_1',
+                name: 'Circuits & Systems Exam (Term 1)',
+                date: '2026-06-19T10:00:00',
+                endDate: '2026-06-19T12:00:00',
+                cat: 'Circuits & Systems',
+                catKey: 'circ',
+                location: 'Room GE-b AE',
+                description: 'Prof. J. Starzyński - Term 1 examination window.'
+            },
+            {
+                id: 'circ_term_2',
+                name: 'Circuits & Systems Exam (Term 2)',
+                date: '2026-06-24T14:00:00',
+                endDate: '2026-06-24T16:00:00',
+                cat: 'Circuits & Systems',
+                catKey: 'circ',
+                location: 'Room GE-b AE',
+                description: 'Prof. J. Starzyński - Term 2 evaluation.'
+            },
+            {
+                id: 'num_term_alt',
+                name: 'Numerical Methods (Session B)',
+                date: '2026-06-25T14:00:00',
+                endDate: '2026-06-25T16:00:00',
+                cat: 'Numerical Methods',
+                catKey: 'num',
+                location: 'Room SK 107a',
+                description: 'Dr inż. Robert Szmurło - Starts at 14:00. Application not required.'
+            }
+        ];
 
- <!-- 1. Path override must appear before count.js -->
-  <script>
-    window.goatcounter = {
-      path: function(p) { return location.host + p }
-    };
-  </script> <!-- :contentReference[oaicite:4]{index=4} -->
+        // Active Tasks Array
+        let taskMatrix = [
+            { id: 1, text: 'Revise Truss reaction forces & method of sections calculations', cat: 'Mechanical Engineering', done: false },
+            { id: 2, text: 'Run RK4 numerical convergence exercises for 1 hour', cat: 'Numerical Methods', done: false },
+            { id: 3, text: 'Review Energy Conversions past exams ahead of June 9 redo', cat: 'Energy Conversions', done: false },
+            { id: 4, text: 'Analyse circuit parameters for Jacek Starzyński term 1 papers', cat: 'Circuits & Systems', done: true }
+        ];
 
-  <!-- 2. Core GoatCounter script -->
-  <script data-goatcounter="https://geohtml.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script> <!-- :contentReference[oaicite:5]{index=5} -->
+        // Clock Update tick interval
+        setInterval(() => {
+            systemClock.setSeconds(systemClock.getSeconds() + 1);
+            const options = { 
+                timeZone: 'Europe/Warsaw',
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', second: '2-digit',
+                hour12: false
+            };
+            const formatted = systemClock.toLocaleString('en-GB', options).replace(',', '');
+            document.getElementById('polish-clock').innerText = formatted;
+            
+            updateHeroCountdowns();
+        }, 1000);
 
-  <!-- 3. Display visitor count -->
-  <script>
-    window.goatcounter.visit_count({ append: 'body' });
-  </script> <!-- :contentReference[oaicite:6]{index=6} -->
+        // Render Countdown Cards inside Hero Section with specific Day of Week & Full Date Info
+        function renderHeroPanel() {
+            const grid = document.getElementById('countdown-hero-grid');
+            const now = systemClock.getTime();
 
-  
- <!-- Hidden Footer -->
-  <footer>
-    &copy; 2025 05Project - Max Gum
-  </footer>
+            const upcomingExams = academicEvents.filter(e => new Date(e.date).getTime() > now);
+
+            if (upcomingExams.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-6 text-center text-slate-500 italic text-xs">
+                        All exams completed. Final sequence finished.
+                    </div>
+                `;
+                return;
+            }
+
+            const sorted = [...upcomingExams].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+            grid.innerHTML = sorted.map(exam => {
+                const targetTime = new Date(exam.date).getTime();
+                const diff = targetTime - now;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                const eventDate = new Date(exam.date);
+                const dayOfWeek = eventDate.toLocaleDateString('en-GB', { weekday: 'long' });
+                const calendarDay = eventDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                const startTimeStr = eventDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+                return `
+                    <div id="hero-countdown-${exam.id}" class="bg-black/20 p-3 rounded-lg border border-white/5 hover:border-white/10 transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-start justify-between gap-2">
+                                <span class="cat-badge cat-${exam.catKey}">${exam.cat}</span>
+                                <span class="text-[9px] text-slate-400 font-mono font-bold">${exam.location}</span>
+                            </div>
+                            <h3 class="text-xs font-bold text-white mt-1.5 leading-snug truncate">${exam.name}</h3>
+                            <p class="text-[9px] text-ios-blue font-semibold mt-0.5">${dayOfWeek}, ${calendarDay} @ ${startTimeStr}</p>
+                        </div>
+                        
+                        <div class="mt-3 pt-2 border-t border-white/5">
+                            <div class="grid grid-cols-4 gap-1 text-center font-mono">
+                                <div class="bg-white/5 p-1 rounded">
+                                    <p class="text-xs font-bold text-ios-orange leading-none" id="hero-d-${exam.id}">${days}</p>
+                                    <span class="text-[6px] text-slate-500 uppercase mt-0.5 block font-semibold">Days</span>
+                                </div>
+                                <div class="bg-white/5 p-1 rounded">
+                                    <p class="text-xs font-bold text-white leading-none" id="hero-h-${exam.id}">${hours}</p>
+                                    <span class="text-[6px] text-slate-500 uppercase mt-0.5 block font-semibold">Hours</span>
+                                </div>
+                                <div class="bg-white/5 p-1 rounded">
+                                    <p class="text-xs font-bold text-white leading-none" id="hero-m-${exam.id}">${minutes}</p>
+                                    <span class="text-[6px] text-slate-500 uppercase mt-0.5 block font-semibold">Mins</span>
+                                </div>
+                                <div class="bg-white/5 p-1 rounded">
+                                    <p class="text-xs font-bold text-ios-red leading-none" id="hero-s-${exam.id}">${seconds}</p>
+                                    <span class="text-[6px] text-slate-500 uppercase mt-0.5 block font-semibold">Secs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateHeroCountdowns() {
+            const now = systemClock.getTime();
+            academicEvents.forEach(exam => {
+                const cardD = document.getElementById(`hero-d-${exam.id}`);
+                const cardH = document.getElementById(`hero-h-${exam.id}`);
+                const cardM = document.getElementById(`hero-m-${exam.id}`);
+                const cardS = document.getElementById(`hero-s-${exam.id}`);
+
+                if (!cardD) return;
+
+                const targetTime = new Date(exam.date).getTime();
+                const diff = targetTime - now;
+
+                if (diff < 0) {
+                    renderHeroPanel();
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                cardD.innerText = days;
+                cardH.innerText = hours;
+                cardM.innerText = minutes;
+                cardS.innerText = seconds;
+            });
+        }
+
+        // VERTICAL SCROLLING FULL MONTHS STACK RENDERER
+        function renderVerticalCalendar() {
+            const container = document.getElementById('vertical-calendar-scroll-container');
+            const monthsToRender = [
+                { month: 4, year: 2026, name: "May 2026" },
+                { month: 5, year: 2026, name: "June 2026" }
+            ];
+
+            let htmlContent = '';
+
+            monthsToRender.forEach(mObj => {
+                let firstDay = new Date(mObj.year, mObj.month, 1).getDay();
+                let shift = firstDay === 0 ? 6 : firstDay - 1;
+                let daysInMonth = new Date(mObj.year, mObj.month + 1, 0).getDate();
+
+                let daysGridHtml = '';
+                
+                // Prefill empty offset days for alignment
+                for (let i = 0; i < shift; i++) {
+                    daysGridHtml += '<div></div>';
+                }
+
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const isSelected = (d === activeSelectedDay && mObj.month === activeSelectedMonth && mObj.year === activeSelectedYear);
+                    const isToday = (d === 29 && mObj.month === 4 && mObj.year === 2026); // Hardcoded Today target May 29, 2026
+                    
+                    // Filter exams on this specific day to extract categories and colors
+                    const dayExams = academicEvents.filter(e => {
+                        let ed = new Date(e.date);
+                        return ed.getDate() === d && ed.getMonth() === mObj.month && ed.getFullYear() === mObj.year;
+                    });
+
+                    // Construct corresponding color-coded dots aligning with countdown styles
+                    let dotsHtml = '';
+                    if (dayExams.length > 0) {
+                        dotsHtml = `<div class="flex justify-center gap-1 mt-1 min-h-[4px]">`;
+                        // Render a dot for EACH individual exam on this day (allows multiple same-category dots)
+                        dayExams.forEach(exam => {
+                            dotsHtml += `<span class="w-1.5 h-1.5 rounded-full dot-${exam.catKey}"></span>`;
+                        });
+                        dotsHtml += `</div>`;
+                    } else {
+                        dotsHtml = `<div class="min-h-[4px] mt-1"></div>`;
+                    }
+
+                    daysGridHtml += `
+                        <div id="day-cell-${mObj.month}-${d}" onclick="selectCalendarDay(${d}, ${mObj.month}, ${mObj.year})" class="relative py-1 cursor-pointer">
+                            <div class="w-7 h-7 mx-auto flex flex-col items-center justify-center rounded-full transition relative ${isSelected ? 'calendar-day-selected animate-pulse' : isToday ? 'border border-ios-blue text-ios-blue font-bold' : 'hover:bg-white/10 text-slate-300 hover:text-white'}">
+                                <span class="text-xs font-semibold">${d}</span>
+                            </div>
+                            ${dotsHtml}
+                        </div>
+                    `;
+                }
+
+                htmlContent += `
+                    <div class="bg-black/10 rounded-xl p-3 border border-white/5">
+                        <h3 class="text-xs font-bold text-slate-300 tracking-wide uppercase mb-3 text-center border-b border-white/5 pb-1">${mObj.name}</h3>
+                        <div class="grid grid-cols-7 gap-y-2 text-center text-xs">
+                            ${daysGridHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = htmlContent;
+            renderAgenda();
+        }
+
+        function selectCalendarDay(d, m, y) {
+            activeSelectedDay = d;
+            activeSelectedMonth = m;
+            activeSelectedYear = y;
+            renderVerticalCalendar();
+        }
+
+        function renderAgenda() {
+            const list = document.getElementById('agenda-list');
+            const dayExams = academicEvents.filter(e => {
+                let ed = new Date(e.date);
+                return ed.getDate() === activeSelectedDay && ed.getMonth() === activeSelectedMonth && ed.getFullYear() === activeSelectedYear;
+            });
+
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.getElementById('agenda-date').innerText = `${activeSelectedDay} ${monthNames[activeSelectedMonth]} ${activeSelectedYear}`;
+
+            if (dayExams.length === 0) {
+                list.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center py-12 text-center">
+                        <i class="fa-regular fa-calendar-minus text-slate-600 text-lg mb-1"></i>
+                        <p class="text-[10px] text-slate-500 italic">No scheduled exams for this day.</p>
+                    </div>
+                `;
+            } else {
+                list.innerHTML = dayExams.map(e => {
+                    const timeStr = new Date(e.date).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                    return `
+                        <div class="bg-white/5 p-2.5 rounded-xl border border-white/5 border-l-2 border-l-${e.catKey} hover:bg-white/10 transition">
+                            <div class="flex justify-between text-[10px] font-bold">
+                                <span class="text-${e.catKey} uppercase tracking-wider">${e.cat}</span>
+                                <span class="text-slate-400 font-mono">${timeStr}</span>
+                            </div>
+                            <p class="text-xs font-bold mt-1 text-white">${e.name}</p>
+                            <p class="text-[9px] text-slate-400 mt-0.5 leading-snug">${e.description}</p>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        // Jump/Scroll to Today (May 29, 2026) in the vertical calendar
+        function scrollToToday() {
+            activeSelectedDay = 29;
+            activeSelectedMonth = 4;
+            activeSelectedYear = 2026;
+            renderVerticalCalendar();
+
+            setTimeout(() => {
+                const targetCell = document.getElementById('day-cell-4-29');
+                const scrollContainer = document.getElementById('vertical-calendar-scroll-container');
+                if (targetCell && scrollContainer) {
+                    scrollContainer.scrollTo({
+                        top: targetCell.offsetTop - (scrollContainer.clientHeight / 2) + (targetCell.clientHeight / 2),
+                        behavior: 'smooth'
+                    });
+                }
+            }, 50);
+        }
+
+        // TASK MATRIX HANDLERS
+        function renderTaskMatrix() {
+            const list = document.getElementById('task-matrix-list');
+            
+            if (taskMatrix.length === 0) {
+                list.innerHTML = `
+                    <div class="py-6 text-center text-slate-500 text-xs italic">
+                        All items cleared. No pending assignments.
+                    </div>
+                `;
+                return;
+            }
+
+            const sorted = [...taskMatrix].sort((a, b) => a.done - b.done);
+
+            list.innerHTML = sorted.map(t => `
+                <div class="bg-black/35 p-2 rounded-lg border border-white/5 hover:border-white/10 transition flex items-center justify-between group">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <input type="checkbox" ${t.done ? 'checked' : ''} onclick="toggleTaskMatrixItem(${t.id})" class="w-3.5 h-3.5 rounded border-slate-700 bg-slate-900 accent-ios-blue cursor-pointer">
+                        <div class="truncate">
+                            <p class="text-xs text-slate-200 truncate ${t.done ? 'line-through text-slate-500' : ''}">${t.text}</p>
+                            <span class="text-[8px] text-slate-500 font-semibold tracking-wide uppercase block mt-0.5">${t.cat}</span>
+                        </div>
+                    </div>
+                    <button onclick="deleteTaskMatrixItem(${t.id})" class="text-slate-500 hover:text-ios-red opacity-0 group-hover:opacity-100 transition px-1.5">
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function handleNewTaskInput(e) {
+            e.preventDefault();
+            const inputField = document.getElementById('task-text-field');
+            const catField = document.getElementById('task-cat-field');
+            const text = inputField.value.trim();
+
+            if (!text) return;
+
+            taskMatrix.push({
+                id: Date.now(),
+                text: text,
+                cat: catField.value,
+                done: false
+            });
+
+            inputField.value = '';
+            renderTaskMatrix();
+        }
+
+        function addQuickChecklistItem(text, category) {
+            taskMatrix.push({
+                id: Date.now(),
+                text: text,
+                cat: category,
+                done: false
+            });
+            renderTaskMatrix();
+        }
+
+        function toggleTaskMatrixItem(id) {
+            taskMatrix = taskMatrix.map(t => t.id === id ? { ...t, done: !t.done } : t);
+            renderTaskMatrix();
+        }
+
+        function deleteTaskMatrixItem(id) {
+            taskMatrix = taskMatrix.filter(t => t.id !== id);
+            renderTaskMatrix();
+        }
+
+        // Initialize elements on load
+        window.onload = function() {
+            renderHeroPanel();
+            renderVerticalCalendar();
+            renderTaskMatrix();
+            scrollToToday(); // Center-scroll to Today automatically on initial run
+        }
+    </script>
 </body>
 </html>
